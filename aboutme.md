@@ -1,16 +1,13 @@
 ---
 layout: page
 title: About me
-subtitle: Why you'd want to go on a date with me
+subtitle: A passionate Data science student who believe that the power of data can change the world
 ---
 
-My name is Inigo Montoya. I have the following qualities:
+My name is Anh Thu, I am currently preparing a bachelor's degree in data sciences at CY Tech (Ex EISTI). And it is in this context that I am actively looking for a five months internship in Data Science starting from April to September 2023 with the possibility of extending it to an apprenticeship for one year after that.
 
-- I rock a great mustache
-- I'm extremely loyal to my family
+### Powerful Quotes That Inspired My Data Science Journey
 
-What else do you need?
+"If you can't explain it simply, you don't understand it well enough." - Albert Einstein
 
-### My story
-
-To be honest, I'm having some trouble remembering right now, so why don't you just watch [my movie](https://en.wikipedia.org/wiki/The_Princess_Bride_%28film%29) and it will answer **all** your questions.
+"it's easy to lie with statistics. It's hard to tell the truth without statistics." - Andrejs Dunkels
