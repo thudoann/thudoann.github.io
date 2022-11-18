@@ -35,7 +35,7 @@ navbar-links:
 avatar: "/assets/img/IMG_3762.jpeg"
 
 # By default, the image is cut into a circle. You can disable this behaviour by setting 'round-avatar: false'
-round-avatar: true
+round-avatar: false
 
 # If you want to have an image logo in the top-left corner instead of having the title of the website,
 # then specify the following parameter
@@ -121,17 +121,17 @@ navbar-var-length: false
 
 # Personalize the colours in your website. Colour values can be any valid CSS colour
 
-navbar-col: "#BD637E"
+navbar-col: "#EAEAEA"
 navbar-text-col: "#404040"
-navbar-border-col: "#E2B4B7"
+navbar-border-col: "#DDDDDD"
 page-col: "#FFFFFF"
 text-col: "#404040"
 link-col: "#008AFF"
-hover-col: "#A0C9C3"
-footer-col: "#657D81"
+hover-col: "#E2B4B7"
+footer-col: "#BD637E"
 footer-text-col: "#777777"
 footer-link-col: "#404040"
-footer-hover-col: "#0085A1"
+footer-hover-col: "#A0C9C3"
 
 # Alternatively, the navbar, footer, and page background can be set to an image
 # instead of colour
