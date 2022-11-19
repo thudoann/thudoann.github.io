@@ -11,7 +11,7 @@ tags: [Data Wrangling, Data Processing, Sentiment Analysis, Social Network Analy
 ---
 
 
-# [1.Text Classification for Restaurant Reviews using Machine Learning models:](https://github.com/thudoann/Text-Classification-for-Restaurant-Reviews-using-Machine-Learning-models)
+# [1. Text Classification for Restaurant Reviews using Machine Learning models:](https://github.com/thudoann/Text-Classification-for-Restaurant-Reviews-using-Machine-Learning-models)
 Online customer feedback has been recognised as an economic value for consumers and restaurants. With the expansion of the internet and social networks, customer reviews significantly influence business growth and gain new consumers. Therefore, the classification between negative and positive reviews contributes a massive benefit for the business to provide better quality services and minimise the harmful effects of bad reviews.
 This project aims to use Supervised Learning Text Classification to predict whether given feedback(s) is(are) positive or negative.
 
