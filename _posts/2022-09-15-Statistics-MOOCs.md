@@ -30,9 +30,9 @@ This project aims to use Supervised Learning Text Classification to predict whet
 
 ![lsvcconfusion](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/lsvcconfusion.png)
 
-![precision](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/precisionrecall.png)
 ![svcconfusion](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/svcconfusion.png)
 
+![precision](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/precisionrecall.png)
 
 #### Feature importance and model interpretability
 
