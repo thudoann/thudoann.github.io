@@ -24,7 +24,7 @@ This project aims to use Supervised Learning Text Classification to predict whet
   <img src="assets/img/feature_importance.png" alt="" width="600"/>
 </p>
 
-![Crepe](https://github.com/thudoann/thudoann.github.io/assets/img/lsvctuning.png "title")
+![Crepe](./assets/img/lsvctuning.png "title")
 
 #### Evaluated the model (with model's accuracy, confusion matrix, precision and recall table)
 
