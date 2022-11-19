@@ -21,7 +21,7 @@ This project aims to use Supervised Learning Text Classification to predict whet
 #### Created machine pipeline to evaluate the performance of several models and tuned hyperparameter on the highest accuracy model (SVC & LSVC)
 
 <p align="center">
-  <img src="assets/img/lsvctuning.png" alt="" width="600"/>
+  <img src="assets/img/feature_importance.png" alt="" width="600"/>
 </p>
 
 ![Crepe](https://github.com/thudoann/thudoann.github.io/assets/img/lsvctuning.png)
