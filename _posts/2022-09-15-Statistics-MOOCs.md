@@ -24,10 +24,10 @@ This project aims to use Supervised Learning Text Classification to predict whet
   <img src="assets/img/lsvctuning.png" alt="" width="600"/>
 </p>
 
-![Crepe](https://github.com/thudoann/thudoann.github.io/blob/master/assets/img/lsvctuning.png)
+![Crepe](https://github.com/thudoann/thudoann.github.io/assets/img/lsvctuning.png)
 
 #### Evaluated the model (with model's accuracy, confusion matrix, precision and recall table)
 
 #### Feature importance and model interpretability
 
-![FeatureImportance](https://github.com/thudoann/thudoann.github.io/blob/master/assets/img/feature_importance.png)
+![FeatureImportance](https://github.com/thudoann/thudoann.github.io/assets/img/feature_importance.png)
