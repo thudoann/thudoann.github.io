@@ -34,6 +34,6 @@ This project aims to use Supervised Learning Text Classification to predict whet
 
 ![precision](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/precisionrecall.png)
 
-#### Feature importance and model interpretability
+#### Identify the top 20 features contributing to LinearSVC classification performance to distinguish whether a review was negative or positive.
 
 ![FeatureImportance](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/feature_importance.png)
