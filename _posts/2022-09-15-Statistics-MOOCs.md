@@ -19,6 +19,11 @@ This project aims to use Supervised Learning Text Classification to predict whet
 #### Chose the baseline classifier based on the most-frequent class in the training dataset.
 
 #### Created machine pipeline to evaluate the performance of several models and tuned hyperparameter on the highest accuracy model (SVC & LSVC)
+
+<p align="center">
+  <img src="assets/img/lsvctuning.png" alt="" width="600"/>
+</p>
+
 ![Crepe](https://github.com/thudoann/thudoann.github.io/blob/master/assets/img/lsvctuning.png)
 
 #### Evaluated the model (with model's accuracy, confusion matrix, precision and recall table)
