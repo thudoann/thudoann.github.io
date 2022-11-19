@@ -23,14 +23,14 @@ This project aims to use Supervised Learning Text Classification to predict whet
 
 ![lsvc](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/lsvctuning.png)
 
-![svc](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/svctuning.png)
+
 
 #### Evaluated the model (with model's accuracy, confusion matrix, precision and recall table)
 
 
 ![lsvcconfusion](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/lsvcconfusion.png)
 
-![svcconfusion](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/svcconfusion.png)
+
 
 ![precision](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/precisionrecall.png)
 
