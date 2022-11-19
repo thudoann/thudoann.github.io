@@ -30,4 +30,4 @@ This project aims to use Supervised Learning Text Classification to predict whet
 
 #### Feature importance and model interpretability
 
-![FeatureImportance](https://github.com/thudoann/thudoann.github.io/blob/master/assets/img/feature_importance.png)
+![FeatureImportance](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/feature_importance.png)
