@@ -12,4 +12,4 @@ tags: [TF-IDF , C-Support Vector Classification, Confusion matrix, Feature impor
 Online customer feedback has been recognised as an economic value for consumers and restaurants. With the expansion of the internet and social networks, customer reviews significantly influence business growth and gain new consumers. Therefore, the classification between negative and positive reviews contributes a massive benefit for the business to provide better quality services and minimise the harmful effects of bad reviews.
 This project aims to use Supervised Learning Text Classification to predict whether given feedback(s) is(are) positive or negative.
 
-/assets/img/market-sentiment.png
+![Crepe](https://github.com/thudoann/thudoann.github.io/blob/master/assets/img/Screenshot%202022-11-19%20at%2002.03.39.png){: .mx-auto.d-block :}
