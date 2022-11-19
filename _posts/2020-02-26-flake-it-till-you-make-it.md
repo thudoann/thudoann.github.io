@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Learning Analytics of MOOCs - Descriptive Statistics and Analysis
-subtitle: Each post also has a subtitle
 gh-repo: [thudoann/Learning-Analytics-of-MOOCs-using-statistical-models-with-R]
 gh-badge: [star, fork, follow]
 cover-img: /assets/img/path.jpg
