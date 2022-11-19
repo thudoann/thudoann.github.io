@@ -9,5 +9,3 @@ My name is Anh Thu, I am currently preparing a bachelor's degree in data science
 ### Powerful Quotes That Inspired My Data Science Journey
 
 "If you can't explain it simply, you don't understand it well enough." - Albert Einstein
-
-"it's easy to lie with statistics. It's hard to tell the truth without statistics." - Andrejs Dunkels
