@@ -27,6 +27,13 @@ This project aims to use Supervised Learning Text Classification to predict whet
 
 #### Evaluated the model (with model's accuracy, confusion matrix, precision and recall table)
 
+
+![lsvcconfusion](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/lsvcconfusion.png)
+
+![precision](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/precisionrecall.png)
+![svcconfusion](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/svcconfusion.png)
+
+
 #### Feature importance and model interpretability
 
 ![FeatureImportance](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/feature_importance.png)
