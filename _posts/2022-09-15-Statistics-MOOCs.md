@@ -21,6 +21,7 @@ This project aims to use Supervised Learning Text Classification to predict whet
 #### Created machine pipeline to evaluate the performance of several models and tuned hyperparameter on the highest accuracy model (SVC)
 
 #### Evaluated the model (with model's accuracy, confusion matrix, precision and recall table)
-Feature importance and model interpretability
+
+#### Feature importance and model interpretability
 
 (https://github.com/thudoann/thudoann.github.io/blob/master/assets/img/Screenshot%202022-11-19%20at%2002.03.39.png)
