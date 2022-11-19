@@ -1,13 +1,13 @@
 ---
 layout: post
 title: Anh Thu's Portfolio
-subtitle: take a look of my recent work
+subtitle: A glimpse of the projects I've been working on
 gh-repo: thudoann
 gh-badge: [star, fork, follow]
 cover-img: /assets/img/computer-typing.gif
 thumbnail-img: /assets/img/cat-computer.gif
 share-img: /assets/img/lsvctuning.png
-tags: [TF-IDF , C-Support Vector Classification, Confusion matrix, Feature importance]
+tags: [Data Wrangling, Data Processing, Sentiment Analysis, Social Network Analysis, Machine Learning, Data Visualization, Dimensionality reduction, Time Series]
 ---
 
 
