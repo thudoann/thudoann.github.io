@@ -67,7 +67,22 @@ My name is Anh Thu, I am currently preparing a bachelor's degree in data science
 ![monthlyAVG](https://raw.githubusercontent.com/thudoann/Madrid-Air-Quality-Analysis-Forecasting/main/plots/monthly_AVG.png)
 ![yearly](https://raw.githubusercontent.com/thudoann/Madrid-Air-Quality-Analysis-Forecasting/main/plots/yearly_MA.png)
 
-# [4. Email spam classification using Naive Bayes](https://github.com/thudoann/Emails-spam-classification-using-Naive-Bayes/edit/main/README.md)
+# [4. Social Network Analysis of the juries of Maître de Conferences (MCF)
+
+
+* The data is constituted of each member of the jure of Maître de Conferences (MCF) from 2017 to 2020.
+
+* To understand a community by mapping the relationships that connect them as a network and then drawing out key individuals, groups, or associations between the individuals.
+
+![h1](https://raw.githubusercontent.com/thudoann/SocialNetworkAnalysis/main/Screenshot%202022-11-20%20at%2023.27.02.png)
+![h2](https://raw.githubusercontent.com/thudoann/SocialNetworkAnalysis/main/Screenshot%202022-11-20%20at%2023.28.49.png)
+![h3](https://github.com/thudoann/SocialNetworkAnalysis/blob/main/Screenshot%202022-11-20%20at%2023.30.08.png)
+
+
+
+
+
+# [. Email spam classification using Naive Bayes](https://github.com/thudoann/Emails-spam-classification-using-Naive-Bayes/edit/main/README.md)
 In this project we worked with the dataset at https://spamassassin.apache.org/old/publiccorpus/ which included three types of files in this locations: 
 
 • easy-ham: non-spam messages typically quite easy to differentiate from spam messages.
@@ -79,3 +94,6 @@ In this project we worked with the dataset at https://spamassassin.apache.org/ol
 * The main purpose of this project is to implement a Na ̈ıve Bayes classifier that will classify emails into spam and non-spam (“ham”) classes. Na ̈ıve Bayes Classifier is one of the simplest and most efficient classification algorithms that helps to build fast predictive speed machine learning models. It is a probabilistic classifier, which means it predicts on the basis of the probability of an object.
 
 ![spam](https://raw.githubusercontent.com/thudoann/Emails-spam-classification-using-Naive-Bayes/main/easy_spam_mnb_4.png)
+
+
+
