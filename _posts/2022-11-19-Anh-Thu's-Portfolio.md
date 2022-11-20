@@ -67,7 +67,7 @@ My name is Anh Thu, I am currently preparing a bachelor's degree in data science
 ![monthlyAVG](https://raw.githubusercontent.com/thudoann/Madrid-Air-Quality-Analysis-Forecasting/main/plots/monthly_AVG.png)
 ![yearly](https://raw.githubusercontent.com/thudoann/Madrid-Air-Quality-Analysis-Forecasting/main/plots/yearly_MA.png)
 
-# [4. Social Network Analysis of the juries of Maître de Conferences (MCF)
+# [4. Social Network Analysis of the juries of Maître de Conferences (MCF)](https://github.com/thudoann/SocialNetworkAnalysis)
 
 
 * The data is constituted of each member of the jure of Maître de Conferences (MCF) from 2017 to 2020.
@@ -76,7 +76,8 @@ My name is Anh Thu, I am currently preparing a bachelor's degree in data science
 
 ![h1](https://raw.githubusercontent.com/thudoann/SocialNetworkAnalysis/main/Screenshot%202022-11-20%20at%2023.27.02.png)
 ![h2](https://raw.githubusercontent.com/thudoann/SocialNetworkAnalysis/main/Screenshot%202022-11-20%20at%2023.28.49.png)
-![h3](https://github.com/thudoann/SocialNetworkAnalysis/blob/main/Screenshot%202022-11-20%20at%2023.30.08.png)
+![h3](https://raw.githubusercontent.com/thudoann/SocialNetworkAnalysis/main/Screenshot%202022-11-20%20at%2023.29.56.png)
+![h4](https://raw.githubusercontent.com/thudoann/SocialNetworkAnalysis/main/Screenshot%202022-11-20%20at%2023.30.08.png)
 
 
 
