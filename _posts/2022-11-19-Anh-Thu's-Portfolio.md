@@ -24,16 +24,13 @@ My name is Anh Thu, I am currently preparing a bachelor's degree in data science
 * Chose the baseline classifier based on the most-frequent class in the training dataset.
 
 * Created machine pipeline to evaluate the performance of several models and tuned hyperparameter on the highest accuracy model (SVC & LSVC)
-
-* Evaluated the model (with model's accuracy, confusion matrix, precision and recall table)
-
-* Identify the top 20 features contributing to LinearSVC classification performance to distinguish whether a review was negative or positive.
-
 ![lsvc](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/lsvctuning.png)
 
+* Evaluated the model (with model's accuracy, confusion matrix, precision and recall table)
 ![lsvcconfusion](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/lsvcconfusion.png)
-
 ![precision](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/precisionrecall.png)
+
+* Identify the top 20 features contributing to LinearSVC classification performance to distinguish whether a review was negative or positive.
 
 ![FeatureImportance](https://raw.githubusercontent.com/thudoann/thudoann.github.io/master/assets/img/feature_importance.png)
 
@@ -41,17 +38,33 @@ My name is Anh Thu, I am currently preparing a bachelor's degree in data science
 # [2. Credict Card Fraud Detection](https://github.com/thudoann/CreditCardFraudDetection)
 
 * The data was collected from over 285,000 anonymized transactions made by credit cards in September 2013 by European cardholders
+![pie](https://raw.githubusercontent.com/thudoann/CreditCardFraudDetection/main/CreditCardFraud_files/figure-html/unnamed-chunk-10-1.png)
 
 * Explored the interactions and correlations between features then visualize them.
-
-* Used Pipeline and GridearchCV to find the best hyperparameters for different models.
-
-* Evaluted the best model as result.
-
-![pie](https://raw.githubusercontent.com/thudoann/CreditCardFraudDetection/main/CreditCardFraud_files/figure-html/unnamed-chunk-10-1.png)
 
 ![amount](https://raw.githubusercontent.com/thudoann/CreditCardFraudDetection/main/CreditCardFraud_files/figure-html/unnamed-chunk-13-1.png)
 
 ![hours](https://raw.githubusercontent.com/thudoann/CreditCardFraudDetection/main/CreditCardFraud_files/figure-html/unnamed-chunk-15-1.png)
 
+* Used Pipeline and GridearchCV to find the best hyperparameters for different models.
+
+* Evaluted the best model as result.
+
 ![Confusion](https://raw.githubusercontent.com/thudoann/CreditCardFraudDetection/main/CreditCardFraud_files/figure-html/Screenshot%202022-11-20%20at%2017.24.04.png)
+
+
+# [3. Madrid's Air Quality Analysis & Forecasting](https://github.com/thudoann/Madrid-Air-Quality-Analysis-Forecasting)
+
+* This dataset is created in the Madrid's City Council Open Data website. It contains in a practical format 18 years (2001-2018) of daily and hourly data.
+
+* Reformatted the structure of the dataset using forecast, tidyverse, ggplot2, and xts libraries from R
+
+* Choice of the variables (Particles smaller than ten μm (PM10), Ground-level Ozone (O3), Nitrogen dioxide (NO2)) are core pollutants based on airqualitynow.eu
+
+* Used the function **auto.arima** from the **forecast** library to generate our prediction model, the output returns an ARIMA model with the best set of hyperparameters to fit the data.
+
+![5years](https://raw.githubusercontent.com/thudoann/Madrid-Air-Quality-Analysis-Forecasting/main/plots/forecast_5years.png)
+![monthlyAVG](https://raw.githubusercontent.com/thudoann/Madrid-Air-Quality-Analysis-Forecasting/main/plots/monthly_AVG.png)
+![yearly](https://raw.githubusercontent.com/thudoann/Madrid-Air-Quality-Analysis-Forecasting/main/plots/yearly_MA.png)
+
+
