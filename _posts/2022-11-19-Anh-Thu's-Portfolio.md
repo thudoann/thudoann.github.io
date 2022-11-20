@@ -59,7 +59,7 @@ My name is Anh Thu, I am currently preparing a bachelor's degree in data science
 
 * Reformatted the structure of the dataset using forecast, tidyverse, ggplot2, and xts libraries from R
 
-* Choice of the variables (Particles smaller than ten μm (PM10), Ground-level Ozone (O3), Nitrogen dioxide (NO2)) are core pollutants based on airqualitynow.eu
+* Choice of the variables (Particles smaller than ten μm (PM10), Ground-level Ozone (O3), Nitrogen dioxide (NO2)) which are core pollutants based on airqualitynow.eu
 
 * Used the function **auto.arima** from the **forecast** library to generate our prediction model, the output returns an ARIMA model with the best set of hyperparameters to fit the data.
 
@@ -67,4 +67,15 @@ My name is Anh Thu, I am currently preparing a bachelor's degree in data science
 ![monthlyAVG](https://raw.githubusercontent.com/thudoann/Madrid-Air-Quality-Analysis-Forecasting/main/plots/monthly_AVG.png)
 ![yearly](https://raw.githubusercontent.com/thudoann/Madrid-Air-Quality-Analysis-Forecasting/main/plots/yearly_MA.png)
 
+# [4. Email spam classification using Naive Bayes](https://github.com/thudoann/Emails-spam-classification-using-Naive-Bayes/edit/main/README.md)
+In this project we worked with the dataset at https://spamassassin.apache.org/old/publiccorpus/ which included three types of files in this locations: 
 
+• easy-ham: non-spam messages typically quite easy to differentiate from spam messages.
+
+• hard-ham: non-spam messages more difficult to differentiate
+
+• spam: spam messages
+
+* The main purpose of this project is to implement a Na ̈ıve Bayes classifier that will classify emails into spam and non-spam (“ham”) classes. Na ̈ıve Bayes Classifier is one of the simplest and most efficient classification algorithms that helps to build fast predictive speed machine learning models. It is a probabilistic classifier, which means it predicts on the basis of the probability of an object.
+
+![spam](https://raw.githubusercontent.com/thudoann/Emails-spam-classification-using-Naive-Bayes/main/easy_spam_mnb_4.png)
