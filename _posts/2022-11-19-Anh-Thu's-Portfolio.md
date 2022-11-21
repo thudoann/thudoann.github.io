@@ -80,17 +80,23 @@ My name is Anh Thu, I am currently preparing a bachelor's degree in data science
 ![h4](https://raw.githubusercontent.com/thudoann/SocialNetworkAnalysis/main/Screenshot%202022-11-20%20at%2023.30.08.png)
 
 
+# [5. Clustering the phi and psi angle combinations in protein](https://github.com/thudoann/Clustering-the-phi-and-psi-angle-combinations-in-protein)
 
+* The distribution of phi and psi combinations.
+*
+![distrition](https://raw.githubusercontent.com/thudoann/Clustering-the-phi-and-psi-angle-combinations-in-protein/main/Plots/distribution.png)
 
+* Used the K-means clustering method to cluster the phi and psi angle combinations with the value of k is based on the histogram of the distribution and by using **elbow** method. 
+![kmeans](https://raw.githubusercontent.com/thudoann/Clustering-the-phi-and-psi-angle-combinations-in-protein/main/Plots/kmeans.png)
 
-# [. Email spam classification using Naive Bayes](https://github.com/thudoann/Emails-spam-classification-using-Naive-Bayes/edit/main/README.md)
-In this project we worked with the dataset at https://spamassassin.apache.org/old/publiccorpus/ which included three types of files in this locations: 
+* Because of the periodic attributes of phi and psi, we shifted the data for better clustering.
+![shifted](https://raw.githubusercontent.com/thudoann/Clustering-the-phi-and-psi-angle-combinations-in-protein/main/Plots/kmeansf.png)
 
-• easy-ham: non-spam messages typically quite easy to differentiate from spam messages.
+* Compare the clusters found by DBSCAN with those found using K-means.
+![dbscan](https://raw.githubusercontent.com/thudoann/Clustering-the-phi-and-psi-angle-combinations-in-protein/main/Plots/DBscan.png)
 
-• hard-ham: non-spam messages more difficult to differentiate
+# [6. Email spam classification using Naive Bayes](https://github.com/thudoann/Emails-spam-classification-using-Naive-Bayes/edit/main/README.md)
 
-• spam: spam messages
 
 * The main purpose of this project is to implement a Na ̈ıve Bayes classifier that will classify emails into spam and non-spam (“ham”) classes. Na ̈ıve Bayes Classifier is one of the simplest and most efficient classification algorithms that helps to build fast predictive speed machine learning models. It is a probabilistic classifier, which means it predicts on the basis of the probability of an object.
 
