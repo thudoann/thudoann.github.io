@@ -122,5 +122,3 @@ My name is Anh Thu, I am currently preparing a bachelor's degree in data science
 * Perform and HCPC on continuous variables.
 ![hcpc](https://raw.githubusercontent.com/thudoann/DimensionalityReduction-Clustering/main/Plots/hhh.png)
 
-
-# [8. 
