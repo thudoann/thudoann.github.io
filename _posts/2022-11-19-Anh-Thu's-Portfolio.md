@@ -102,4 +102,22 @@ My name is Anh Thu, I am currently preparing a bachelor's degree in data science
 ![spam](https://raw.githubusercontent.com/thudoann/Emails-spam-classification-using-Naive-Bayes/main/easy_spam_mnb_4.png)
 
 
+# [7. Dimensionality Reduction & Clustering techniques on Dating app's data.](https://github.com/thudoann/DimensionalityReduction-Clustering)
 
+* Performed a PCA on relevant continuous variables of the dataset
+![pca](https://raw.githubusercontent.com/thudoann/DimensionalityReduction-Clustering/main/Plots/VariablePCA.png)
+
+* Created an individual map with a sample of individuals.
+![imap](https://raw.githubusercontent.com/thudoann/DimensionalityReduction-Clustering/main/Plots/Indi.png)
+
+* Created a biplot with a limited number of individuals.
+![biplot](https://raw.githubusercontent.com/thudoann/DimensionalityReduction-Clustering/main/Plots/Biplot.png)
+
+* Performed a MCA on relevant discrete variables of the dataset.
+![mca](https://raw.githubusercontent.com/thudoann/DimensionalityReduction-Clustering/main/Plots/imca.png)
+
+* Perform a k-means clustering on principal components of the analysis.
+![kmeans](https://raw.githubusercontent.com/thudoann/DimensionalityReduction-Clustering/main/Plots/facctor.png)
+
+* Perform and HCPC on continuous variables.
+![hcpc](https://raw.githubusercontent.com/thudoann/DimensionalityReduction-Clustering/main/Plots/hhh.png)
