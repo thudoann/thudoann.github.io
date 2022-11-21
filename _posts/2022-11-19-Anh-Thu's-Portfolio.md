@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Anh Thu's Portfolio
-subtitle: A glimpse of the projects I've been working on
+subtitle: A glimpse of the some projects I've been working on
 gh-repo: thudoann
 gh-badge: [star, fork, follow]
 cover-img: /assets/img/computer-typing.gif
@@ -10,7 +10,7 @@ share-img: /assets/img/lsvctuning.png
 tags: [Data Wrangling, Data Processing, Sentiment Analysis, Social Network Analysis, Machine Learning, Data Visualization, Dimensionality reduction, Time Series]
 ---
 
-My name is Anh Thu, I am currently preparing a bachelor's degree in data sciences at CY Tech (Ex EISTI). I am actively looking for a five months internship in Data Science starting from April to September 2023 with the possibility of extending it to an apprenticeship for one year after that. Here are some projects I have worked on.
+My name is Anh Thu, I am currently preparing a bachelor's degree in data sciences at CY Tech (Ex EISTI). I am actively looking for a five months internship in Data Science starting from April to September 2023 with the possibility of extending it to an apprenticeship.
 
 
 ---
@@ -121,3 +121,6 @@ My name is Anh Thu, I am currently preparing a bachelor's degree in data science
 
 * Perform and HCPC on continuous variables.
 ![hcpc](https://raw.githubusercontent.com/thudoann/DimensionalityReduction-Clustering/main/Plots/hhh.png)
+
+
+# [8. 
