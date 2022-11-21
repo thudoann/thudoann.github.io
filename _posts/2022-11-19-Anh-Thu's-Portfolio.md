@@ -76,7 +76,6 @@ My name is Anh Thu, I am currently preparing a bachelor's degree in data science
 
 ![h1](https://raw.githubusercontent.com/thudoann/SocialNetworkAnalysis/main/Screenshot%202022-11-20%20at%2023.27.02.png)
 ![h2](https://raw.githubusercontent.com/thudoann/SocialNetworkAnalysis/main/Screenshot%202022-11-21%20at%2001.31.49.png)
-![h3](https://raw.githubusercontent.com/thudoann/SocialNetworkAnalysis/main/Screenshot%202022-11-20%20at%2023.29.56.png)
 ![h4](https://raw.githubusercontent.com/thudoann/SocialNetworkAnalysis/main/Screenshot%202022-11-20%20at%2023.30.08.png)
 
 
