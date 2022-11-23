@@ -38,7 +38,6 @@ My name is Anh Thu, I am currently preparing a bachelor degree in data sciences 
 # [2. Credict Card Fraud Detection](https://github.com/thudoann/CreditCardFraudDetection)
 
 * The data was collected from over 285,000 anonymized transactions made by credit cards in September 2013 by European cardholders
-![pie](https://raw.githubusercontent.com/thudoann/CreditCardFraudDetection/main/CreditCardFraud_files/figure-html/Screenshot%202022-11-21%20at%2001.56.47.png)
 
 * Explored the interactions and correlations between features then visualize them.
 
