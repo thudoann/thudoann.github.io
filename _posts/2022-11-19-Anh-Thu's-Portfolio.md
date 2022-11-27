@@ -123,7 +123,7 @@ My name is Anh Thu, I am currently preparing a bachelor degree in data sciences 
 
 # [8. Text Mining and Natural Language Processing on French doctoral dissertations](https://github.com/thudoann/Text-Mining-and-NLP-on-French-doctoral-dissertations)
 
-* Detected the language of the doctument using stop words.
+* Detected the language of the document using stop words.
 * Used TF-IDF and cosine to assess similarity between thedocument.
 ![hiu](https://raw.githubusercontent.com/thudoann/Text-Mining-and-NLP-on-French-doctoral-dissertations/main/Screenshot%202022-11-27%20at%2003.37.21.png)
 * Trained and used a bigram and a 3-gram model on a relevantpart of the dataset.
