@@ -121,7 +121,7 @@ My name is Anh Thu, I am currently preparing a bachelor degree in data sciences 
 * Perform and HCPC on continuous variables.
 ![hcpc](https://raw.githubusercontent.com/thudoann/DimensionalityReduction-Clustering/main/Plots/hhh.png)
 
-# [4. Text Mining and Natural Language Processing on French doctoral dissertations](https://github.com/thudoann/Text-Mining-and-NLP-on-French-doctoral-dissertations)
+# [8. Text Mining and Natural Language Processing on French doctoral dissertations](https://github.com/thudoann/Text-Mining-and-NLP-on-French-doctoral-dissertations)
 
 * Detected the language of the doctument using stop words.
 * Used TF-IDF and cosine to assess similarity between thedocument.
@@ -129,4 +129,5 @@ My name is Anh Thu, I am currently preparing a bachelor degree in data sciences 
 * Trained and used a bigram and a 3-gram model on a relevantpart of the dataset.
 * Applied  a  conjugator-based  strategy  to  the  sentence  corpus  and  propose  arelevant automatically generated exercise based on this tool by using spaCy and stanza libraries.
 ![hdisfh](https://raw.githubusercontent.com/thudoann/Text-Mining-and-NLP-on-French-doctoral-dissertations/main/Screenshot%202022-11-27%20at%2003.42.39.png)
+
 
