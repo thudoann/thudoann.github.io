@@ -81,7 +81,6 @@ My name is Anh Thu, I am currently preparing a bachelor degree in data sciences 
 # [5. Clustering the phi and psi angle combinations in protein](https://github.com/thudoann/Clustering-the-phi-and-psi-angle-combinations-in-protein)
 
 * The distribution of phi and psi combinations.
-*
 ![distrition](https://raw.githubusercontent.com/thudoann/Clustering-the-phi-and-psi-angle-combinations-in-protein/main/Plots/distribution.png)
 
 * Used the K-means clustering method to cluster the phi and psi angle combinations with the value of k is based on the histogram of the distribution and by using **elbow** method. 
@@ -127,7 +126,7 @@ My name is Anh Thu, I am currently preparing a bachelor degree in data sciences 
 * Used TF-IDF and cosine to assess similarity between thedocument.
 ![hiu](https://raw.githubusercontent.com/thudoann/Text-Mining-and-NLP-on-French-doctoral-dissertations/main/Screenshot%202022-11-27%20at%2003.37.21.png)
 * Trained and used a bigram and a n-gram model on a relevant part of the dataset.
-* Applied  a  conjugator-based  strategy  to  the  sentence  corpus  and  propose  arelevant automatically generated exercise based on this tool by using spaCy and stanza libraries.
+* Applied a conjugator-based strategy to the sentence corpus and propose a relevant automatically generated exercise based on this tool by using spaCy and stanza libraries.
 ![hdisfh](https://raw.githubusercontent.com/thudoann/Text-Mining-and-NLP-on-French-doctoral-dissertations/main/Screenshot%202022-11-27%20at%2003.42.39.png)
 
 
