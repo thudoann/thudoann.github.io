@@ -1,0 +1,126 @@
+:root {
+  --text: #111;
+  --muted: #666;
+  --line: #eee;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  color: var(--text);
+}
+
+/* Main content */
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 20px 88px;
+}
+
+h1 {
+  font-size: 44px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+}
+
+.muted { color: var(--muted); }
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 18px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 18px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 8px 0;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.tab[aria-selected="true"] {
+  color: var(--text);
+  border-bottom: 1px solid var(--text);
+}
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* Calendar */
+.calendar {
+  padding: 32px;
+  border-left: 1px solid var(--line);
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.clock {
+  text-align: center;
+}
+
+#time {
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+#date {
+  font-size: 13px;
+}
+
+h3 {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  margin: 6px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.day { color: #aaa; }
+.cell {
+  padding: 7px 0;
+  border-radius: 8px;
+}
+
+.today {
+  background: var(--text);
+  color: #fff;
+}
+
+/* Footer */
+footer {
+  position: fixed;
+  bottom: 18px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Mobile */
+@media (max-width: 820px) {
+  body { grid-template-columns: 1fr; }
+  .calendar {
+    border-left: none;
+    border-top: 1px solid var(--line);
+  }
+}
