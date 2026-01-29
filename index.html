@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Thudoann</title>
-  <meta name="description" content="Thudoann — minimal portfolio." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -12,29 +11,25 @@
   <main class="wrap">
     <h1>Thudoann</h1>
 
-    <div class="tabs" role="tablist">
-      <button class="tab" id="tab-about" aria-selected="true">About</button>
-      <button class="tab" id="tab-cv">CV</button>
-      <button class="tab" id="tab-projects">Projects</button>
+    <div class="tabs">
+      <button class="tab" data-tab="about" aria-selected="true">About</button>
+      <button class="tab" data-tab="cv">CV</button>
+      <button class="tab" data-tab="projects">Projects</button>
     </div>
 
-    <section class="panel active" id="panel-about">
+    <section class="panel active" id="about">
       <p class="muted">Write something about yourself when ready.</p>
     </section>
 
-    <section class="panel" id="panel-cv">
-      <p class="muted">
-        Upload <strong>cv.pdf</strong> to this repo.
-        <br />
-        <a href="./cv.pdf" target="_blank">Open CV</a>
-      </p>
-    </section>
+    <!-- CV loads here -->
+    <section class="panel" id="cv"></section>
 
-    <section class="panel" id="panel-projects">
+    <section class="panel" id="projects">
       <p class="muted">Projects will live here.</p>
     </section>
   </main>
 
+  <!-- Right side -->
   <aside class="calendar">
     <div class="clock">
       <span id="time"></span>
