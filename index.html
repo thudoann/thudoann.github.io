@@ -5,39 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Anh Thu DOAN</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="alternate" hreflang="x-default" href="." />
+  <link rel="alternate" hreflang="fr" href="fr/" />
 </head>
 
 <body>
   <main class="wrap">
-    <h1>Anh Thu DOAN</h1>
+    <header class="site-header">
+      <h1>Anh Thu DOAN</h1>
+      <a href="fr/" class="lang-switch" hreflang="fr" title="Version française">FR</a>
+    </header>
 
     <div class="tabs">
       <button class="tab" data-tab="about" aria-selected="true">About</button>
-      <button class="tab" data-tab="cv">CV</button>
       <button class="tab" data-tab="projects">Projects</button>
+      <button class="tab" data-tab="papers">Papers</button>
+      <button class="tab" data-tab="hobbies">Hobbies</button>
+      <button class="tab" data-tab="contact">Contact</button>
     </div>
 
     <section class="panel active" id="about">
-      <p class="muted">Write something about yourself when ready.</p>
+      <p class="muted">I sleep with my cat and my laptop.</p>
+      <div id="about-cv" class="about-cv"></div>
     </section>
 
-    <!-- CV loads here -->
-    <section class="panel" id="cv"></section>
-
-    <section class="panel" id="projects">
-      <p class="muted">Projects will live here.</p>
-    </section>
+    <section class="panel" id="projects"></section>
+    <section class="panel" id="papers"></section>
+    <section class="panel" id="hobbies"></section>
+    <section class="panel" id="contact"></section>
   </main>
 
-  <!-- Right side -->
   <aside class="calendar">
-    <div class="clock">
-      <span id="time"></span>
-      <span id="date" class="muted"></span>
+    <div class="aside-doodle" aria-hidden="true">
+      <img src="icon.png" alt="" width="560" height="280" />
     </div>
-
-    <h3 id="month"></h3>
-    <div class="grid" id="calendar-grid"></div>
+    <div class="clock-card">
+      <div class="clock">
+        <span id="time" class="clock-time" aria-live="polite"></span>
+        <span id="date" class="clock-date muted" aria-live="polite"></span>
+      </div>
+    </div>
+    <div class="calendar-card">
+      <h3 id="month" class="calendar-month"></h3>
+      <div class="grid" id="calendar-grid" role="grid" aria-label="Current month"></div>
+    </div>
+    <div class="aside-info card">
+      <p class="aside-info-line aside-location">Paris, France · CET</p>
+      <p class="aside-info-line muted">Open to opportunities</p>
+      <p class="aside-info-line aside-focus">Right now: Biotech & AI in healthcare</p>
+      <p class="aside-info-line aside-note muted">
+        <span class="aside-note-icon" aria-hidden="true">☽</span> Night here = reply in the morning
+      </p>
+      <p class="aside-info-line">
+        <a href="mailto:thudoann45@gmail.com" class="aside-link">Say hi →</a>
+      </p>
+      <p class="aside-info-line aside-note muted">CV updated Jan 2025</p>
+    </div>
   </aside>
 
   <footer>
