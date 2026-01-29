@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Anh Thu DOAN</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="alternate" hreflang="x-default" href="../" />
+  <link rel="alternate" hreflang="en" href="../" />
+</head>
+
+<body>
+  <main class="wrap">
+    <header class="site-header">
+      <h1>Anh Thu DOAN</h1>
+      <a href="../" class="lang-switch" hreflang="en" title="English version">EN</a>
+    </header>
+
+    <div class="tabs">
+      <button class="tab" data-tab="about" aria-selected="true">À propos</button>
+      <button class="tab" data-tab="projects">Projets</button>
+      <button class="tab" data-tab="papers">Publications</button>
+      <button class="tab" data-tab="hobbies">Loisirs</button>
+      <button class="tab" data-tab="contact">Contact</button>
+    </div>
+
+    <section class="panel active" id="about">
+      <p class="muted">Je dors avec mon chat et mon ordinateur.</p>
+      <div id="about-cv" class="about-cv"></div>
+    </section>
+
+    <section class="panel" id="projects"></section>
+    <section class="panel" id="papers"></section>
+    <section class="panel" id="hobbies"></section>
+    <section class="panel" id="contact"></section>
+  </main>
+
+  <aside class="calendar">
+    <div class="aside-doodle" aria-hidden="true">
+      <img src="../icon.png" alt="" width="560" height="280" />
+    </div>
+    <div class="clock-card">
+      <div class="clock">
+        <span id="time" class="clock-time" aria-live="polite"></span>
+        <span id="date" class="clock-date muted" aria-live="polite"></span>
+      </div>
+    </div>
+    <div class="calendar-card">
+      <h3 id="month" class="calendar-month"></h3>
+      <div class="grid" id="calendar-grid" role="grid" aria-label="Mois en cours"></div>
+    </div>
+    <div class="aside-info card">
+      <p class="aside-info-line aside-location">Paris, France · CET</p>
+      <p class="aside-info-line muted">Ouverte aux opportunités</p>
+      <p class="aside-info-line aside-focus">En ce moment : biotech & IA en santé</p>
+      <p class="aside-info-line aside-note muted">
+        <span class="aside-note-icon" aria-hidden="true">☽</span> Nuit ici = réponse le matin
+      </p>
+      <p class="aside-info-line">
+        <a href="mailto:thudoann45@gmail.com" class="aside-link">Dire bonjour →</a>
+      </p>
+      <p class="aside-info-line aside-note muted">CV mis à jour janv. 2025</p>
+    </div>
+  </aside>
+
+  <footer>
+    <a href="https://github.com/thudoann" target="_blank">github.com/thudoann</a>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>
