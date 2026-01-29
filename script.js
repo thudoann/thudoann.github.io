@@ -1,73 +1,67 @@
-/* ---------- Tabs ---------- */
+/* Tabs + CV loader */
 const tabs = document.querySelectorAll(".tab");
 const panels = document.querySelectorAll(".panel");
+let cvLoaded = false;
 
 tabs.forEach(tab => {
-  tab.addEventListener("click", () => {
+  tab.addEventListener("click", async () => {
     tabs.forEach(t => t.setAttribute("aria-selected", "false"));
     panels.forEach(p => p.classList.remove("active"));
 
     tab.setAttribute("aria-selected", "true");
-    document
-      .getElementById("panel-" + tab.id.replace("tab-", ""))
-      .classList.add("active");
+    const id = tab.dataset.tab;
+    const panel = document.getElementById(id);
+    panel.classList.add("active");
+
+    if (id === "cv" && !cvLoaded) {
+      const res = await fetch("cv.html");
+      panel.innerHTML = await res.text();
+      cvLoaded = true;
+    }
   });
 });
 
-/* ---------- Time (with seconds) ---------- */
+/* Time (with seconds) */
 function updateTime() {
-  const now = new Date();
-  document.getElementById("time").textContent =
-    now.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit"
-    });
-
-  document.getElementById("date").textContent =
-    now.toLocaleDateString([], {
-      weekday: "long",
-      month: "short",
-      day: "numeric"
-    });
+  const n = new Date();
+  time.textContent = n.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+  date.textContent = n.toLocaleDateString([], {
+    weekday: "long",
+    month: "short",
+    day: "numeric"
+  });
 }
-
 updateTime();
 setInterval(updateTime, 1000);
 
-/* ---------- Calendar ---------- */
+/* Calendar */
 const calendar = document.getElementById("calendar-grid");
-const today = new Date();
-const year = today.getFullYear();
-const month = today.getMonth();
-
+const now = new Date();
+const year = now.getFullYear();
+const month = now.getMonth();
 const monthNames = [
   "January","February","March","April","May","June",
   "July","August","September","October","November","December"
 ];
-
-document.getElementById("month").textContent =
-  `${monthNames[month]} ${year}`;
-
-const firstDay = new Date(year, month, 1).getDay();
-const daysInMonth = new Date(year, month + 1, 0).getDate();
+document.getElementById("month").textContent = `${monthNames[month]} ${year}`;
 
 ["S","M","T","W","T","F","S"].forEach(d => {
   const el = document.createElement("div");
   el.textContent = d;
-  el.className = "day";
   calendar.appendChild(el);
 });
 
-for (let i = 0; i < firstDay; i++) {
-  calendar.appendChild(document.createElement("div"));
-}
+const firstDay = new Date(year, month, 1).getDay();
+const days = new Date(year, month + 1, 0).getDate();
+for (let i = 0; i < firstDay; i++) calendar.appendChild(document.createElement("div"));
 
-for (let d = 1; d <= daysInMonth; d++) {
+for (let d = 1; d <= days; d++) {
   const el = document.createElement("div");
   el.textContent = d;
-  el.className = "cell";
-
-  if (d === today.getDate()) el.classList.add("today");
+  if (d === now.getDate()) el.classList.add("today");
   calendar.appendChild(el);
 }
