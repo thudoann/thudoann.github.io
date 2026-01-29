@@ -3,18 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Anh Thu DOAN</title>
+  <title>Thudoann</title>
 
   <style>
-    html, body {
-      margin: 0;
-      height: 100%;
+    :root {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: #ffffff;
-      color: #111111;
+      color: #111;
     }
 
     body {
+      margin: 0;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr auto;
+    }
+
+    /* Center name */
+    .center {
       display: grid;
       place-items: center;
     }
@@ -23,10 +28,125 @@
       font-size: 48px;
       font-weight: 600;
       letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    /* Right calendar */
+    .calendar {
+      padding: 32px;
+      border-left: 1px solid #eee;
+      min-width: 220px;
+    }
+
+    .calendar h2 {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .day {
+      color: #aaa;
+    }
+
+    .date {
+      padding: 6px 0;
+      border-radius: 6px;
+    }
+
+    .today {
+      background: #111;
+      color: #fff;
+    }
+
+    /* Footer GitHub */
+    footer {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #111;
+      text-decoration: none;
+      border-bottom: 1px solid #eee;
+    }
+
+    footer a:hover {
+      border-bottom-color: #111;
     }
   </style>
 </head>
 <body>
-  <h1>Thudoann</h1>
+  <div class="center">
+    <h1>Thudoann</h1>
+  </div>
+
+  <aside class="calendar">
+    <h2 id="month"></h2>
+    <div class="grid" id="calendar"></div>
+  </aside>
+
+  <footer>
+    <a href="https://github.com/thudoann" target="_blank" rel="noreferrer">
+      github.com/thudoann
+    </a>
+  </footer>
+
+  <script>
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+
+    const monthNames = [
+      "January","February","March","April","May","June",
+      "July","August","September","October","November","December"
+    ];
+
+    document.getElementById("month").textContent =
+      `${monthNames[month]} ${year}`;
+
+    const calendar = document.getElementById("calendar");
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const weekdays = ["S","M","T","W","T","F","S"];
+    weekdays.forEach(d => {
+      const el = document.createElement("div");
+      el.textContent = d;
+      el.className = "day";
+      calendar.appendChild(el);
+    });
+
+    for (let i = 0; i < firstDay; i++) {
+      calendar.appendChild(document.createElement("div"));
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const el = document.createElement("div");
+      el.textContent = d;
+      el.className = "date";
+      if (
+        d === now.getDate() &&
+        month === now.getMonth() &&
+        year === now.getFullYear()
+      ) {
+        el.classList.add("today");
+      }
+      calendar.appendChild(el);
+    }
+  </script>
 </body>
 </html>
