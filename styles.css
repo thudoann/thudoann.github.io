@@ -1,7 +1,7 @@
 :root {
-  --text: #111;
-  --muted: #666;
-  --line: #eee;
+  --text:#111;
+  --muted:#666;
+  --line:#eee;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
@@ -12,10 +12,10 @@ body {
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr auto;
+  background: #fff;
   color: var(--text);
 }
 
-/* Main content */
 .wrap {
   max-width: 900px;
   margin: 0 auto;
@@ -25,7 +25,6 @@ body {
 h1 {
   font-size: 44px;
   font-weight: 650;
-  letter-spacing: -0.02em;
   margin: 0 0 12px;
 }
 
@@ -55,55 +54,58 @@ h1 {
 .panel { display: none; }
 .panel.active { display: block; }
 
+/* CV */
+.cv { max-width: 720px; }
+.cv-top {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.cv-name { margin: 0; font-size: 28px; }
+.cv-links a { display: block; margin-bottom: 4px; }
+.cv-section {
+  margin-top: 22px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+.cv-tags span {
+  display: inline-block;
+  border: 1px solid var(--line);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin: 6px 6px 0 0;
+  font-size: 13px;
+}
+.cv-item { margin-top: 10px; }
+.cv-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 /* Calendar */
 .calendar {
   padding: 32px;
   border-left: 1px solid var(--line);
   min-width: 260px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
 }
-
-.clock {
-  text-align: center;
-}
-
-#time {
-  font-size: 26px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-}
-
-#date {
-  font-size: 13px;
-}
-
-h3 {
-  text-align: center;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--muted);
-  margin: 6px 0;
-}
-
+.clock { text-align: center; }
+#time { font-size: 26px; }
+#date { font-size: 13px; }
 .grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7,1fr);
   gap: 6px;
   font-size: 12px;
   text-align: center;
 }
-
-.day { color: #aaa; }
-.cell {
-  padding: 7px 0;
-  border-radius: 8px;
-}
-
 .today {
   background: var(--text);
   color: #fff;
+  border-radius: 8px;
 }
 
 /* Footer */
@@ -113,7 +115,6 @@ footer {
   left: 0;
   right: 0;
   text-align: center;
-  font-size: 14px;
 }
 
 /* Mobile */
