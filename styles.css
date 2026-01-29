@@ -86,6 +86,34 @@ h1 {
   gap: 12px;
 }
 
+/* CV icons */
+.cv-icons {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.cv-icons a {
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  color: var(--muted);
+}
+
+.cv-icons svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.cv-icons a:hover {
+  color: var(--text);
+}
+
+
+
 /* Calendar */
 .calendar {
   padding: 32px;
