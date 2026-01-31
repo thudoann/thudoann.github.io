@@ -7,6 +7,10 @@ const i18n = {
   tabError: isFr ? "Impossible de charger le fichier. Vérifiez qu'il est dans le dossier courant." : "Could not load file. Make sure it is in the repo root.",
   contactSubject: isFr ? "Contact depuis le site" : "Contact from website",
   contactFrom: isFr ? "De" : "From",
+  contactEmailInvalid: isFr ? "Entrez une adresse email valide." : "Please enter a valid email address.",
+  contactOpening: isFr ? "Ouverture…" : "Opening…",
+  contactSubmitLabel: isFr ? "Envoyer l'email" : "Send email",
+  keyboardHint: isFr ? "← → pour changer d’onglet" : "← → to switch tabs",
 };
 
 const tabs = document.querySelectorAll(".tab");
@@ -127,12 +131,20 @@ function switchToTab(tab) {
   panels.forEach((p) => p.classList.remove("active"));
   panel.classList.add("active");
 
+  if (history.replaceState) history.replaceState(null, "", "#" + id);
+  else location.hash = id;
+
   panel.scrollIntoView({ behavior: "smooth", block: "start" });
 
   if (id === "about") loadAboutCv();
   else if (tabFiles[id] && !loaded[id]) {
     loadPanel(panel, tabFiles[id], i18n.tabError).then(ok => { if (ok) loaded[id] = true; });
   }
+}
+
+function openTabById(id) {
+  const tab = document.querySelector(".tab[data-tab='" + id + "']");
+  if (tab) switchToTab(tab);
 }
 
 tabs.forEach((tab, i) => {
@@ -155,8 +167,21 @@ tabs.forEach((tab, i) => {
 });
 
 document.addEventListener("keydown", (e) => {
-  if (e.target.closest(".tabs") || e.target.closest(".contact-form")) return;
+  const inForm = e.target.closest(".contact-form");
+  if (e.target.closest(".tabs")) return;
+  if (e.key >= "1" && e.key <= "5" && !inForm) {
+    const i = parseInt(e.key, 10) - 1;
+    if (tabs[i]) {
+      e.preventDefault();
+      tabs[i].focus();
+      switchToTab(tabs[i]);
+      hideKeyboardHint();
+    }
+    return;
+  }
+  if (inForm) return;
   if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+    hideKeyboardHint();
     const current = document.querySelector(".tab[aria-selected='true']");
     if (!current) return;
     const i = Array.from(tabs).indexOf(current);
@@ -169,25 +194,105 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-if (document.getElementById("about").classList.contains("active")) loadAboutCv();
+const hash = location.hash.slice(1);
+if (hash && ["about", "projects", "papers", "hobbies", "contact"].includes(hash)) {
+  openTabById(hash);
+} else {
+  if (history.replaceState) history.replaceState(null, "", "#about");
+  if (document.getElementById("about").classList.contains("active")) loadAboutCv();
+}
+window.addEventListener("hashchange", () => {
+  const id = location.hash.slice(1);
+  if (id && document.getElementById(id)) openTabById(id);
+});
 
-/* ---------- Contact form: open mailto ---------- */
+/* Clicking .tab-link (e.g. from Projects placeholder) switches to that tab */
+document.addEventListener("click", (e) => {
+  const link = e.target.closest(".tab-link");
+  if (!link || !link.dataset.tab) return;
+  e.preventDefault();
+  const tab = document.querySelector(".tab[data-tab='" + link.dataset.tab + "']");
+  if (tab) switchToTab(tab);
+});
+
+/* Keyboard hint: show once, hide on first arrow/key or after 5s */
+function hideKeyboardHint() {
+  const el = document.getElementById("keyboard-hint");
+  if (el) {
+    el.classList.add("keyboard-hint-hidden");
+    try { sessionStorage.setItem("keyboard-hint-seen", "1"); } catch (_) {}
+  }
+}
+(function initKeyboardHint() {
+  try { if (sessionStorage.getItem("keyboard-hint-seen")) return; } catch (_) {}
+  const el = document.getElementById("keyboard-hint");
+  if (!el) return;
+  const textEl = el.querySelector(".keyboard-hint-text");
+  if (textEl) textEl.textContent = i18n.keyboardHint;
+  el.classList.remove("keyboard-hint-hidden");
+  el.querySelector(".keyboard-hint-dismiss")?.addEventListener("click", hideKeyboardHint);
+  setTimeout(hideKeyboardHint, 5000);
+})();
+
+/* ---------- Contact form: validation + mailto ---------- */
+function showContactError(el, msg) {
+  let err = el.nextElementSibling?.classList?.contains("contact-field-error") ? el.nextElementSibling : null;
+  if (!err) {
+    err = document.createElement("p");
+    err.className = "contact-field-error";
+    el.insertAdjacentElement("afterend", err);
+  }
+  err.textContent = msg;
+  err.setAttribute("role", "alert");
+}
+function clearContactError(el) {
+  const err = el.nextElementSibling;
+  if (err?.classList?.contains("contact-field-error")) err.remove();
+}
+function isValidEmail(s) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((s || "").trim());
+}
+
 document.addEventListener("submit", (e) => {
   if (e.target.id !== "contact-form") return;
   e.preventDefault();
   const nameEl = document.getElementById("contact-name");
   const emailEl = document.getElementById("contact-email");
   const messageEl = document.getElementById("contact-message");
+  const submitBtn = e.target.querySelector('button[type="submit"]');
   if (!emailEl || !messageEl) return;
   const from = (emailEl.value || "").trim();
   const name = (nameEl?.value || "").trim();
   const message = (messageEl.value || "").trim();
+  clearContactError(emailEl);
+  if (!isValidEmail(from)) {
+    showContactError(emailEl, i18n.contactEmailInvalid);
+    emailEl.focus();
+    return;
+  }
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = i18n.contactOpening;
+  }
   const fromLine = name ? `${i18n.contactFrom}: ${name} <${from}>` : `${i18n.contactFrom}: ${from}`;
   const mailto = "mailto:thudoann45@gmail.com"
     + "?subject=" + encodeURIComponent(i18n.contactSubject)
     + "&body=" + encodeURIComponent(fromLine + "\n\n" + message);
   window.location.href = mailto;
+  setTimeout(() => {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = i18n.contactSubmitLabel;
+    }
+  }, 1500);
 });
+
+document.addEventListener("blur", (e) => {
+  if (e.target.id === "contact-email" && e.target.form?.id === "contact-form") {
+    if (e.target.value.trim() && !isValidEmail(e.target.value)) showContactError(e.target, i18n.contactEmailInvalid);
+    else clearContactError(e.target);
+  }
+}, true);
 
 /* ---------- Time & calendar ---------- */
 const timeEl = document.getElementById("time");
@@ -230,5 +335,8 @@ for (let d = 1; d <= daysInMonth; d++) {
   const el = document.createElement("div");
   el.className = "cell" + (d === now.getDate() ? " today" : "");
   el.textContent = d;
+  el.setAttribute("title", `${monthNames[month]} ${d}, ${year}`);
+  el.setAttribute("role", "gridcell");
+  if (d === now.getDate()) el.setAttribute("aria-current", "date");
   calendar.appendChild(el);
 }

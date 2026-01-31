@@ -3,19 +3,31 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Anh Thu DOAN</title>
+  <title>Anh Thu DOAN — AI & Biotech in Healthcare</title>
+  <meta name="description" content="Anh Thu DOAN · AI Research Engineer in Paris. Biotech & AI in healthcare, NLP, synthetic data. Open to opportunities." />
+  <link rel="icon" href="Icon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="alternate" hreflang="x-default" href="." />
   <link rel="alternate" hreflang="fr" href="fr/" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Anh Thu DOAN — AI & Biotech in Healthcare" />
+  <meta property="og:description" content="AI Research Engineer in Paris. Biotech & AI in healthcare, NLP, synthetic data. Open to opportunities." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://thudoann.github.io/Icon.png" />
 </head>
 
 <body>
-  <main class="wrap">
+  <a href="#about" class="skip-link">Skip to main content</a>
+  <main class="wrap" id="main-content">
     <header class="site-header">
       <h1>Anh Thu DOAN</h1>
       <a href="fr/" class="lang-switch" hreflang="fr" title="Version française">FR</a>
     </header>
 
+    <p id="keyboard-hint" class="keyboard-hint keyboard-hint-hidden" aria-live="polite">
+      <span class="keyboard-hint-text"></span>
+      <button type="button" class="keyboard-hint-dismiss" aria-label="Dismiss">×</button>
+    </p>
     <div class="tabs">
       <button class="tab" data-tab="about" aria-selected="true">About</button>
       <button class="tab" data-tab="projects">Projects</button>
@@ -26,7 +38,24 @@
 
     <section class="panel active" id="about">
       <p class="muted">I sleep with my cat and my laptop.</p>
-      <div id="about-cv" class="about-cv"></div>
+      <div class="about-content">
+        <div id="about-cv" class="about-cv"></div>
+        <aside class="about-glance" aria-label="At a glance">
+          <div class="glance-card">
+            <p class="glance-line"><strong>Paris, France</strong></p>
+            <p class="glance-line muted">Open to opportunities</p>
+            <p class="glance-focus">Right now: Biotech &amp; AI in healthcare</p>
+            <p class="glance-line">
+              <a href="mailto:thudoann45@gmail.com" class="aside-link">Say hi →</a>
+            </p>
+            <p class="glance-line glance-links">
+              <a href="https://github.com/thudoann" target="_blank" rel="noopener" aria-label="GitHub">GitHub</a>
+              <span class="glance-sep">·</span>
+              <a href="https://www.linkedin.com/in/thudoann" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
+            </p>
+          </div>
+        </aside>
+      </div>
     </section>
 
     <section class="panel" id="projects"></section>
@@ -64,7 +93,9 @@
   </aside>
 
   <footer>
-    <a href="https://github.com/thudoann" target="_blank">github.com/thudoann</a>
+    <a href="https://github.com/thudoann" target="_blank" rel="noopener">GitHub</a>
+    <span class="footer-sep" aria-hidden="true">·</span>
+    <a href="https://www.linkedin.com/in/thudoann" target="_blank" rel="noopener">LinkedIn</a>
   </footer>
 
   <script src="script.js"></script>

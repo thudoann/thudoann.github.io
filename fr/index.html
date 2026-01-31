@@ -3,19 +3,30 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Anh Thu DOAN</title>
+  <title>Anh Thu DOAN — IA et biotech en santé</title>
+  <meta name="description" content="Anh Thu DOAN · Ingénieure recherche IA à Paris. Biotech et IA en santé, NLP, données synthétiques. Ouverte aux opportunités." />
+  <link rel="icon" href="../Icon.png" type="image/png" />
   <link rel="stylesheet" href="../styles.css" />
   <link rel="alternate" hreflang="x-default" href="../" />
   <link rel="alternate" hreflang="en" href="../" />
+  <meta property="og:title" content="Anh Thu DOAN — IA et biotech en santé" />
+  <meta property="og:description" content="Ingénieure recherche IA à Paris. Biotech et IA en santé, NLP, données synthétiques. Ouverte aux opportunités." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://thudoann.github.io/Icon.png" />
 </head>
 
 <body>
-  <main class="wrap">
+  <a href="#about" class="skip-link">Aller au contenu principal</a>
+  <main class="wrap" id="main-content">
     <header class="site-header">
       <h1>Anh Thu DOAN</h1>
       <a href="../" class="lang-switch" hreflang="en" title="English version">EN</a>
     </header>
 
+    <p id="keyboard-hint" class="keyboard-hint keyboard-hint-hidden" aria-live="polite">
+      <span class="keyboard-hint-text"></span>
+      <button type="button" class="keyboard-hint-dismiss" aria-label="Fermer">×</button>
+    </p>
     <div class="tabs">
       <button class="tab" data-tab="about" aria-selected="true">À propos</button>
       <button class="tab" data-tab="projects">Projets</button>
@@ -26,7 +37,24 @@
 
     <section class="panel active" id="about">
       <p class="muted">Je dors avec mon chat et mon ordinateur.</p>
-      <div id="about-cv" class="about-cv"></div>
+      <div class="about-content">
+        <div id="about-cv" class="about-cv"></div>
+        <aside class="about-glance" aria-label="En bref">
+          <div class="glance-card">
+            <p class="glance-line"><strong>Paris, France</strong></p>
+            <p class="glance-line muted">Ouverte aux opportunités</p>
+            <p class="glance-focus">En ce moment : Biotech &amp; IA en santé</p>
+            <p class="glance-line">
+              <a href="mailto:thudoann45@gmail.com" class="aside-link">Dire bonjour →</a>
+            </p>
+            <p class="glance-line glance-links">
+              <a href="https://github.com/thudoann" target="_blank" rel="noopener" aria-label="GitHub">GitHub</a>
+              <span class="glance-sep">·</span>
+              <a href="https://www.linkedin.com/in/thudoann" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
+            </p>
+          </div>
+        </aside>
+      </div>
     </section>
 
     <section class="panel" id="projects"></section>
