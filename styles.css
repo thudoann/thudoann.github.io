@@ -647,9 +647,9 @@ h1 {
   display: block;
 }
 
-/* CV (inside About) — grows with main area, cap line length for readability */
+/* CV (inside About) — full width of main area */
 .cv {
-  max-width: min(960px, 100%);
+  max-width: 100%;
   transform-style: preserve-3d;
 }
 
