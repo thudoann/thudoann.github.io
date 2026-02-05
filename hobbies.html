@@ -7,5 +7,80 @@
   <p class="muted">Coming soon.</p>
 </div>
 <div class="sub-panel" id="sub-travel" role="tabpanel" aria-labelledby="tab-travel">
-  <p class="muted">Coming soon.</p>
+  <p class="muted">Plan trips just for yourself: nothing is sent anywhere, everything stays in this browser.</p>
+  <div class="planner-layout" data-role="travel-planner">
+    <section class="planner-card" aria-label="Saved trips">
+      <h3 class="planner-section-title">Saved trips</h3>
+      <p class="planner-empty muted" data-role="planner-empty">No trips yet. Create one on the right.</p>
+      <ul class="planner-trip-list" data-role="planner-trip-list" aria-label="Saved trips list"></ul>
+      <button type="button" class="planner-secondary-btn" data-role="planner-new-trip">+ New empty trip</button>
+    </section>
+
+    <section class="planner-card planner-main" aria-label="Trip details">
+      <h3 class="planner-section-title">Trip details</h3>
+      <form class="planner-form" data-role="planner-form">
+        <div class="planner-form-row">
+          <label>
+            Trip name
+            <input type="text" name="title" required placeholder="Summer in Japan" />
+          </label>
+        </div>
+        <div class="planner-form-row planner-form-row-inline">
+          <label>
+            Start date
+            <input type="date" name="startDate" />
+          </label>
+          <label>
+            End date
+            <input type="date" name="endDate" />
+          </label>
+        </div>
+        <div class="planner-form-actions">
+          <button type="button" class="planner-secondary-btn" data-role="planner-clear-trip">Clear</button>
+          <button type="submit" class="planner-primary-btn" data-role="planner-save-trip">Save trip</button>
+          <button type="button" class="planner-secondary-btn" data-role="planner-download-summary">Download summary</button>
+        </div>
+      </form>
+
+      <h3 class="planner-section-title planner-section-title-spaced">Itinerary</h3>
+      <p class="muted planner-itinerary-hint">
+        Add activities for each day of your trip. Changes are stored in this browser when you click “Save trip”.
+      </p>
+
+      <div class="planner-itinerary">
+        <table class="planner-table" aria-label="Trip itinerary">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Time</th>
+              <th scope="col">Category</th>
+              <th scope="col">Place / Activity</th>
+              <th scope="col">Cost</th>
+              <th scope="col">Notes</th>
+              <th scope="col" class="planner-table-col-actions"> </th>
+            </tr>
+          </thead>
+          <tbody data-role="planner-itinerary-body"></tbody>
+        </table>
+        <button type="button" class="planner-secondary-btn planner-add-row-btn" data-role="planner-add-item">+ Add item</button>
+        <div class="planner-budget-summary muted" data-role="planner-budget-summary" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="planner-card planner-map-card" aria-label="Map preview">
+      <h3 class="planner-section-title">Map</h3>
+      <p class="muted planner-map-hint">
+        Small map preview for your main destination. The map itself loads directly from Google Maps.
+      </p>
+      <div class="planner-map-frame">
+        <iframe
+          data-role="planner-map-frame"
+          title="Trip map"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?output=embed"
+        ></iframe>
+      </div>
+    </section>
+  </div>
 </div>

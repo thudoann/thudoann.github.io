@@ -602,6 +602,312 @@ h1 {
   font-weight: 500;
 }
 
+/* Travel planner (Hobbies → Travel) */
+.planner-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.planner-card {
+  flex: 1 1 260px;
+  background: #fdfcfb;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  box-shadow: var(--shadow);
+}
+
+.planner-main {
+  flex: 2 1 360px;
+}
+
+.planner-map-card {
+  flex: 1 1 260px;
+}
+
+.planner-section-title {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.planner-section-title-spaced {
+  margin-top: 20px;
+}
+
+.planner-empty {
+  margin: 0 0 12px;
+}
+
+.planner-trip-list {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.planner-trip-entry {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.planner-trip-btn {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: #fdfcfb;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font: inherit;
+  color: var(--text);
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.planner-trip-delete {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0 4px;
+  font-size: 0.9rem;
+}
+
+.planner-trip-delete:hover {
+  color: var(--text);
+}
+
+.planner-trip-btn + .planner-trip-btn {
+  margin-top: 6px;
+}
+
+.planner-trip-btn:hover {
+  background: #f7f4f1;
+  box-shadow: var(--shadow);
+}
+
+.planner-trip-btn-active {
+  border-color: var(--text);
+}
+
+.planner-trip-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.planner-trip-meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.planner-form {
+  margin-top: 4px;
+}
+
+.planner-form-row {
+  margin-bottom: 10px;
+}
+
+.planner-form-row-inline {
+  display: flex;
+  gap: 16px;
+}
+
+.planner-form-row-inline label {
+  flex: 1;
+}
+
+.planner-form label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.planner-form input[type="text"],
+.planner-form input[type="date"],
+.planner-form input[type="time"] {
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 0;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--text);
+  box-sizing: border-box;
+}
+
+.planner-form input[type="text"]:focus,
+.planner-form input[type="date"]:focus,
+.planner-form input[type="time"]:focus {
+  outline: none;
+  border-bottom-color: var(--text);
+}
+
+.planner-form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.planner-primary-btn,
+.planner-secondary-btn {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: none;
+}
+
+.planner-primary-btn {
+  background: var(--text);
+  color: #fff;
+}
+
+.planner-primary-btn:hover {
+  opacity: 0.88;
+}
+
+.planner-secondary-btn {
+  border-color: var(--line);
+  color: var(--text);
+  background: #fdfcfb;
+}
+
+.planner-secondary-btn:hover {
+  background: #f7f4f1;
+}
+
+.planner-itinerary {
+  margin-top: 8px;
+}
+
+.planner-itinerary-hint {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+}
+
+.planner-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.planner-table th,
+.planner-table td {
+  text-align: left;
+  padding: 6px 6px 6px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.planner-table th:last-child,
+.planner-table td:last-child {
+  padding-right: 0;
+}
+
+.planner-table input[type="text"],
+.planner-table input[type="date"],
+.planner-table input[type="time"],
+.planner-table input[type="number"],
+.planner-table select {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 2px 0;
+  box-sizing: border-box;
+}
+
+.planner-table input[type="text"]:focus,
+.planner-table input[type="date"]:focus,
+.planner-table input[type="time"]:focus,
+.planner-table input[type="number"]:focus,
+.planner-table select:focus {
+  outline: none;
+}
+
+.planner-table-col-actions {
+  width: 32px;
+}
+
+.planner-add-row-btn {
+  margin-top: 8px;
+}
+
+.planner-budget-summary {
+  margin-top: 6px;
+  font-size: 0.85rem;
+}
+
+.planner-map-hint {
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.planner-map-frame {
+  margin-top: 10px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #e6e4e0;
+}
+
+.planner-map-frame iframe {
+  display: block;
+  width: 100%;
+  height: 220px;
+  border: 0;
+}
+
+.planner-flight-extra {
+  display: none;
+  margin-top: 4px;
+  gap: 6px;
+  font-size: 0.8rem;
+}
+
+.planner-flight-extra-visible {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.planner-flight-extra select,
+.planner-flight-extra input {
+  font-size: 0.8rem;
+}
+
+.planner-row-remove {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0 4px;
+  color: var(--muted);
+}
+
+.planner-row-remove:hover {
+  color: var(--text);
+}
+
+.planner-input-error {
+  border-bottom-color: #b54 !important;
+}
+
 /* Papers */
 .papers-title {
   margin: 0 0 20px;
