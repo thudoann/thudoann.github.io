@@ -619,12 +619,12 @@ h1 {
   box-shadow: var(--shadow);
 }
 
-.planner-main {
-  flex: 2 1 360px;
+.planner-saved-card {
+  flex: 0 0 220px;
 }
 
-.planner-map-card {
-  flex: 1 1 260px;
+.planner-main {
+  flex: 3 1 440px;
 }
 
 .planner-section-title {
@@ -853,26 +853,6 @@ h1 {
   font-size: 0.85rem;
 }
 
-.planner-map-hint {
-  margin: 0;
-  font-size: 0.8rem;
-}
-
-.planner-map-frame {
-  margin-top: 10px;
-  border-radius: var(--radius);
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background: #e6e4e0;
-}
-
-.planner-map-frame iframe {
-  display: block;
-  width: 100%;
-  height: 220px;
-  border: 0;
-}
-
 .planner-flight-extra {
   display: none;
   margin-top: 4px;
@@ -888,6 +868,30 @@ h1 {
 .planner-flight-extra select,
 .planner-flight-extra input {
   font-size: 0.8rem;
+}
+
+.planner-place-input-hidden {
+  display: none;
+}
+
+.planner-accommodation-dates {
+  display: none;
+  margin-top: 4px;
+  gap: 6px;
+  font-size: 0.8rem;
+}
+
+.planner-accommodation-dates-visible {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.planner-time-input-hidden {
+  display: none;
+}
+
+.planner-date-input-hidden {
+  display: none;
 }
 
 .planner-row-remove {

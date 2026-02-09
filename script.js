@@ -123,6 +123,16 @@ async function loadAboutCv() {
   }
 }
 
+function initAboutCvLazy() {
+  const container = document.getElementById("about-cv");
+  if (!container) return;
+  const btn = container.querySelector("[data-role='about-cv-toggle']");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    loadAboutCv();
+  }, { once: true });
+}
+
 function switchToTab(tab) {
   const id = tab.dataset.tab;
   const panel = document.getElementById(id);
@@ -137,8 +147,7 @@ function switchToTab(tab) {
 
   panel.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  if (id === "about") loadAboutCv();
-  else if (tabFiles[id] && !loaded[id]) {
+  if (tabFiles[id] && !loaded[id]) {
     loadPanel(panel, tabFiles[id], i18n.tabError).then(ok => { if (ok) loaded[id] = true; });
   }
 }
@@ -170,8 +179,8 @@ if (hash && ["about", "projects", "papers", "hobbies", "contact"].includes(hash)
   openTabById(hash);
 } else {
   if (history.replaceState) history.replaceState(null, "", "#about");
-  if (document.getElementById("about").classList.contains("active")) loadAboutCv();
 }
+initAboutCvLazy();
 window.addEventListener("hashchange", () => {
   const id = location.hash.slice(1);
   if (id && document.getElementById(id)) openTabById(id);

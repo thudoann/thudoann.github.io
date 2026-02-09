@@ -41,7 +41,6 @@ function initTravelPlanner(root) {
   const tbody = container.querySelector("[data-role='planner-itinerary-body']");
   const budgetSummaryEl = container.querySelector("[data-role='planner-budget-summary']");
   const downloadBtn = container.querySelector("[data-role='planner-download-summary']");
-  const mapFrame = container.querySelector("[data-role='planner-map-frame']");
 
   if (!form || !tripListEl || !tbody) return;
 
@@ -77,18 +76,56 @@ function initTravelPlanner(root) {
   function updateRowFlightVisibility(row) {
     const kindSelect = row.querySelector('select[name="item-kind"]');
     const extra = row.querySelector(".planner-flight-extra");
-    if (!extra || !kindSelect) return;
-    if (kindSelect.value === "flight") {
+    const placeInput = row.querySelector('input[name="item-place"]');
+    const accomDates = row.querySelector(".planner-accommodation-dates");
+    const timeInput = row.querySelector('input[name="item-time"]');
+    const mainDateInput = row.querySelector('input[name="item-date"]');
+    const checkInInput = row.querySelector('input[name="item-checkin"]');
+    const checkOutInput = row.querySelector('input[name="item-checkout"]');
+    if (!extra || !kindSelect || !placeInput || !accomDates || !timeInput || !mainDateInput || !checkInInput || !checkOutInput) return;
+    const kind = kindSelect.value;
+    const usesRoute = kind === "flight" || kind === "transport";
+    const isAccommodation = kind === "accommodation";
+
+    if (usesRoute) {
       extra.classList.add("planner-flight-extra-visible");
+      placeInput.classList.add("planner-place-input-hidden");
     } else {
       extra.classList.remove("planner-flight-extra-visible");
+      placeInput.classList.remove("planner-place-input-hidden");
+    }
+
+    if (isAccommodation) {
+      accomDates.classList.add("planner-accommodation-dates-visible");
+      timeInput.classList.add("planner-time-input-hidden");
+      mainDateInput.classList.add("planner-date-input-hidden");
+
+      const tripStart = (startInput && startInput.value ? startInput.value.trim() : "") || "";
+      const tripEndRaw = (endInputGlobal && endInputGlobal.value ? endInputGlobal.value.trim() : "") || "";
+      const tripEnd = tripEndRaw || tripStart;
+
+      // Default check-in/check-out into the trip span if empty
+      if (tripStart && !checkInInput.value) checkInInput.value = tripStart;
+      if (tripEnd && !checkOutInput.value) checkOutInput.value = tripEnd;
+
+      // Clamp into span just in case
+      if (tripStart && checkInInput.value && checkInInput.value < tripStart) checkInInput.value = tripStart;
+      if (tripEnd && checkInInput.value && checkInInput.value > tripEnd) checkInInput.value = tripEnd;
+      if (tripStart && checkOutInput.value && checkOutInput.value < tripStart) checkOutInput.value = tripStart;
+      if (tripEnd && checkOutInput.value && checkOutInput.value > tripEnd) checkOutInput.value = tripEnd;
+    } else {
+      accomDates.classList.remove("planner-accommodation-dates-visible");
+      timeInput.classList.remove("planner-time-input-hidden");
+      mainDateInput.classList.remove("planner-date-input-hidden");
     }
   }
 
   function updateItineraryDateConstraints() {
     const min = (startInput && startInput.value ? startInput.value.trim() : "") || "";
     const max = (endInputGlobal && endInputGlobal.value ? endInputGlobal.value.trim() : "") || "";
-    const dateInputs = tbody.querySelectorAll('input[name="item-date"]');
+    const dateInputs = tbody.querySelectorAll(
+      'input[name="item-date"], input[name="item-checkin"], input[name="item-checkout"]'
+    );
     dateInputs.forEach((input) => {
       if (min) {
         input.min = min;
@@ -124,31 +161,7 @@ function initTravelPlanner(root) {
   }
 
   function updateMapPreview() {
-    if (!mapFrame) return;
-    const items = collectItineraryFromDom();
-    let query = "";
-
-    const flightItem = items.find((it) => it.kind === "flight" && (it.to || it.from));
-    if (flightItem) {
-      query = flightItem.to || flightItem.from || "";
-    } else {
-      const placeItem = items.find((it) => it.place);
-      if (placeItem) query = placeItem.place;
-    }
-
-    if (!query) {
-      const titleInput = form.elements.namedItem("title");
-      query = (titleInput?.value || "").trim();
-    }
-
-    if (!query) {
-      const fallback = "https://www.google.com/maps?output=embed";
-      if (mapFrame.src !== fallback) mapFrame.src = fallback;
-      return;
-    }
-
-    const url = "https://www.google.com/maps?q=" + encodeURIComponent(query) + "&output=embed";
-    if (mapFrame.src !== url) mapFrame.src = url;
+    // Map has been removed; no-op.
   }
 
   function makeRow(item) {
@@ -167,8 +180,16 @@ function initTravelPlanner(root) {
     const fromVal = item && item.from ? item.from : "";
     const toVal = item && item.to ? item.to : "";
     const flightTypeVal = item && item.flightType ? item.flightType : "";
+    const checkInVal = item && item.checkIn ? item.checkIn : "";
+    const checkOutVal = item && item.checkOut ? item.checkOut : "";
     tr.innerHTML = `
-      <td><input type="date" name="item-date" value="${dateVal}"></td>
+      <td>
+        <input type="date" name="item-date" value="${dateVal}">
+        <div class="planner-accommodation-dates">
+          <input type="date" name="item-checkin" placeholder="${isFr ? "Arrivée" : "Check-in"}" value="${checkInVal}">
+          <input type="date" name="item-checkout" placeholder="${isFr ? "Départ" : "Check-out"}" value="${checkOutVal}">
+        </div>
+      </td>
       <td><input type="time" name="item-time" value="${timeVal}"></td>
       <td>
         <select name="item-kind">
@@ -203,7 +224,7 @@ function initTravelPlanner(root) {
 
   function renderItinerary(items) {
     tbody.innerHTML = "";
-    const list = items && items.length ? items : [{}];
+    const list = items && items.length ? sortItinerary(items) : [{}];
     list.forEach((item) => {
       tbody.appendChild(makeRow(item));
     });
@@ -313,19 +334,42 @@ function initTravelPlanner(root) {
       const flightType = row.querySelector('select[name="item-flight-type"]')?.value || "";
       const from = row.querySelector('input[name="item-from"]')?.value?.trim() || "";
       const to = row.querySelector('input[name="item-to"]')?.value?.trim() || "";
+      let checkIn = row.querySelector('input[name="item-checkin"]')?.value?.trim() || "";
+      let checkOut = row.querySelector('input[name="item-checkout"]')?.value?.trim() || "";
       if (startLimit && date && date < startLimit) {
         date = startLimit;
       }
       if (endLimit && date && date > endLimit) {
         date = endLimit;
       }
-      const hasAny = date || time || place || notes || kind || costRaw || flightType || from || to;
+      if (startLimit && checkIn && checkIn < startLimit) checkIn = startLimit;
+      if (endLimit && checkIn && checkIn > endLimit) checkIn = endLimit;
+      if (startLimit && checkOut && checkOut < startLimit) checkOut = startLimit;
+      if (endLimit && checkOut && checkOut > endLimit) checkOut = endLimit;
+      // For accommodation, if main date is empty but we have check-in, use that as the main date
+      if (kind === "accommodation" && !date && checkIn) {
+        date = checkIn;
+      }
+      const hasAny = date || time || place || notes || kind || costRaw || flightType || from || to || checkIn || checkOut;
       if (hasAny) {
         const costNum = costRaw && !Number.isNaN(Number(costRaw)) ? Number(costRaw) : null;
-        items.push({ date, time, place, notes, kind, cost: costNum, flightType, from, to });
+        items.push({ date, time, place, notes, kind, cost: costNum, flightType, from, to, checkIn, checkOut });
       }
     });
-    return items;
+    return sortItinerary(items);
+  }
+
+  function sortItinerary(items) {
+    return (items || []).slice().sort((a, b) => {
+      const da = (a.date || a.checkIn || "") || "";
+      const db = (b.date || b.checkIn || "") || "";
+      if (da && db && da !== db) return da < db ? -1 : 1;
+      if (!!da !== !!db) return da ? -1 : 1;
+      const ta = a.time || "";
+      const tb = b.time || "";
+      if (ta && tb && ta !== tb) return ta < tb ? -1 : 1;
+      return 0;
+    });
   }
 
   function recomputeBudgetSummary() {
@@ -431,12 +475,19 @@ function initTravelPlanner(root) {
         const from = item.from || "";
         const to = item.to || "";
         const flightType = item.flightType || "";
+        const checkIn = item.checkIn || "";
+        const checkOut = item.checkOut || "";
 
         const parts = [];
-        if (date) parts.push(date);
-        if (time) parts.push(time);
+        if (item.kind === "accommodation" && (checkIn || checkOut)) {
+          const span = [checkIn, checkOut].filter(Boolean).join(" → ");
+          if (span) parts.push(span);
+        } else if (date) {
+          parts.push(date);
+        }
+        if (time && item.kind !== "accommodation") parts.push(time);
         parts.push(`[${kindLabel}]`);
-        if (item.kind === "flight") {
+        if (item.kind === "flight" || item.kind === "transport") {
           if (from || to) {
             let route = `${from || "?"} → ${to || "?"}`;
             const typeLabel = flightType === "roundtrip" ? tRound : flightType === "oneway" ? tOneWay : "";
@@ -517,9 +568,12 @@ function initTravelPlanner(root) {
 
     const itinerary = collectItineraryFromDom();
 
-    // If dates are empty, infer them from itinerary (min/max item dates)
+    // If dates are empty, infer them from itinerary (min/max item dates, including accommodation spans)
     if ((!startDate || !endDate) && itinerary.length) {
-      const datesOnly = itinerary.map((it) => it.date).filter(Boolean).sort();
+      const datesOnly = itinerary
+        .flatMap((it) => [it.date, it.checkIn, it.checkOut])
+        .filter(Boolean)
+        .sort();
       if (datesOnly.length) {
         if (!startDate) startDate = datesOnly[0];
         if (!endDate) endDate = datesOnly[datesOnly.length - 1];
