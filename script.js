@@ -15,8 +15,20 @@ const i18n = {
 
 const tabs = document.querySelectorAll(".tab");
 const panels = document.querySelectorAll(".panel");
-const loaded = { aboutCv: false, papers: false, hobbies: false, projects: false, contact: false };
-const tabFiles = { papers: "papers.html", hobbies: "hobbies.html", projects: "projects.html", contact: "contact.html" };
+const loaded = { aboutCv: false, papers: false, hobbies: false, projects: false, quiz: false, contact: false };
+const tabFiles = { papers: "papers.html", hobbies: "hobbies.html", projects: "projects.html", quiz: "quiz.html", contact: "contact.html" };
+
+/* ---------- Theme toggle ---------- */
+(function initThemeToggle() {
+  const toggle = document.getElementById("theme-toggle");
+  if (!toggle) return;
+  toggle.addEventListener("click", function () {
+    const html = document.documentElement;
+    const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    html.setAttribute("data-theme", next);
+    try { localStorage.setItem("theme", next); } catch (e) {}
+  });
+})();
 
 function getBaseUrl() {
   const path = window.location.pathname;
@@ -50,6 +62,176 @@ function hideLoading(panel) {
   panel.classList.remove("loading");
 }
 
+async function initCivicQuizEmbeds(scope) {
+  const root = scope || document;
+  const hosts = root.querySelectorAll("[data-embed-civic-quiz]");
+  if (!hosts.length) return;
+
+  await Promise.all(Array.from(hosts).map(async (host) => {
+    if (host.dataset.embedLoaded === "1") return;
+    host.dataset.embedLoaded = "1";
+    const src = host.getAttribute("data-src");
+    if (!src) return;
+
+    host.innerHTML = `<p class="muted">${i18n.loading}</p>`;
+
+    try {
+      const res = await fetch(src, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const html = await res.text();
+      const doc = new DOMParser().parseFromString(html, "text/html");
+
+      const inlineStyle = doc.querySelector("style");
+      const scriptEl = doc.querySelector("script");
+      if (!inlineStyle || !scriptEl || !doc.body) throw new Error("Malformed quiz document");
+
+      const scriptInBody = doc.body.querySelector("script");
+      if (scriptInBody) scriptInBody.remove();
+      const content = doc.body.innerHTML;
+      if (!content.trim()) throw new Error("Empty quiz content");
+
+      host.innerHTML = "";
+      const shadow = host.attachShadow({ mode: "open" });
+
+      const style = document.createElement("style");
+      style.textContent = inlineStyle.textContent;
+      shadow.appendChild(style);
+
+      const bridge = document.createElement("style");
+      bridge.textContent = `
+        .project-native-embed-root {
+          --bg: transparent !important;
+          --ink: var(--q-ink) !important;
+          --dim: var(--q-dim) !important;
+          --line: var(--q-line) !important;
+          --green: var(--q-green) !important;
+          --red: var(--q-red) !important;
+          --serif: ui-serif, Georgia, "Times New Roman", serif;
+          --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+          font-family: var(--sans);
+          color: var(--q-ink);
+          padding: 0;
+          text-align: left;
+        }
+        .project-native-embed-root > header {
+          display: none;
+        }
+        .project-native-embed-root .card {
+          max-width: 100% !important;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          animation: none;
+        }
+        .project-native-embed-root .section-label,
+        .project-native-embed-root .q-meta,
+        .project-native-embed-root th {
+          color: var(--q-dim) !important;
+        }
+        .project-native-embed-root .q-score-live,
+        .project-native-embed-root .mode-btn.selected,
+        .project-native-embed-root .choice-btn:hover:not(:disabled) {
+          color: var(--q-ink) !important;
+        }
+        .project-native-embed-root .mode-btn,
+        .project-native-embed-root .btn,
+        .project-native-embed-root .choice-btn {
+          font-family: var(--sans) !important;
+        }
+        .project-native-embed-root h2,
+        .project-native-embed-root .question-text,
+        .project-native-embed-root .verdict,
+        .project-native-embed-root .result-circle .big,
+        .project-native-embed-root .result-mention,
+        .project-native-embed-root .stat-box .sv,
+        .project-native-embed-root .choice-badge,
+        .project-native-embed-root .rank {
+          font-family: var(--serif) !important;
+        }
+        .project-native-embed-root kbd {
+          background: var(--q-line) !important;
+          color: var(--q-ink) !important;
+        }
+        .project-native-embed-root .pt-dot {
+          background: var(--q-line) !important;
+        }
+        .project-native-embed-root .pt-dot.ok {
+          background: var(--q-green) !important;
+        }
+        .project-native-embed-root .pt-dot.bad {
+          background: var(--q-red) !important;
+        }
+        .project-native-embed-root .pt-dot.cur {
+          background: var(--q-ink) !important;
+        }
+        .project-native-embed-root .btn-primary {
+          color: var(--q-ink) !important;
+        }
+        .project-native-embed-root .result-circle .big {
+          font-size: clamp(3.5rem, 12vw, 5.5rem);
+        }
+      `;
+      shadow.appendChild(bridge);
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "project-native-embed-root";
+      wrapper.innerHTML = content;
+      shadow.appendChild(wrapper);
+
+      const documentProxy = {
+        querySelector: (sel) => shadow.querySelector(sel),
+        querySelectorAll: (sel) => shadow.querySelectorAll(sel),
+        getElementById: (id) => shadow.querySelector(`#${CSS.escape(id)}`),
+        addEventListener: (...args) => shadow.addEventListener(...args),
+        removeEventListener: (...args) => shadow.removeEventListener(...args),
+        createElement: (...args) => document.createElement(...args),
+      };
+
+      const runQuiz = new Function(
+        "document",
+        "window",
+        "localStorage",
+        "setInterval",
+        "clearInterval",
+        "setTimeout",
+        "clearTimeout",
+        "console",
+        "confirm",
+        `${scriptEl.textContent}
+return {
+  toggleSound: typeof toggleSound === "function" ? toggleSound : null,
+  selectCategory: typeof selectCategory === "function" ? selectCategory : null,
+  selectMode: typeof selectMode === "function" ? selectMode : null,
+  startQuiz: typeof startQuiz === "function" ? startQuiz : null,
+  showScores: typeof showScores === "function" ? showScores : null,
+  nextQuestion: typeof nextQuestion === "function" ? nextQuestion : null,
+  goHome: typeof goHome === "function" ? goHome : null,
+  clearScores: typeof clearScores === "function" ? clearScores : null
+};`
+      );
+      const exported = runQuiz(
+        documentProxy,
+        window,
+        localStorage,
+        setInterval,
+        clearInterval,
+        setTimeout,
+        clearTimeout,
+        console,
+        confirm
+      );
+
+      // The quiz markup uses inline onclick handlers; expose needed actions globally.
+      Object.entries(exported || {}).forEach(([name, fn]) => {
+        if (typeof fn === "function") window[name] = fn;
+      });
+    } catch (err) {
+      host.innerHTML = `<p class="muted">${i18n.tabError}</p>`;
+      console.error(err);
+    }
+  }));
+}
+
 async function loadPanel(panel, filename, fallbackMsg) {
   showLoading(panel);
   try {
@@ -58,6 +240,7 @@ async function loadPanel(panel, filename, fallbackMsg) {
     hideLoading(panel);
     panel.innerHTML = await res.text();
     initSubTabs(panel);
+    await initCivicQuizEmbeds(panel);
     if (panel.id === "hobbies") initTravelPlanner(panel);
     return true;
   } catch (err) {
@@ -175,7 +358,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 const hash = location.hash.slice(1);
-if (hash && ["about", "projects", "papers", "hobbies", "contact"].includes(hash)) {
+if (hash && ["about", "projects", "quiz", "papers", "hobbies", "contact"].includes(hash)) {
   openTabById(hash);
 } else {
   if (history.replaceState) history.replaceState(null, "", "#about");

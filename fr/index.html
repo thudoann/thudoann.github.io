@@ -13,6 +13,13 @@
   <meta property="og:description" content="Ingénieure recherche IA à Paris. Biotech et IA en santé, NLP, données synthétiques. Ouverte aux opportunités." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://thudoann.github.io/Icon.png" />
+  <script>
+    (function() {
+      var stored = localStorage.getItem('theme');
+      var theme = stored === 'dark' || stored === 'light' ? stored : (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
 </head>
 
 <body>
@@ -20,7 +27,13 @@
   <main class="wrap" id="main-content">
     <header class="site-header">
       <h1>Anh Thu DOAN</h1>
-      <a href="../" class="lang-switch" hreflang="en" title="English version">EN</a>
+      <div class="header-actions">
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Mode sombre" title="Mode sombre">
+          <svg class="icon-light" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 6 6c0 2.2-1.2 4.1-3 5.2V19a1 1 0 0 1-2 0v-4.8C5.2 13.1 4 11.2 4 9a6 6 0 0 0 6-6 1 1 0 0 1 2 0z"/></svg>
+          <svg class="icon-dark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+        <a href="../" class="lang-switch" hreflang="en" title="English version">EN</a>
+      </div>
     </header>
 
     <p id="keyboard-hint" class="keyboard-hint keyboard-hint-hidden" aria-live="polite">
@@ -30,6 +43,7 @@
     <div class="tabs">
       <button class="tab" data-tab="about" aria-selected="true">À propos</button>
       <button class="tab" data-tab="projects">Projets</button>
+      <button class="tab" data-tab="quiz">Quiz</button>
       <button class="tab" data-tab="papers">Publications</button>
       <button class="tab" data-tab="hobbies">Loisirs</button>
       <button class="tab" data-tab="contact">Contact</button>
@@ -50,6 +64,7 @@
     </section>
 
     <section class="panel" id="projects"></section>
+    <section class="panel" id="quiz"></section>
     <section class="panel" id="papers"></section>
     <section class="panel" id="hobbies"></section>
     <section class="panel" id="contact"></section>
