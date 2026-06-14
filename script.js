@@ -241,7 +241,10 @@ async function loadPanel(panel, filename, fallbackMsg) {
     panel.innerHTML = await res.text();
     initSubTabs(panel);
     await initCivicQuizEmbeds(panel);
-    if (panel.id === "hobbies") initTravelPlanner(panel);
+    if (panel.id === "hobbies") {
+      initTravelPlanner(panel);
+      if (typeof initCameraGuide === "function") initCameraGuide(panel);
+    }
     return true;
   } catch (err) {
     hideLoading(panel);

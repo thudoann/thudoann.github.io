@@ -4,7 +4,37 @@
   <button type="button" class="sub-tab" data-subtab="travel" role="tab" aria-selected="false" aria-controls="sub-travel" id="tab-travel">Travel</button>
 </div>
 <div class="sub-panel active" id="sub-digital-camera" role="tabpanel" aria-labelledby="tab-digital-camera">
-  <p class="muted">Coming soon.</p>
+  <div class="cam-guide" data-role="camera-guide">
+    <div class="cam-controls">
+      <input type="search" class="cam-search" data-role="cam-search" placeholder="Search brand, model, sensor…" aria-label="Search cameras" />
+      <div class="cam-filter-row">
+        <div class="cam-chips" data-role="cam-chips" role="group" aria-label="Filter by type">
+          <button class="cam-chip cam-chip-active" data-filter="all" aria-pressed="true">All</button>
+          <button class="cam-chip" data-filter="Mirrorless" aria-pressed="false">Mirrorless</button>
+          <button class="cam-chip" data-filter="DSLR" aria-pressed="false">DSLR</button>
+          <button class="cam-chip" data-filter="Film SLR" aria-pressed="false">Film SLR</button>
+          <button class="cam-chip" data-filter="Compact" aria-pressed="false">Compact</button>
+          <button class="cam-chip" data-filter="Medium Format" aria-pressed="false">Medium Format</button>
+        </div>
+        <select class="cam-sort" data-role="cam-sort" aria-label="Sort cameras">
+          <option value="year-desc">Newest first</option>
+          <option value="year-asc">Oldest first</option>
+          <option value="price-asc">Price: low → high</option>
+          <option value="price-desc">Price: high → low</option>
+          <option value="mp-desc">Most megapixels</option>
+        </select>
+      </div>
+    </div>
+    <div class="cam-layout">
+      <div class="cam-list-panel">
+        <p class="cam-count muted" data-role="cam-count"></p>
+        <ul class="cam-list" data-role="cam-list" role="listbox" aria-label="Camera list"></ul>
+      </div>
+      <div class="cam-detail-panel" data-role="cam-detail">
+        <p class="muted cam-detail-empty">Select a camera from the list to view its full specifications.</p>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="sub-panel" id="sub-travel" role="tabpanel" aria-labelledby="tab-travel">
   <p class="muted">Plan trips just for yourself: nothing is sent anywhere, everything stays in this browser.</p>
