@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.ensemble-en-france.org)",
+      "Bash(python3 -c ' *)",
+      "Bash(mdls -name kMDItemNumberOfPages \"/Users/ahnthu/Downloads/examen-civique-naturalisation-questions-de-connaissance-20251212.pdf\")",
+      "Bash(python3)"
+    ]
+  }
+}
