@@ -1,0 +1,30 @@
+<h2 class="panel-title">Rabbit Holes</h2>
+<p class="muted">Things I fell down a hole researching: geography, politics, art history, and how stock options actually work.</p>
+<div class="rh-guide" data-role="knowledge-guide">
+  <div class="rh-controls">
+    <input type="search" class="rh-search" data-role="rh-search" placeholder="Search topics, titles, facts…" aria-label="Search entries" />
+    <div class="rh-filter-row">
+      <div class="rh-chips" data-role="rh-chips" role="group" aria-label="Filter by topic">
+        <button class="rh-chip rh-chip-active" data-filter="all" aria-pressed="true">All</button>
+        <button class="rh-chip" data-filter="Geography" aria-pressed="false">Geography</button>
+        <button class="rh-chip" data-filter="Politics" aria-pressed="false">Politics</button>
+        <button class="rh-chip" data-filter="Art" aria-pressed="false">Art</button>
+        <button class="rh-chip" data-filter="Stock Options" aria-pressed="false">Stock Options</button>
+      </div>
+      <select class="rh-sort" data-role="rh-sort" aria-label="Sort entries">
+        <option value="title-asc">Title: A → Z</option>
+        <option value="title-desc">Title: Z → A</option>
+        <option value="topic">By topic</option>
+      </select>
+    </div>
+  </div>
+  <div class="rh-layout">
+    <div class="rh-list-panel">
+      <p class="rh-count muted" data-role="rh-count"></p>
+      <ul class="rh-list" data-role="rh-list" role="listbox" aria-label="Knowledge entries"></ul>
+    </div>
+    <div class="rh-detail-panel" data-role="rh-detail">
+      <p class="muted rh-detail-empty">Select an entry from the list to read more.</p>
+    </div>
+  </div>
+</div>
