@@ -2197,6 +2197,46 @@ html[data-theme="dark"] .rh-badge[data-topic="Art"] {
   border: 1px solid var(--line);
 }
 
+.rh-badge[data-topic="History"] {
+  background: rgba(150, 110, 50, 0.14);
+  color: #966e32;
+}
+
+html[data-theme="dark"] .rh-badge[data-topic="History"] {
+  background: rgba(210, 160, 90, 0.16);
+  color: #d8a55a;
+}
+
+.rh-badge[data-topic="Science"] {
+  background: rgba(50, 110, 150, 0.14);
+  color: #326e96;
+}
+
+html[data-theme="dark"] .rh-badge[data-topic="Science"] {
+  background: rgba(90, 160, 210, 0.16);
+  color: #7fb8e0;
+}
+
+.rh-badge[data-topic="Philosophy"] {
+  background: rgba(95, 90, 150, 0.14);
+  color: #5f5a96;
+}
+
+html[data-theme="dark"] .rh-badge[data-topic="Philosophy"] {
+  background: rgba(150, 140, 210, 0.16);
+  color: #a8a0d8;
+}
+
+.rh-badge[data-topic="Psychology"] {
+  background: rgba(160, 90, 70, 0.14);
+  color: #a05a46;
+}
+
+html[data-theme="dark"] .rh-badge[data-topic="Psychology"] {
+  background: rgba(210, 130, 100, 0.16);
+  color: #d8967c;
+}
+
 /* Detail panel */
 .rh-detail-panel {
   flex: 1 1 300px;
