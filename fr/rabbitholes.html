@@ -1,0 +1,34 @@
+<h2 class="panel-title">Rabbit Holes</h2>
+<p class="muted">Des sujets dans lesquels je me suis plongée : géographie, politique, histoire de l'art, options d'achat, histoire, sciences, philosophie et psychologie.</p>
+<div class="rh-guide" data-role="knowledge-guide">
+  <div class="rh-controls">
+    <input type="search" class="rh-search" data-role="rh-search" placeholder="Rechercher sujets, titres, faits…" aria-label="Rechercher une entrée" />
+    <div class="rh-filter-row">
+      <div class="rh-chips" data-role="rh-chips" role="group" aria-label="Filtrer par thème">
+        <button class="rh-chip rh-chip-active" data-filter="all" aria-pressed="true">Tous</button>
+        <button class="rh-chip" data-filter="Geography" aria-pressed="false">Géographie</button>
+        <button class="rh-chip" data-filter="Politics" aria-pressed="false">Politique</button>
+        <button class="rh-chip" data-filter="Art" aria-pressed="false">Art</button>
+        <button class="rh-chip" data-filter="Stock Options" aria-pressed="false">Options d'achat</button>
+        <button class="rh-chip" data-filter="History" aria-pressed="false">Histoire</button>
+        <button class="rh-chip" data-filter="Science" aria-pressed="false">Sciences</button>
+        <button class="rh-chip" data-filter="Philosophy" aria-pressed="false">Philosophie</button>
+        <button class="rh-chip" data-filter="Psychology" aria-pressed="false">Psychologie</button>
+      </div>
+      <select class="rh-sort" data-role="rh-sort" aria-label="Trier les entrées">
+        <option value="title-asc">Titre : A → Z</option>
+        <option value="title-desc">Titre : Z → A</option>
+        <option value="topic">Par thème</option>
+      </select>
+    </div>
+  </div>
+  <div class="rh-layout">
+    <div class="rh-list-panel">
+      <p class="rh-count muted" data-role="rh-count"></p>
+      <ul class="rh-list" data-role="rh-list" role="listbox" aria-label="Entrées de connaissance"></ul>
+    </div>
+    <div class="rh-detail-panel" data-role="rh-detail">
+      <p class="muted rh-detail-empty">Sélectionnez une entrée dans la liste pour en savoir plus.</p>
+    </div>
+  </div>
+</div>
