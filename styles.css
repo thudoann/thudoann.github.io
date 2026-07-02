@@ -947,6 +947,245 @@ h1 {
   font-size: 0.85rem;
 }
 
+.planner-budget-split {
+  margin-bottom: 16px;
+  padding: 16px 18px;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.budget-split-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  align-items: flex-start;
+}
+
+.budget-split-fields {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.budget-split-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 90px;
+  flex: 1;
+}
+
+.budget-split-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.budget-split-field input {
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.budget-split-field input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.budget-shared-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 2;
+  min-width: 200px;
+}
+
+.budget-shared-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.budget-shared-item {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.budget-shared-name {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.82rem;
+  min-width: 0;
+  transition: border-color 0.15s;
+}
+
+.budget-shared-amount {
+  width: 90px;
+  flex-shrink: 0;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.82rem;
+  transition: border-color 0.15s;
+}
+
+.budget-shared-name:focus,
+.budget-shared-amount:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.budget-shared-remove {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 3px 5px;
+  border-radius: var(--radius);
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.budget-shared-remove:hover {
+  color: var(--text);
+  background: var(--hover-bg);
+}
+
+.budget-shared-add {
+  align-self: flex-start;
+  background: none;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  margin-top: 1px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.budget-shared-add:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--hover-bg);
+}
+
+/* Result breakdown */
+.budget-split-result {
+  display: none;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.budget-split-result.visible {
+  display: block;
+}
+
+.bsr-table {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.bsr-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 80px 56px;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+}
+
+.bsr-label {
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bsr-bar-track {
+  height: 3px;
+  background: var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bsr-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.bsr-amount {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.bsr-hint {
+  font-size: 0.68rem;
+  color: var(--muted);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.bsr-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 4px 0;
+}
+
+.bsr-total-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 80px 56px;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.bsr-total-amount {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.bsr-group-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 80px 56px;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.bsr-group-amount {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
 .planner-flight-extra {
   display: none;
   margin-top: 4px;

@@ -1,9 +1,9 @@
 <h2 class="panel-title">Hobbies</h2>
 <div class="sub-tabs" role="tablist" aria-label="Hobbies">
-  <button type="button" class="sub-tab" data-subtab="digital-camera" role="tab" aria-selected="true" aria-controls="sub-digital-camera" id="tab-digital-camera">Digital camera</button>
-  <button type="button" class="sub-tab" data-subtab="travel" role="tab" aria-selected="false" aria-controls="sub-travel" id="tab-travel">Travel</button>
+  <button type="button" class="sub-tab" data-subtab="travel" role="tab" aria-selected="true" aria-controls="sub-travel" id="tab-travel">Travel</button>
+  <button type="button" class="sub-tab" data-subtab="digital-camera" role="tab" aria-selected="false" aria-controls="sub-digital-camera" id="tab-digital-camera">Digital camera</button>
 </div>
-<div class="sub-panel active" id="sub-digital-camera" role="tabpanel" aria-labelledby="tab-digital-camera">
+<div class="sub-panel" id="sub-digital-camera" role="tabpanel" aria-labelledby="tab-digital-camera">
   <div class="cam-guide" data-role="camera-guide">
     <div class="cam-controls">
       <input type="search" class="cam-search" data-role="cam-search" placeholder="Search brand, model, sensor…" aria-label="Search cameras" />
@@ -36,8 +36,34 @@
     </div>
   </div>
 </div>
-<div class="sub-panel" id="sub-travel" role="tabpanel" aria-labelledby="tab-travel">
+<div class="sub-panel active" id="sub-travel" role="tabpanel" aria-labelledby="tab-travel">
   <p class="muted">Plan trips just for yourself: nothing is sent anywhere, everything stays in this browser.</p>
+
+  <div class="planner-budget-split" data-role="budget-split">
+    <div class="budget-split-inputs">
+      <div class="budget-split-fields">
+        <div class="budget-split-field">
+          <span class="budget-split-label">People</span>
+          <input type="number" name="budget-people" min="1" step="1" placeholder="1">
+        </div>
+        <div class="budget-split-field">
+          <span class="budget-split-label">Flight / person</span>
+          <input type="number" name="budget-flight" min="0" step="0.01" placeholder="0 €">
+        </div>
+        <div class="budget-split-field">
+          <span class="budget-split-label">Accommodation</span>
+          <input type="number" name="budget-accom" min="0" step="0.01" placeholder="0 €">
+        </div>
+      </div>
+      <div class="budget-shared-section">
+        <span class="budget-split-label">Shared costs</span>
+        <div class="budget-shared-list" data-role="budget-shared-list"></div>
+        <button type="button" class="budget-shared-add" data-role="budget-add-shared">+ Add</button>
+      </div>
+    </div>
+    <div class="budget-split-result" data-role="budget-split-result" aria-live="polite"></div>
+  </div>
+
   <div class="planner-layout" data-role="travel-planner">
     <section class="planner-card planner-saved-card" aria-label="Saved trips">
       <h3 class="planner-section-title">Saved trips</h3>
@@ -95,6 +121,7 @@
         <button type="button" class="planner-secondary-btn planner-add-row-btn" data-role="planner-add-item">+ Add item</button>
         <div class="planner-budget-summary muted" data-role="planner-budget-summary" aria-live="polite"></div>
       </div>
+
     </section>
   </div>
 </div>

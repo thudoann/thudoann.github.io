@@ -722,5 +722,117 @@ function initTravelPlanner(root) {
     renderItinerary([{}]);
     updateMapPreview();
   }
+
+  initBudgetSplit(root);
+}
+
+function initBudgetSplit(root) {
+  const splitEl = root.querySelector("[data-role='budget-split']");
+  if (!splitEl) return;
+
+  const peopleInput = splitEl.querySelector('input[name="budget-people"]');
+  const flightInput = splitEl.querySelector('input[name="budget-flight"]');
+  const accomInput = splitEl.querySelector('input[name="budget-accom"]');
+  const sharedList = splitEl.querySelector("[data-role='budget-shared-list']");
+  const addSharedBtn = splitEl.querySelector("[data-role='budget-add-shared']");
+  const resultEl = splitEl.querySelector("[data-role='budget-split-result']");
+
+  if (!peopleInput || !flightInput || !accomInput || !sharedList || !resultEl) return;
+
+  function fmt(n) {
+    return n.toFixed(2) + "€";
+  }
+
+  function addSharedItem(name, amount) {
+    const item = document.createElement("div");
+    item.className = "budget-shared-item";
+    item.innerHTML = `
+      <input type="text" class="budget-shared-name" placeholder="${isFr ? "ex. Repas, Transport…" : "e.g. Food, Transport…"}" value="${name || ""}">
+      <input type="number" class="budget-shared-amount" min="0" step="0.01" placeholder="0 €" value="${amount || ""}">
+      <button type="button" class="budget-shared-remove" aria-label="${isFr ? "Supprimer" : "Remove"}">×</button>
+    `;
+    item.querySelector(".budget-shared-remove").addEventListener("click", () => {
+      item.remove();
+      compute();
+    });
+    sharedList.appendChild(item);
+  }
+
+  function getSharedItems() {
+    return Array.from(sharedList.querySelectorAll(".budget-shared-item")).map((item) => ({
+      name: item.querySelector(".budget-shared-name").value.trim(),
+      amount: parseFloat(item.querySelector(".budget-shared-amount").value) || 0,
+    }));
+  }
+
+  function compute() {
+    const people = Math.max(1, parseInt(peopleInput.value, 10) || 1);
+    const flight = parseFloat(flightInput.value) || 0;
+    const accom = parseFloat(accomInput.value) || 0;
+    const shared = getSharedItems();
+
+    const lines = [];
+    if (flight) lines.push({ label: isFr ? "Vol" : "Flight", per: flight, hint: "" });
+    if (accom) lines.push({ label: isFr ? "Hébergement" : "Accommodation", per: accom / people, hint: `÷${people}` });
+    shared.forEach((it) => {
+      if (!it.amount) return;
+      lines.push({
+        label: it.name || (isFr ? "Partagé" : "Shared"),
+        per: it.amount / people,
+        hint: `÷${people}`,
+      });
+    });
+
+    if (!lines.length) {
+      resultEl.classList.remove("visible");
+      return;
+    }
+
+    const totalPer = lines.reduce((s, l) => s + l.per, 0);
+    const totalGroup = totalPer * people;
+    const maxPer = Math.max(...lines.map((l) => l.per));
+
+    const rows = lines.map((l) => {
+      const pct = maxPer > 0 ? Math.round((l.per / maxPer) * 100) : 0;
+      return `<div class="bsr-row">
+        <span class="bsr-label">${l.label}</span>
+        <span class="bsr-bar-track"><span class="bsr-bar-fill" style="width:${pct}%"></span></span>
+        <span class="bsr-amount">${fmt(l.per)}</span>
+        <span class="bsr-hint">${l.hint}</span>
+      </div>`;
+    }).join("");
+
+    resultEl.innerHTML = `
+      <div class="bsr-table">
+        ${rows}
+        <div class="bsr-divider"></div>
+        <div class="bsr-total-row">
+          <span>${isFr ? "Total / personne" : "Total / person"}</span>
+          <span></span>
+          <span class="bsr-total-amount">${fmt(totalPer)}</span>
+          <span></span>
+        </div>
+        <div class="bsr-group-row">
+          <span>${isFr ? `Groupe (×${people})` : `Group (×${people})`}</span>
+          <span></span>
+          <span class="bsr-group-amount">${fmt(totalGroup)}</span>
+          <span></span>
+        </div>
+      </div>
+    `;
+
+    resultEl.classList.add("visible");
+  }
+
+  addSharedBtn.addEventListener("click", () => {
+    addSharedItem("", "");
+    const last = sharedList.lastElementChild;
+    if (last) last.querySelector(".budget-shared-name").focus();
+  });
+
+  // Start with one shared item
+  addSharedItem("", "");
+
+  splitEl.addEventListener("input", compute);
 }
 
