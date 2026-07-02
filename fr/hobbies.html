@@ -1,11 +1,127 @@
 <h2 class="panel-title">Loisirs</h2>
 <div class="sub-tabs" role="tablist" aria-label="Loisirs">
-  <button type="button" class="sub-tab" data-subtab="digital-camera" role="tab" aria-selected="true" aria-controls="sub-digital-camera" id="tab-digital-camera">Appareil photo</button>
-  <button type="button" class="sub-tab" data-subtab="travel" role="tab" aria-selected="false" aria-controls="sub-travel" id="tab-travel">Voyages</button>
+  <button type="button" class="sub-tab" data-subtab="travel" role="tab" aria-selected="true" aria-controls="sub-travel" id="tab-travel">Voyages</button>
+  <button type="button" class="sub-tab" data-subtab="digital-camera" role="tab" aria-selected="false" aria-controls="sub-digital-camera" id="tab-digital-camera">Appareil photo</button>
 </div>
-<div class="sub-panel active" id="sub-digital-camera" role="tabpanel" aria-labelledby="tab-digital-camera">
-  <p class="muted">Modifiez <strong>hobbies.html</strong> — ajoutez ici vos notes, matériel ou photos.</p>
+<div class="sub-panel" id="sub-digital-camera" role="tabpanel" aria-labelledby="tab-digital-camera">
+  <div class="cam-guide" data-role="camera-guide">
+    <div class="cam-controls">
+      <input type="search" class="cam-search" data-role="cam-search" placeholder="Rechercher marque, modèle, capteur…" aria-label="Rechercher un appareil photo" />
+      <div class="cam-filter-row">
+        <div class="cam-chips" data-role="cam-chips" role="group" aria-label="Filtrer par type">
+          <button class="cam-chip cam-chip-active" data-filter="all" aria-pressed="true">Tous</button>
+          <button class="cam-chip" data-filter="Mirrorless" aria-pressed="false">Hybride</button>
+          <button class="cam-chip" data-filter="DSLR" aria-pressed="false">Reflex</button>
+          <button class="cam-chip" data-filter="Film SLR" aria-pressed="false">Reflex argentique</button>
+          <button class="cam-chip" data-filter="Compact" aria-pressed="false">Compact</button>
+          <button class="cam-chip" data-filter="Medium Format" aria-pressed="false">Moyen format</button>
+        </div>
+        <select class="cam-sort" data-role="cam-sort" aria-label="Trier les appareils">
+          <option value="year-desc">Plus récents en premier</option>
+          <option value="year-asc">Plus anciens en premier</option>
+          <option value="price-asc">Prix : croissant</option>
+          <option value="price-desc">Prix : décroissant</option>
+          <option value="mp-desc">Plus de mégapixels</option>
+        </select>
+      </div>
+    </div>
+    <div class="cam-layout">
+      <div class="cam-list-panel">
+        <p class="cam-count muted" data-role="cam-count"></p>
+        <ul class="cam-list" data-role="cam-list" role="listbox" aria-label="Liste des appareils photo"></ul>
+      </div>
+      <div class="cam-detail-panel" data-role="cam-detail">
+        <p class="muted cam-detail-empty">Sélectionnez un appareil dans la liste pour voir ses caractéristiques complètes.</p>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="sub-panel" id="sub-travel" role="tabpanel" aria-labelledby="tab-travel">
-  <p class="muted">Modifiez <strong>hobbies.html</strong> — ajoutez ici vos notes de voyage, lieux ou photos.</p>
+<div class="sub-panel active" id="sub-travel" role="tabpanel" aria-labelledby="tab-travel">
+  <p class="muted">Planifiez vos voyages en solo : rien n'est envoyé nulle part, tout reste dans ce navigateur.</p>
+
+  <div class="planner-budget-split" data-role="budget-split">
+    <div class="budget-split-inputs">
+      <div class="budget-split-fields">
+        <div class="budget-split-field">
+          <span class="budget-split-label">Personnes</span>
+          <input type="number" name="budget-people" min="1" step="1" placeholder="1">
+        </div>
+        <div class="budget-split-field">
+          <span class="budget-split-label">Vol / personne</span>
+          <input type="number" name="budget-flight" min="0" step="0.01" placeholder="0 €">
+        </div>
+        <div class="budget-split-field">
+          <span class="budget-split-label">Hébergement</span>
+          <input type="number" name="budget-accom" min="0" step="0.01" placeholder="0 €">
+        </div>
+      </div>
+      <div class="budget-shared-section">
+        <span class="budget-split-label">Coûts partagés</span>
+        <div class="budget-shared-list" data-role="budget-shared-list"></div>
+        <button type="button" class="budget-shared-add" data-role="budget-add-shared">+ Ajouter</button>
+      </div>
+    </div>
+    <div class="budget-split-result" data-role="budget-split-result" aria-live="polite"></div>
+  </div>
+
+  <div class="planner-layout" data-role="travel-planner">
+    <section class="planner-card planner-saved-card" aria-label="Voyages enregistrés">
+      <h3 class="planner-section-title">Voyages enregistrés</h3>
+      <p class="planner-empty muted" data-role="planner-empty">Aucun voyage pour l'instant. Créez-en un à droite.</p>
+      <ul class="planner-trip-list" data-role="planner-trip-list" aria-label="Liste des voyages enregistrés"></ul>
+      <button type="button" class="planner-secondary-btn" data-role="planner-new-trip">+ Nouveau voyage</button>
+    </section>
+
+    <section class="planner-card planner-main" aria-label="Détails du voyage">
+      <h3 class="planner-section-title">Détails du voyage</h3>
+      <form class="planner-form" data-role="planner-form">
+        <div class="planner-form-row">
+          <label>
+            Nom du voyage
+            <input type="text" name="title" required placeholder="Été au Japon" />
+          </label>
+        </div>
+        <div class="planner-form-row planner-form-row-inline">
+          <label>
+            Date de début
+            <input type="date" name="startDate" />
+          </label>
+          <label>
+            Date de fin
+            <input type="date" name="endDate" />
+          </label>
+        </div>
+        <div class="planner-form-actions">
+          <button type="button" class="planner-secondary-btn" data-role="planner-clear-trip">Effacer</button>
+          <button type="submit" class="planner-primary-btn" data-role="planner-save-trip">Enregistrer</button>
+          <button type="button" class="planner-secondary-btn" data-role="planner-download-summary">Télécharger le résumé</button>
+        </div>
+      </form>
+
+      <h3 class="planner-section-title planner-section-title-spaced">Itinéraire</h3>
+      <p class="muted planner-itinerary-hint">
+        Ajoutez des activités pour chaque jour de votre voyage. Les modifications sont enregistrées dans ce navigateur en cliquant sur « Enregistrer ».
+      </p>
+
+      <div class="planner-itinerary">
+        <table class="planner-table" aria-label="Itinéraire du voyage">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Heure</th>
+              <th scope="col">Catégorie</th>
+              <th scope="col">Lieu / Activité</th>
+              <th scope="col">Coût</th>
+              <th scope="col">Notes</th>
+              <th scope="col" class="planner-table-col-actions"> </th>
+            </tr>
+          </thead>
+          <tbody data-role="planner-itinerary-body"></tbody>
+        </table>
+        <button type="button" class="planner-secondary-btn planner-add-row-btn" data-role="planner-add-item">+ Ajouter</button>
+        <div class="planner-budget-summary muted" data-role="planner-budget-summary" aria-live="polite"></div>
+      </div>
+
+    </section>
+  </div>
 </div>
