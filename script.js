@@ -248,6 +248,9 @@ async function loadPanel(panel, filename, fallbackMsg) {
     if (panel.id === "rabbitholes") {
       if (typeof initKnowledgeGuide === "function") initKnowledgeGuide(panel);
     }
+    if (panel.id === "projects") {
+      if (typeof initProjectsGuide === "function") initProjectsGuide(panel);
+    }
     return true;
   } catch (err) {
     hideLoading(panel);
