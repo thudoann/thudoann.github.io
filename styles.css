@@ -2996,3 +2996,49 @@ html[data-theme="dark"] .sudoku-cell.sudoku-conflict span { color: #ff6b6b; }
 .sudoku-cell.sudoku-selected.sudoku-unit-done {
   background-color: var(--accent);
 }
+
+/* Best times */
+.sudoku-bests {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 16px;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+  flex-wrap: wrap;
+}
+
+.sudoku-bests-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 4px;
+}
+
+.sudoku-best-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.sudoku-best-diff {
+  font-size: 0.68rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sudoku-best-time {
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.sudoku-best-item.sudoku-best-new .sudoku-best-time {
+  color: #4caf50;
+}

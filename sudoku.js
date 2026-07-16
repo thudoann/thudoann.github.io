@@ -102,7 +102,48 @@
     const notesBtn = panel.querySelector("[data-role='sudoku-notes']");
     const numpadEl = panel.querySelector("[data-role='sudoku-numpad']");
     const diffEl   = panel.querySelector("[data-role='sudoku-difficulty']");
+    const bestsEl  = panel.querySelector("[data-role='sudoku-bests']");
     const fr = typeof isFr !== "undefined" && isFr;
+
+    const BEST_KEY = "sudoku_best_v1";
+
+    function loadBests() {
+      try { return JSON.parse(localStorage.getItem(BEST_KEY)) || {}; } catch (_) { return {}; }
+    }
+
+    function saveBest(diff, seconds) {
+      const bests = loadBests();
+      if (!bests[diff] || seconds < bests[diff]) {
+        bests[diff] = seconds;
+        localStorage.setItem(BEST_KEY, JSON.stringify(bests));
+        return true;
+      }
+      return false;
+    }
+
+    function fmtSecs(s) {
+      return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+    }
+
+    function renderBests(newRecordDiff) {
+      if (!bestsEl) return;
+      const bests = loadBests();
+      const diffs = fr
+        ? [["easy", "Facile"], ["medium", "Moyen"], ["hard", "Difficile"]]
+        : [["easy", "Easy"], ["medium", "Medium"], ["hard", "Hard"]];
+      const heading = fr ? "Meilleurs temps" : "Best times";
+      bestsEl.innerHTML = `
+        <span class="sudoku-bests-label">${heading}</span>
+        ${diffs.map(([key, label]) => {
+          const t = bests[key];
+          const isNew = key === newRecordDiff;
+          return `<span class="sudoku-best-item${isNew ? " sudoku-best-new" : ""}">
+            <span class="sudoku-best-diff">${label}</span>
+            <span class="sudoku-best-time">${t ? fmtSecs(t) : "—"}</span>
+          </span>`;
+        }).join("")}
+      `;
+    }
 
     let solution, puzzle, board, notes, given;
     let selected = null;
@@ -137,6 +178,7 @@
     document.addEventListener("keydown", onKey);
 
     newGame();
+    renderBests(null);
 
     /* ---- New game ---- */
 
@@ -350,10 +392,18 @@
     function triggerWin() {
       isSolved = true;
       stopTimer();
+      const elapsed = Math.floor((Date.now() - timerStart) / 1000);
+      const diff = diffEl ? diffEl.value : "medium";
+      const isRecord = saveBest(diff, elapsed);
+
       boardEl.classList.add("sudoku-solved");
       setTimeout(() => boardEl.classList.remove("sudoku-solved"), 900);
-      const t = timerEl ? timerEl.textContent : "";
-      setMsg(fr ? `Bravo ! Résolu en ${t} 🎉` : `Solved in ${t}! 🎉`);
+
+      const t = timerEl ? timerEl.textContent : fmtSecs(elapsed);
+      const extra = isRecord ? (fr ? " 🏆 Nouveau record !" : " 🏆 New record!") : "";
+      setMsg(fr ? `Bravo ! Résolu en ${t}${extra}` : `Solved in ${t}!${extra}`);
+
+      renderBests(isRecord ? diff : null);
     }
 
     function revealSolution() {
