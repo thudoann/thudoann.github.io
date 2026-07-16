@@ -1,9 +1,11 @@
 /* ---------- Projects page config ----------
    Edit this file to control what appears on the Projects page.
 
-   pinned   : shown first, in this order, with a "Featured" badge
-   exclude  : hidden entirely
-   descriptions : override the (empty) GitHub description for any repo
+   pinned       : shown first, in this order, with a "Featured" badge
+   exclude      : hidden entirely
+   descriptions : override the GitHub description for any repo
+   tags         : tech-stack tag pills shown on the card (array of strings)
+   demos        : live demo URL for a repo — shows a "Demo →" button
 */
 const PROJECTS_CONFIG = {
   user: "thudoann",
@@ -80,5 +82,33 @@ const PROJECTS_CONFIG = {
       "Dimensionality reduction (PCA, t-SNE, UMAP) combined with clustering algorithms.",
     "Learning-Analytics-of-MOOCs-using-statistical-models-with-R":
       "Statistical analysis of MOOC learner behaviour and completion rates using R.",
+  },
+
+  tags: {
+    "clinical-trials-rag-platform":       ["RAG", "LLM", "Clinical NLP", "Python"],
+    "medrag_eval":                         ["Benchmarking", "RAG", "Medical AI", "Python"],
+    "ppo-llm-alignment":                   ["RLHF", "PPO", "LLM", "Alignment"],
+    "neural-morphogenesis":                ["Neural ODE", "Biology", "PyTorch"],
+    "Fine-tuning-Image-Captioning-Models-for-Chest-X-ray-Interpretation": ["Vision-Language", "Chest X-Ray", "Fine-tuning"],
+    "Fine-tuned-Retrieval-Augmented-Generation-RAG-Chatbot": ["RAG", "Chatbot", "Fine-tuning"],
+    "Fine-tuning-SAM-for-Cellular-Images-Segmentation":      ["SAM", "Segmentation", "Microscopy"],
+    "Mapify_My_Travels":                   ["Streamlit", "Folium", "Geospatial"],
+    "rna-seq-stapp":                       ["Streamlit", "RNA-seq", "Bioinformatics"],
+    "rnaseq-pipeline-interface":           ["RNA-seq", "Pipeline", "Bioinformatics"],
+    "gp-bayesopt":                         ["Bayesian Optimisation", "Gaussian Process"],
+    "IMDB-Classification-with-BERT":       ["NLP", "BERT", "Fine-tuning"],
+    "Text-Mining-and-NLP-on-French-doctoral-dissertations": ["NLP", "Topic Modelling", "French"],
+    "CreditCardFraudDetection":            ["Imbalanced Learning", "SMOTE", "Classification"],
+    "Madrid-Air-Quality-Analysis-Forecasting": ["Time Series", "ARIMA", "Forecasting"],
+    "Machine-Learning-Pipeline-with-Real-Time-Data-Scoring": ["ML Pipeline", "Real-Time Scoring"],
+    "ML-Model-Data-Drift-Investigation":   ["MLOps", "Data Drift", "Monitoring"],
+    "SocialNetworkAnalysis":               ["Graph", "Community Detection", "NetworkX"],
+    "DimensionalityReduction-Clustering":  ["PCA", "t-SNE", "UMAP", "Clustering"],
+  },
+
+  demos: {
+    // Add demo URLs here once deployed, e.g.:
+    // "Mapify_My_Travels": "https://mapify-my-travels.streamlit.app",
+    // "rna-seq-stapp":     "https://rna-seq.streamlit.app",
   },
 };

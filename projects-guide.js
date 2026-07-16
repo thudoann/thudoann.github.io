@@ -63,18 +63,29 @@ function makeCard(repo, pinned, cfg) {
   const stars = repo.stargazers_count;
   const lang = repo.language;
   const url = repo.html_url;
+  const tags = (cfg.tags && cfg.tags[repo.name]) || (repo.topics || []).slice(0, 5);
+  const demoUrl = cfg.demos && cfg.demos[repo.name];
 
   const card = document.createElement("article");
   card.className = "proj-card" + (pinned ? " proj-card-pinned" : "");
 
+  const tagsHtml = tags.length
+    ? `<div class="proj-tags">${tags.map((t) => `<span class="proj-tag">${t}</span>`).join("")}</div>`
+    : "";
+
   card.innerHTML = `
     ${pinned ? `<span class="proj-badge">${isFr ? "Sélectionné" : "Featured"}</span>` : ""}
-    <h3 class="proj-title"><a href="${url}" target="_blank" rel="noopener">${label}</a></h3>
+    <h3 class="proj-title">${label}</h3>
     ${desc ? `<p class="proj-desc">${desc}</p>` : ""}
+    ${tagsHtml}
     <div class="proj-meta">
       ${lang ? `<span class="proj-lang"><span class="proj-lang-dot" style="background:${langColor(lang)}"></span>${lang}</span>` : ""}
       ${stars ? `<span class="proj-stars">★ ${stars}</span>` : ""}
       ${updated ? `<span class="proj-updated">${isFr ? "Mis à jour" : "Updated"} ${updated}</span>` : ""}
+    </div>
+    <div class="proj-links">
+      <a href="${url}" target="_blank" rel="noopener" class="proj-link-github">GitHub →</a>
+      ${demoUrl ? `<a href="${demoUrl}" target="_blank" rel="noopener" class="proj-link-demo">Demo →</a>` : ""}
     </div>
   `;
   return card;

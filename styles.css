@@ -819,6 +819,67 @@ h1 {
   margin-left: auto;
 }
 
+.proj-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 2px;
+}
+
+.proj-tag {
+  font-size: 0.68rem;
+  font-weight: 500;
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--muted);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+html[data-theme="dark"] .proj-tag {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.proj-links {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.proj-link-github,
+.proj-link-demo {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.28rem 0.7rem;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s, opacity 0.15s;
+  white-space: nowrap;
+}
+
+.proj-link-github {
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.proj-link-github:hover {
+  background: var(--card-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.proj-link-demo {
+  background: var(--accent);
+  color: var(--bg);
+  border: 1px solid transparent;
+}
+
+.proj-link-demo:hover {
+  opacity: 0.8;
+}
+
 /* Travel planner (Hobbies → Travel) */
 .planner-layout {
   display: flex;
