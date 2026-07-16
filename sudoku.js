@@ -118,23 +118,32 @@
     const notesBtn = panel.querySelector("[data-role='sudoku-notes']");
     const numpadEl = panel.querySelector("[data-role='sudoku-numpad']");
     const diffEl   = panel.querySelector("[data-role='sudoku-difficulty']");
-    const bestsEl  = panel.querySelector("[data-role='sudoku-bests']");
+    const bestsEl      = panel.querySelector("[data-role='sudoku-bests']");
+    const namePromptEl = panel.querySelector("[data-role='sudoku-name-prompt']");
     const fr = typeof isFr !== "undefined" && isFr;
 
-    const BEST_KEY = "sudoku_best_v1";
+    const BEST_KEY = "sudoku_best_v2";
+    const NAME_KEY = "sudoku_player_name";
 
     function loadBests() {
       try { return JSON.parse(localStorage.getItem(BEST_KEY)) || {}; } catch (_) { return {}; }
     }
 
-    function saveBest(diff, seconds) {
+    function saveBestTime(diff, seconds) {
       const bests = loadBests();
-      if (!bests[diff] || seconds < bests[diff]) {
-        bests[diff] = seconds;
+      const prev = bests[diff];
+      if (!prev || seconds < prev.time) {
+        bests[diff] = { time: seconds, name: prev ? prev.name : "" };
         localStorage.setItem(BEST_KEY, JSON.stringify(bests));
         return true;
       }
       return false;
+    }
+
+    function saveBestName(diff, name) {
+      const bests = loadBests();
+      if (bests[diff]) { bests[diff].name = name; localStorage.setItem(BEST_KEY, JSON.stringify(bests)); }
+      if (name) localStorage.setItem(NAME_KEY, name);
     }
 
     function fmtSecs(s) {
@@ -151,14 +160,33 @@
       bestsEl.innerHTML = `
         <span class="sudoku-bests-label">${heading}</span>
         ${diffs.map(([key, label]) => {
-          const t = bests[key];
+          const entry = bests[key];
           const isNew = key === newRecordDiff;
           return `<span class="sudoku-best-item${isNew ? " sudoku-best-new" : ""}">
             <span class="sudoku-best-diff">${label}</span>
-            <span class="sudoku-best-time">${t ? fmtSecs(t) : "—"}</span>
+            <span class="sudoku-best-time">${entry ? fmtSecs(entry.time) : "—"}</span>
+            ${entry && entry.name ? `<span class="sudoku-best-name">${entry.name}</span>` : ""}
           </span>`;
         }).join("")}
       `;
+    }
+
+    function showNamePrompt(diff) {
+      if (!namePromptEl) return;
+      const input   = namePromptEl.querySelector("[data-role='sudoku-name-input']");
+      const saveBtn = namePromptEl.querySelector("[data-role='sudoku-name-save']");
+      if (input) input.value = localStorage.getItem(NAME_KEY) || "";
+      namePromptEl.classList.add("visible");
+      if (input) setTimeout(() => input.focus(), 80);
+
+      function commit() {
+        const name = input ? input.value.trim() : "";
+        saveBestName(diff, name);
+        renderBests(null);
+        namePromptEl.classList.remove("visible");
+      }
+      if (saveBtn) saveBtn.onclick = commit;
+      if (input)   input.onkeydown = (e) => { if (e.key === "Enter") commit(); };
     }
 
     let solution, puzzle, board, notes, given;
@@ -205,6 +233,7 @@
       notesBtn.classList.remove("active");
       notesBtn.setAttribute("aria-pressed", "false");
       boardEl.classList.remove("sudoku-solved");
+      if (namePromptEl) namePromptEl.classList.remove("visible");
       stopTimer();
       if (timerEl) timerEl.textContent = "00:00";
       completedUnits = new Set();
@@ -422,7 +451,7 @@
       stopTimer();
       const elapsed = Math.floor((Date.now() - timerStart) / 1000);
       const diff = diffEl ? diffEl.value : "medium";
-      const isRecord = saveBest(diff, elapsed);
+      const isRecord = saveBestTime(diff, elapsed);
 
       boardEl.classList.add("sudoku-solved");
       setTimeout(() => boardEl.classList.remove("sudoku-solved"), 900);
@@ -432,6 +461,7 @@
       setMsg(fr ? `Bravo ! Résolu en ${t}${extra}` : `Solved in ${t}!${extra}`);
 
       renderBests(isRecord ? diff : null);
+      showNamePrompt(diff);
     }
 
     function revealSolution() {

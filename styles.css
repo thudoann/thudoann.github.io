@@ -3042,3 +3042,57 @@ html[data-theme="dark"] .sudoku-cell.sudoku-conflict span { color: #ff6b6b; }
 .sudoku-best-item.sudoku-best-new .sudoku-best-time {
   color: #4caf50;
 }
+
+/* Name prompt */
+.sudoku-name-prompt {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.sudoku-name-prompt.visible { display: flex; }
+
+.sudoku-name-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.sudoku-name-input {
+  font-size: 0.85rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--card-bg);
+  color: var(--text);
+  width: 140px;
+  transition: border-color 0.15s;
+}
+.sudoku-name-input:focus { outline: none; border-color: var(--accent); }
+
+.sudoku-name-save {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.3rem 0.7rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--bg);
+  cursor: pointer;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+.sudoku-name-save:hover { opacity: 0.8; }
+
+.sudoku-best-name {
+  font-size: 0.65rem;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 1px;
+}

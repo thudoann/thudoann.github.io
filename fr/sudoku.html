@@ -26,5 +26,12 @@
 
   <p class="sudoku-message muted" data-role="sudoku-message" aria-live="polite"></p>
 
+  <div class="sudoku-name-prompt" data-role="sudoku-name-prompt">
+    <label class="sudoku-name-label" for="sudoku-name-fr">Signer votre score</label>
+    <input type="text" id="sudoku-name-fr" class="sudoku-name-input" data-role="sudoku-name-input"
+           placeholder="Votre nom" maxlength="24" autocomplete="off" />
+    <button type="button" class="sudoku-name-save" data-role="sudoku-name-save">Enregistrer</button>
+  </div>
+
   <div class="sudoku-bests" data-role="sudoku-bests" aria-label="Meilleurs temps"></div>
 </div>
