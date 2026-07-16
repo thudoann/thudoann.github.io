@@ -1,0 +1,398 @@
+/* ---------- Sudoku ---------- */
+(function () {
+
+  /* ---- Helpers ---- */
+
+  function shuffled(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function findEmpty(g) {
+    for (let r = 0; r < 9; r++)
+      for (let c = 0; c < 9; c++)
+        if (g[r][c] === 0) return [r, c];
+    return null;
+  }
+
+  function canPlace(g, r, c, n) {
+    if (g[r].includes(n)) return false;
+    for (let i = 0; i < 9; i++) if (g[i][c] === n) return false;
+    const br = Math.floor(r / 3) * 3, bc = Math.floor(c / 3) * 3;
+    for (let i = br; i < br + 3; i++)
+      for (let j = bc; j < bc + 3; j++)
+        if (g[i][j] === n) return false;
+    return true;
+  }
+
+  /* ---- Generator ---- */
+
+  function fillGrid(g) {
+    const pos = findEmpty(g);
+    if (!pos) return true;
+    const [r, c] = pos;
+    for (const n of shuffled([1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      if (canPlace(g, r, c, n)) {
+        g[r][c] = n;
+        if (fillGrid(g)) return true;
+        g[r][c] = 0;
+      }
+    }
+    return false;
+  }
+
+  function generateSolution() {
+    const g = Array.from({ length: 9 }, () => Array(9).fill(0));
+    fillGrid(g);
+    return g;
+  }
+
+  function countSolutions(grid, limit) {
+    let count = 0;
+    const g = grid.map((r) => [...r]);
+    function solve() {
+      if (count >= limit) return;
+      const pos = findEmpty(g);
+      if (!pos) { count++; return; }
+      const [r, c] = pos;
+      for (let n = 1; n <= 9; n++) {
+        if (canPlace(g, r, c, n)) {
+          g[r][c] = n;
+          solve();
+          g[r][c] = 0;
+        }
+      }
+    }
+    solve();
+    return count;
+  }
+
+  function createPuzzle(solution, difficulty) {
+    const clues = { easy: 46, medium: 36, hard: 28 }[difficulty] ?? 36;
+    const toRemove = 81 - clues;
+    const puzzle = solution.map((r) => [...r]);
+    let removed = 0;
+    for (const pos of shuffled([...Array(81).keys()])) {
+      if (removed >= toRemove) break;
+      const r = Math.floor(pos / 9), c = pos % 9;
+      const backup = puzzle[r][c];
+      puzzle[r][c] = 0;
+      if (countSolutions(puzzle, 2) === 1) {
+        removed++;
+      } else {
+        puzzle[r][c] = backup;
+      }
+    }
+    return puzzle;
+  }
+
+  /* ---- Game ---- */
+
+  function initSudoku(panel) {
+    const boardEl = panel.querySelector("[data-role='sudoku-board']");
+    if (!boardEl || boardEl.dataset.initialized) return;
+    boardEl.dataset.initialized = "1";
+
+    const timerEl  = panel.querySelector("[data-role='sudoku-timer']");
+    const msgEl    = panel.querySelector("[data-role='sudoku-message']");
+    const notesBtn = panel.querySelector("[data-role='sudoku-notes']");
+    const numpadEl = panel.querySelector("[data-role='sudoku-numpad']");
+    const diffEl   = panel.querySelector("[data-role='sudoku-difficulty']");
+    const fr = typeof isFr !== "undefined" && isFr;
+
+    let solution, puzzle, board, notes, given;
+    let selected = null;
+    let notesMode = false;
+    let undoStack = [];
+    let timerStart = 0, timerInterval = null;
+    let isSolved = false;
+
+    /* Build numpad */
+    for (let n = 1; n <= 9; n++) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "sudoku-num-btn";
+      btn.textContent = n;
+      btn.dataset.num = n;
+      btn.addEventListener("click", () => input(n));
+      numpadEl.appendChild(btn);
+    }
+    const eraseBtn = document.createElement("button");
+    eraseBtn.type = "button";
+    eraseBtn.className = "sudoku-num-btn sudoku-erase-btn";
+    eraseBtn.textContent = "⌫";
+    eraseBtn.addEventListener("click", () => input(0));
+    numpadEl.appendChild(eraseBtn);
+
+    panel.querySelector("[data-role='sudoku-new']").addEventListener("click", newGame);
+    panel.querySelector("[data-role='sudoku-undo']").addEventListener("click", undoLast);
+    panel.querySelector("[data-role='sudoku-check']").addEventListener("click", checkSolution);
+    panel.querySelector("[data-role='sudoku-reveal']").addEventListener("click", revealSolution);
+    notesBtn.addEventListener("click", toggleNotes);
+    document.addEventListener("keydown", onKey);
+
+    newGame();
+
+    /* ---- New game ---- */
+
+    function newGame() {
+      isSolved = false;
+      notesMode = false;
+      undoStack = [];
+      notesBtn.classList.remove("active");
+      notesBtn.setAttribute("aria-pressed", "false");
+      boardEl.classList.remove("sudoku-solved");
+      setMsg("");
+      if (timerEl) timerEl.textContent = "00:00";
+      startTimer();
+
+      solution = generateSolution();
+      puzzle   = createPuzzle(solution, diffEl ? diffEl.value : "medium");
+      board    = puzzle.map((r) => [...r]);
+      notes    = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => new Set()));
+      given    = puzzle.map((r) => r.map((v) => v !== 0));
+      selected = null;
+
+      renderBoard();
+    }
+
+    /* ---- Render ---- */
+
+    function renderBoard() {
+      boardEl.innerHTML = "";
+      for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+          const cell = document.createElement("div");
+          cell.className = "sudoku-cell";
+          cell.dataset.r = r;
+          cell.dataset.c = c;
+          cell.setAttribute("role", "gridcell");
+          if (given[r][c]) cell.classList.add("sudoku-given");
+          cell.addEventListener("click", () => selectCell(r, c));
+          boardEl.appendChild(cell);
+        }
+      }
+      refresh();
+    }
+
+    function refresh() {
+      const conflicts = findConflicts();
+      const counts = Array(10).fill(0);
+      for (let r = 0; r < 9; r++)
+        for (let c = 0; c < 9; c++)
+          if (board[r][c]) counts[board[r][c]]++;
+
+      for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+          const cell = boardEl.querySelector(`[data-r="${r}"][data-c="${c}"]`);
+          if (!cell) continue;
+
+          cell.classList.remove("sudoku-selected", "sudoku-related", "sudoku-same", "sudoku-conflict");
+          cell.innerHTML = "";
+
+          const val = board[r][c];
+          if (val !== 0) {
+            const s = document.createElement("span");
+            s.textContent = val;
+            cell.appendChild(s);
+          } else {
+            const ns = notes[r][c];
+            if (ns.size > 0) {
+              const ng = document.createElement("div");
+              ng.className = "sudoku-notes-grid";
+              for (let n = 1; n <= 9; n++) {
+                const nd = document.createElement("span");
+                nd.textContent = ns.has(n) ? n : "";
+                ng.appendChild(nd);
+              }
+              cell.appendChild(ng);
+            }
+          }
+
+          if (conflicts.has(`${r},${c}`)) cell.classList.add("sudoku-conflict");
+        }
+      }
+
+      /* Selection highlight */
+      if (selected) {
+        const { r, c } = selected;
+        const selVal = board[r][c];
+        for (let i = 0; i < 9; i++) {
+          for (let j = 0; j < 9; j++) {
+            const cell = boardEl.querySelector(`[data-r="${i}"][data-c="${j}"]`);
+            if (!cell) continue;
+            if (i === r && j === c) {
+              cell.classList.add("sudoku-selected");
+            } else if (
+              i === r || j === c ||
+              (Math.floor(i / 3) === Math.floor(r / 3) && Math.floor(j / 3) === Math.floor(c / 3))
+            ) {
+              cell.classList.add("sudoku-related");
+              if (selVal && board[i][j] === selVal) cell.classList.add("sudoku-same");
+            } else if (selVal && board[i][j] === selVal) {
+              cell.classList.add("sudoku-same");
+            }
+          }
+        }
+      }
+
+      /* Dim numpad buttons for completed numbers */
+      numpadEl.querySelectorAll(".sudoku-num-btn[data-num]").forEach((btn) => {
+        const n = parseInt(btn.dataset.num, 10);
+        btn.classList.toggle("sudoku-num-done", counts[n] >= 9);
+      });
+    }
+
+    function findConflicts() {
+      const set = new Set();
+      for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+          const v = board[r][c];
+          if (!v) continue;
+          for (let j = 0; j < 9; j++)
+            if (j !== c && board[r][j] === v) { set.add(`${r},${c}`); set.add(`${r},${j}`); }
+          for (let i = 0; i < 9; i++)
+            if (i !== r && board[i][c] === v) { set.add(`${r},${c}`); set.add(`${i},${c}`); }
+          const br = Math.floor(r / 3) * 3, bc = Math.floor(c / 3) * 3;
+          for (let i = br; i < br + 3; i++)
+            for (let j = bc; j < bc + 3; j++)
+              if ((i !== r || j !== c) && board[i][j] === v) { set.add(`${r},${c}`); set.add(`${i},${j}`); }
+        }
+      }
+      return set;
+    }
+
+    /* ---- Interaction ---- */
+
+    function selectCell(r, c) {
+      selected = { r, c };
+      refresh();
+    }
+
+    function input(n) {
+      if (!selected || isSolved) return;
+      const { r, c } = selected;
+      if (given[r][c]) return;
+
+      const oldVal  = board[r][c];
+      const oldNotes = new Set(notes[r][c]);
+
+      if (notesMode && n !== 0) {
+        if (notes[r][c].has(n)) notes[r][c].delete(n);
+        else notes[r][c].add(n);
+      } else {
+        board[r][c] = n;
+        if (n !== 0) {
+          notes[r][c].clear();
+          eraseRelatedNotes(r, c, n);
+        }
+      }
+      undoStack.push({ r, c, oldVal, oldNotes });
+
+      refresh();
+      if (n !== 0 && !notesMode) autoWinCheck();
+    }
+
+    function eraseRelatedNotes(r, c, n) {
+      for (let j = 0; j < 9; j++) notes[r][j].delete(n);
+      for (let i = 0; i < 9; i++) notes[i][c].delete(n);
+      const br = Math.floor(r / 3) * 3, bc = Math.floor(c / 3) * 3;
+      for (let i = br; i < br + 3; i++)
+        for (let j = bc; j < bc + 3; j++)
+          notes[i][j].delete(n);
+    }
+
+    function undoLast() {
+      if (!undoStack.length || isSolved) return;
+      const { r, c, oldVal, oldNotes } = undoStack.pop();
+      board[r][c]  = oldVal;
+      notes[r][c]  = oldNotes;
+      refresh();
+    }
+
+    function toggleNotes() {
+      notesMode = !notesMode;
+      notesBtn.classList.toggle("active", notesMode);
+      notesBtn.setAttribute("aria-pressed", String(notesMode));
+    }
+
+    function checkSolution() {
+      const conflicts = findConflicts();
+      const allFilled = board.every((row) => row.every((v) => v !== 0));
+      if (!allFilled) {
+        setMsg(fr ? "La grille n'est pas encore complète." : "Not complete yet — keep going.");
+      } else if (conflicts.size > 0) {
+        setMsg(fr ? "Des conflits — vérifiez les cases en rouge." : "Conflicts detected — check the red cells.");
+      } else {
+        triggerWin();
+      }
+    }
+
+    function autoWinCheck() {
+      if (board.every((row, r) => row.every((v, c) => v === solution[r][c]))) {
+        triggerWin();
+      }
+    }
+
+    function triggerWin() {
+      isSolved = true;
+      stopTimer();
+      boardEl.classList.add("sudoku-solved");
+      setTimeout(() => boardEl.classList.remove("sudoku-solved"), 900);
+      const t = timerEl ? timerEl.textContent : "";
+      setMsg(fr ? `Bravo ! Résolu en ${t} 🎉` : `Solved in ${t}! 🎉`);
+    }
+
+    function revealSolution() {
+      board  = solution.map((r) => [...r]);
+      notes  = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => new Set()));
+      isSolved = true;
+      stopTimer();
+      refresh();
+      setMsg(fr ? "Solution affichée." : "Solution revealed.");
+    }
+
+    /* ---- Timer ---- */
+
+    function startTimer() {
+      stopTimer();
+      timerStart = Date.now();
+      timerInterval = setInterval(() => {
+        if (!timerEl) return;
+        const s = Math.floor((Date.now() - timerStart) / 1000);
+        timerEl.textContent =
+          `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+      }, 500);
+    }
+
+    function stopTimer() {
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    }
+
+    /* ---- Keyboard ---- */
+
+    function onKey(e) {
+      if (!panel.classList.contains("active")) return;
+      if (!selected) return;
+      const { r, c } = selected;
+      if (e.key >= "1" && e.key <= "9") { e.preventDefault(); input(parseInt(e.key, 10)); }
+      else if (e.key === "Backspace" || e.key === "Delete" || e.key === "0") { e.preventDefault(); input(0); }
+      else if (e.key === "ArrowUp")    { e.preventDefault(); selectCell((r + 8) % 9, c); }
+      else if (e.key === "ArrowDown")  { e.preventDefault(); selectCell((r + 1) % 9, c); }
+      else if (e.key === "ArrowLeft")  { e.preventDefault(); selectCell(r, (c + 8) % 9); }
+      else if (e.key === "ArrowRight") { e.preventDefault(); selectCell(r, (c + 1) % 9); }
+    }
+
+    /* ---- Util ---- */
+
+    function setMsg(msg) {
+      if (msgEl) msgEl.textContent = msg;
+    }
+  }
+
+  window.initSudoku = initSudoku;
+})();

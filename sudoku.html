@@ -1,0 +1,26 @@
+<div class="sudoku-wrap">
+  <div class="sudoku-header">
+    <span class="sudoku-timer mono muted" data-role="sudoku-timer" aria-label="Timer">00:00</span>
+    <div class="sudoku-top-controls">
+      <select class="sudoku-difficulty" data-role="sudoku-difficulty" aria-label="Difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <button type="button" class="sudoku-new-btn" data-role="sudoku-new">New game</button>
+    </div>
+  </div>
+
+  <div class="sudoku-board" data-role="sudoku-board" role="grid" aria-label="Sudoku board"></div>
+
+  <div class="sudoku-numpad" data-role="sudoku-numpad" aria-label="Number pad"></div>
+
+  <div class="sudoku-actions">
+    <button type="button" class="sudoku-action-btn" data-role="sudoku-notes" aria-pressed="false">✏ Notes</button>
+    <button type="button" class="sudoku-action-btn" data-role="sudoku-undo">↩ Undo</button>
+    <button type="button" class="sudoku-action-btn" data-role="sudoku-check">✓ Check</button>
+    <button type="button" class="sudoku-action-btn sudoku-reveal-btn" data-role="sudoku-reveal">Reveal</button>
+  </div>
+
+  <p class="sudoku-message muted" data-role="sudoku-message" aria-live="polite"></p>
+</div>

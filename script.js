@@ -15,8 +15,8 @@ const i18n = {
 
 const tabs = document.querySelectorAll(".tab");
 const panels = document.querySelectorAll(".panel");
-const loaded = { aboutCv: false, papers: false, hobbies: false, projects: false, quiz: false, contact: false, rabbitholes: false };
-const tabFiles = { papers: "papers.html", hobbies: "hobbies.html", projects: "projects.html", quiz: "quiz.html", contact: "contact.html", rabbitholes: "rabbitholes.html" };
+const loaded = { aboutCv: false, papers: false, hobbies: false, projects: false, quiz: false, contact: false, rabbitholes: false, sudoku: false };
+const tabFiles = { papers: "papers.html", hobbies: "hobbies.html", projects: "projects.html", quiz: "quiz.html", contact: "contact.html", rabbitholes: "rabbitholes.html", sudoku: "sudoku.html" };
 
 /* ---------- Theme toggle ---------- */
 (function initThemeToggle() {
@@ -251,6 +251,9 @@ async function loadPanel(panel, filename, fallbackMsg) {
     if (panel.id === "projects") {
       if (typeof initProjectsGuide === "function") initProjectsGuide(panel);
     }
+    if (panel.id === "sudoku") {
+      if (typeof initSudoku === "function") initSudoku(panel);
+    }
     return true;
   } catch (err) {
     hideLoading(panel);
@@ -367,7 +370,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 const hash = location.hash.slice(1);
-if (hash && ["about", "projects", "quiz", "papers", "hobbies", "rabbitholes", "contact"].includes(hash)) {
+if (hash && ["about", "projects", "quiz", "papers", "hobbies", "rabbitholes", "sudoku", "contact"].includes(hash)) {
   openTabById(hash);
 } else {
   if (history.replaceState) history.replaceState(null, "", "#about");
