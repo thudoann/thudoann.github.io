@@ -51,13 +51,29 @@
     return g;
   }
 
+  /* MRV: pick the empty cell with fewest valid options — dramatically faster for sparse grids */
+  function findBestEmpty(g) {
+    let best = null, bestCount = 10;
+    for (let r = 0; r < 9; r++) {
+      for (let c = 0; c < 9; c++) {
+        if (g[r][c] !== 0) continue;
+        let count = 0;
+        for (let n = 1; n <= 9; n++) if (canPlace(g, r, c, n)) count++;
+        if (count === 0) return "dead";
+        if (count < bestCount) { bestCount = count; best = [r, c]; if (count === 1) return best; }
+      }
+    }
+    return best; // null = all filled (solved)
+  }
+
   function countSolutions(grid, limit) {
     let count = 0;
     const g = grid.map((r) => [...r]);
     function solve() {
       if (count >= limit) return;
-      const pos = findEmpty(g);
-      if (!pos) { count++; return; }
+      const pos = findBestEmpty(g);
+      if (pos === null)   { count++; return; }
+      if (pos === "dead") return;
       const [r, c] = pos;
       for (let n = 1; n <= 9; n++) {
         if (canPlace(g, r, c, n)) {
@@ -72,7 +88,7 @@
   }
 
   function createPuzzle(solution, difficulty) {
-    const clues = { easy: 46, medium: 36, hard: 28 }[difficulty] ?? 36;
+    const clues = { easy: 46, medium: 36, hard: 28, expert: 24, evil: 21 }[difficulty] ?? 36;
     const toRemove = 81 - clues;
     const puzzle = solution.map((r) => [...r]);
     let removed = 0;
@@ -129,8 +145,8 @@
       if (!bestsEl) return;
       const bests = loadBests();
       const diffs = fr
-        ? [["easy", "Facile"], ["medium", "Moyen"], ["hard", "Difficile"]]
-        : [["easy", "Easy"], ["medium", "Medium"], ["hard", "Hard"]];
+        ? [["easy", "Facile"], ["medium", "Moyen"], ["hard", "Difficile"], ["expert", "Expert"], ["evil", "Extrême"]]
+        : [["easy", "Easy"], ["medium", "Medium"], ["hard", "Hard"], ["expert", "Expert"], ["evil", "Evil"]];
       const heading = fr ? "Meilleurs temps" : "Best times";
       bestsEl.innerHTML = `
         <span class="sudoku-bests-label">${heading}</span>
@@ -182,25 +198,37 @@
 
     /* ---- New game ---- */
 
-    function newGame() {
+    async function newGame() {
       isSolved = false;
       notesMode = false;
       undoStack = [];
       notesBtn.classList.remove("active");
       notesBtn.setAttribute("aria-pressed", "false");
       boardEl.classList.remove("sudoku-solved");
-      setMsg("");
+      stopTimer();
       if (timerEl) timerEl.textContent = "00:00";
-      startTimer();
-
       completedUnits = new Set();
+      selected = null;
+
+      const diff = diffEl ? diffEl.value : "medium";
+      const slow = diff === "expert" || diff === "evil";
+      if (slow) {
+        setMsg(fr ? "Génération…" : "Generating…");
+        boardEl.style.opacity = "0.4";
+        await new Promise((res) => setTimeout(res, 30));
+      } else {
+        setMsg("");
+      }
+
       solution = generateSolution();
-      puzzle   = createPuzzle(solution, diffEl ? diffEl.value : "medium");
+      puzzle   = createPuzzle(solution, diff);
       board    = puzzle.map((r) => [...r]);
       notes    = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => new Set()));
       given    = puzzle.map((r) => r.map((v) => v !== 0));
-      selected = null;
 
+      boardEl.style.opacity = "";
+      setMsg("");
+      startTimer();
       renderBoard();
     }
 
