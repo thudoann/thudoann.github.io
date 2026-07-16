@@ -110,6 +110,7 @@
     let undoStack = [];
     let timerStart = 0, timerInterval = null;
     let isSolved = false;
+    let completedUnits = new Set();
 
     /* Build numpad */
     for (let n = 1; n <= 9; n++) {
@@ -150,6 +151,7 @@
       if (timerEl) timerEl.textContent = "00:00";
       startTimer();
 
+      completedUnits = new Set();
       solution = generateSolution();
       puzzle   = createPuzzle(solution, diffEl ? diffEl.value : "medium");
       board    = puzzle.map((r) => [...r]);
@@ -191,7 +193,7 @@
           const cell = boardEl.querySelector(`[data-r="${r}"][data-c="${c}"]`);
           if (!cell) continue;
 
-          cell.classList.remove("sudoku-selected", "sudoku-related", "sudoku-same", "sudoku-conflict");
+          cell.classList.remove("sudoku-selected", "sudoku-related", "sudoku-same", "sudoku-conflict", "sudoku-unit-done");
           cell.innerHTML = "";
 
           const val = board[r][c];
@@ -214,6 +216,10 @@
           }
 
           if (conflicts.has(`${r},${c}`)) cell.classList.add("sudoku-conflict");
+          const b = Math.floor(r / 3) * 3 + Math.floor(c / 3);
+          if (completedUnits.has(`r${r}`) || completedUnits.has(`c${c}`) || completedUnits.has(`b${b}`)) {
+            cell.classList.add("sudoku-unit-done");
+          }
         }
       }
 
@@ -294,7 +300,10 @@
       undoStack.push({ r, c, oldVal, oldNotes });
 
       refresh();
-      if (n !== 0 && !notesMode) autoWinCheck();
+      if (n !== 0 && !notesMode) {
+        checkUnitCompletions();
+        autoWinCheck();
+      }
     }
 
     function eraseRelatedNotes(r, c, n) {
@@ -352,6 +361,7 @@
       notes  = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => new Set()));
       isSolved = true;
       stopTimer();
+      completedUnits = findCompletedUnits();
       refresh();
       setMsg(fr ? "Solution affichée." : "Solution revealed.");
     }
@@ -385,6 +395,65 @@
       else if (e.key === "ArrowDown")  { e.preventDefault(); selectCell((r + 1) % 9, c); }
       else if (e.key === "ArrowLeft")  { e.preventDefault(); selectCell(r, (c + 8) % 9); }
       else if (e.key === "ArrowRight") { e.preventDefault(); selectCell(r, (c + 1) % 9); }
+    }
+
+    /* ---- Unit completion ---- */
+
+    function findCompletedUnits() {
+      const done = new Set();
+      for (let r = 0; r < 9; r++) {
+        const s = new Set(board[r]);
+        if (s.size === 9 && !s.has(0)) done.add(`r${r}`);
+      }
+      for (let c = 0; c < 9; c++) {
+        const s = new Set();
+        for (let r = 0; r < 9; r++) s.add(board[r][c]);
+        if (s.size === 9 && !s.has(0)) done.add(`c${c}`);
+      }
+      for (let br = 0; br < 3; br++) {
+        for (let bc = 0; bc < 3; bc++) {
+          const s = new Set();
+          for (let r = br * 3; r < br * 3 + 3; r++)
+            for (let c = bc * 3; c < bc * 3 + 3; c++)
+              s.add(board[r][c]);
+          if (s.size === 9 && !s.has(0)) done.add(`b${br * 3 + bc}`);
+        }
+      }
+      return done;
+    }
+
+    function unitCells(unit) {
+      const cells = [];
+      if (unit[0] === "r") {
+        const r = +unit.slice(1);
+        for (let c = 0; c < 9; c++) cells.push([r, c]);
+      } else if (unit[0] === "c") {
+        const c = +unit.slice(1);
+        for (let r = 0; r < 9; r++) cells.push([r, c]);
+      } else {
+        const b = +unit.slice(1), br = Math.floor(b / 3) * 3, bc = (b % 3) * 3;
+        for (let r = br; r < br + 3; r++)
+          for (let c = bc; c < bc + 3; c++)
+            cells.push([r, c]);
+      }
+      return cells;
+    }
+
+    function checkUnitCompletions() {
+      const current = findCompletedUnits();
+      for (const u of current) {
+        if (!completedUnits.has(u)) {
+          for (const [r, c] of unitCells(u)) {
+            const cell = boardEl.querySelector(`[data-r="${r}"][data-c="${c}"]`);
+            if (!cell) continue;
+            cell.classList.remove("sudoku-unit-flash");
+            void cell.offsetWidth;
+            cell.classList.add("sudoku-unit-flash");
+            cell.addEventListener("animationend", () => cell.classList.remove("sudoku-unit-flash"), { once: true });
+          }
+        }
+      }
+      completedUnits = current;
     }
 
     /* ---- Util ---- */

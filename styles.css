@@ -2976,3 +2976,23 @@ html[data-theme="dark"] .sudoku-cell.sudoku-conflict span { color: #ff6b6b; }
   .sudoku-wrap  { padding-bottom: 16px; }
   .sudoku-num-btn { border-radius: 6px; }
 }
+
+/* Completed unit highlight */
+.sudoku-cell.sudoku-unit-done {
+  background-color: rgba(76, 175, 80, 0.09);
+}
+
+@keyframes sk-unit-complete {
+  0%   { box-shadow: inset 0 0 0 200px rgba(76, 175, 80, 0.00); }
+  28%  { box-shadow: inset 0 0 0 200px rgba(76, 175, 80, 0.48); }
+  100% { box-shadow: inset 0 0 0 200px rgba(76, 175, 80, 0.00); }
+}
+
+.sudoku-cell.sudoku-unit-flash {
+  animation: sk-unit-complete 0.75s ease-out forwards;
+}
+
+/* Selection still wins over done tint */
+.sudoku-cell.sudoku-selected.sudoku-unit-done {
+  background-color: var(--accent);
+}
