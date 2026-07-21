@@ -248,7 +248,7 @@
       const diff = diffEl ? diffEl.value : "medium";
       const slow = diff === "expert" || diff === "evil";
       if (slow) {
-        setMsg(fr ? "Génération…" : "Generating…");
+        setMsg(fr ? "Génération… 🐾" : "Generating… 🐾");
         boardEl.style.opacity = "0.4";
         await new Promise((res) => setTimeout(res, 30));
       } else {
@@ -454,9 +454,9 @@
       const conflicts = findConflicts();
       const allFilled = board.every((row) => row.every((v) => v !== 0));
       if (!allFilled) {
-        setMsg(fr ? "La grille n'est pas encore complète." : "Not complete yet — keep going.");
+        setMsg(fr ? "Pas encore fini… courage ! 🐱" : "Not done yet — keep going 🐱");
       } else if (conflicts.size > 0) {
-        setMsg(fr ? "Des conflits — vérifiez les cases en rouge." : "Conflicts detected — check the red cells.");
+        setMsg(fr ? "Des conflits 😾 — vérifiez les cases en rouge." : "Conflicts detected 😾 — check the red cells.");
       } else {
         triggerWin();
       }
@@ -480,7 +480,7 @@
 
       const t = timerEl ? timerEl.textContent : fmtSecs(elapsed);
       const extra = isRecord ? (fr ? " 🏆 Nouveau record !" : " 🏆 New record!") : "";
-      setMsg(fr ? `Bravo ! Résolu en ${t}${extra}` : `Solved in ${t}!${extra}`);
+      setMsg(fr ? `Purrfait ! Résolu en ${t}${extra} 🐾` : `Purrfect! Solved in ${t}!${extra} 🐾`);
 
       renderBests(isRecord ? diff : null);
       showNamePrompt(diff);
@@ -493,7 +493,7 @@
       stopTimer();
       completedUnits = findCompletedUnits();
       refresh();
-      setMsg(fr ? "Solution affichée." : "Solution revealed.");
+      setMsg(fr ? "Tricheuse 😼 Solution affichée." : "Cheater 😼 Solution revealed.");
     }
 
     /* ---- Timer ---- */
@@ -542,8 +542,8 @@
       boardEl.classList.add("sudoku-gameover");
       setTimeout(() => boardEl.classList.remove("sudoku-gameover"), 600);
       setMsg(fr
-        ? "3 erreurs — partie terminée. Lancez une nouvelle partie."
-        : "3 mistakes — game over. Start a new game.");
+        ? "3 erreurs — partie terminée 😿 Nouvelle partie ?"
+        : "3 mistakes — game over 😿 Start a new game.");
     }
 
     /* ---- Unit completion ---- */

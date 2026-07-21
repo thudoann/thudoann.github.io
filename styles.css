@@ -2776,29 +2776,59 @@ html[data-theme="dark"] .rh-badge[data-topic="Psychology"] {
   }
 }
 
+
 /* ════════════════════════════════════════════
    Sudoku
    ════════════════════════════════════════════ */
 
 .sudoku-wrap {
-  max-width: 460px;
+  max-width: 440px;
   margin: 0 auto;
-  padding-bottom: 24px;
+  padding-bottom: 32px;
 }
 
+.sudoku-title {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 18px;
+}
+
+/* ── Header ── */
 .sudoku-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .sudoku-timer {
-  font-size: 1rem;
-  min-width: 48px;
-  letter-spacing: 0.04em;
+  font-size: 1.05rem;
+  font-weight: 600;
+  min-width: 52px;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
 }
+
+.sudoku-mistakes {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.sudoku-mistake-dot {
+  font-size: 1.15rem;
+  line-height: 1;
+  opacity: 0.2;
+  transition: opacity 0.25s;
+}
+.sudoku-mistake-dot::before { content: "🐱"; }
+.sudoku-mistake-dot.sudoku-mistake-used::before { content: "😾"; }
+.sudoku-mistake-dot.sudoku-mistake-used { opacity: 1; }
 
 .sudoku-top-controls {
   display: flex;
@@ -2808,7 +2838,7 @@ html[data-theme="dark"] .rh-badge[data-topic="Psychology"] {
 }
 
 .sudoku-difficulty {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   padding: 0.3rem 0.5rem;
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -2818,42 +2848,52 @@ html[data-theme="dark"] .rh-badge[data-topic="Psychology"] {
 }
 
 .sudoku-new-btn {
-  font-size: 0.8rem;
-  font-weight: 500;
-  padding: 0.3rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.32rem 0.8rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 7px;
   background: var(--accent);
   color: var(--bg);
   cursor: pointer;
   white-space: nowrap;
-  transition: opacity 0.15s;
+  letter-spacing: 0.01em;
+  transition: opacity 0.15s, transform 0.1s;
 }
-.sudoku-new-btn:hover { opacity: 0.8; }
+.sudoku-new-btn:hover  { opacity: 0.85; }
+.sudoku-new-btn:active { transform: scale(0.97); }
 
-/* Board */
+/* ── Board ── */
 .sudoku-board {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  border: 2px solid var(--text);
-  border-radius: 4px;
+  border: 2.5px solid var(--text);
+  border-radius: 10px;
   overflow: hidden;
   width: 100%;
   aspect-ratio: 1;
   user-select: none;
-  transition: box-shadow 0.3s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow 0.25s;
 }
 
-.sudoku-board.sudoku-solved {
-  animation: sk-solved-pulse 0.9s ease;
+html[data-theme="dark"] .sudoku-board {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35), 0 1px 4px rgba(0,0,0,0.2);
 }
 
 @keyframes sk-solved-pulse {
-  0%, 100% { box-shadow: none; }
-  40%       { box-shadow: 0 0 0 4px #4caf50; }
+  0%, 100% { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  40%       { box-shadow: 0 0 0 6px rgba(210,145,145,0.65), 0 4px 20px rgba(0,0,0,0.07); }
 }
+.sudoku-board.sudoku-solved { animation: sk-solved-pulse 0.9s ease; }
 
-/* Cells */
+@keyframes sk-gameover {
+  0%, 100% { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  30%       { box-shadow: 0 0 0 5px rgba(192,57,43,0.45), 0 4px 20px rgba(0,0,0,0.07); }
+}
+.sudoku-board.sudoku-gameover { animation: sk-gameover 0.55s ease; }
+
+/* ── Cells ── */
 .sudoku-cell {
   display: flex;
   align-items: center;
@@ -2861,13 +2901,13 @@ html[data-theme="dark"] .rh-badge[data-topic="Psychology"] {
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   cursor: pointer;
-  font-size: clamp(0.85rem, 3.8vw, 1.2rem);
+  font-size: clamp(0.9rem, 4vw, 1.3rem);
   position: relative;
-  transition: background 0.08s;
+  transition: background 0.07s;
   aspect-ratio: 1;
 }
 
-/* Thick box borders */
+/* Box dividers */
 .sudoku-cell[data-c="2"],
 .sudoku-cell[data-c="5"] { border-right: 2px solid var(--text); }
 .sudoku-cell[data-r="2"],
@@ -2875,187 +2915,211 @@ html[data-theme="dark"] .rh-badge[data-topic="Psychology"] {
 .sudoku-cell[data-c="8"] { border-right: none; }
 .sudoku-cell[data-r="8"] { border-bottom: none; }
 
-/* Cell states */
-.sudoku-cell.sudoku-given         { font-weight: 700; color: var(--text); }
-.sudoku-cell:not(.sudoku-given) span { color: var(--accent); }
+/* Given numbers */
+.sudoku-cell.sudoku-given { font-weight: 700; color: var(--text); }
 
-.sudoku-cell.sudoku-related   { background: rgba(128,128,128,0.06); }
-.sudoku-cell.sudoku-same      { background: rgba(128,128,128,0.15); }
-.sudoku-cell.sudoku-selected  {
-  background: var(--accent) !important;
+/* User-entered numbers */
+.sudoku-cell:not(.sudoku-given) span { color: var(--accent); font-weight: 500; }
+
+/* Hover */
+.sudoku-cell:hover:not(.sudoku-selected) { background: var(--hover-bg); }
+
+/* Related (same row/col/box as selected) */
+.sudoku-cell.sudoku-related {
+  background: rgba(210,145,145,0.10);
 }
+html[data-theme="dark"] .sudoku-cell.sudoku-related {
+  background: rgba(220,160,160,0.09);
+}
+
+/* Same number as selected */
+.sudoku-cell.sudoku-same {
+  background: rgba(210,145,145,0.22);
+}
+html[data-theme="dark"] .sudoku-cell.sudoku-same {
+  background: rgba(220,160,160,0.20);
+}
+
+/* Selected */
+.sudoku-cell.sudoku-selected { background: var(--accent) !important; }
 .sudoku-cell.sudoku-selected span,
-.sudoku-cell.sudoku-selected .sudoku-notes-grid span {
-  color: var(--bg) !important;
-}
-.sudoku-cell.sudoku-conflict span { color: #e84040; }
-html[data-theme="dark"] .sudoku-cell.sudoku-conflict span { color: #ff6b6b; }
+.sudoku-cell.sudoku-selected .sudoku-notes-grid span { color: var(--bg) !important; }
 
-/* Notes grid (3×3 inside a cell) */
+/* Conflict */
+.sudoku-cell.sudoku-conflict span { color: #c0392b; font-weight: 600; }
+html[data-theme="dark"] .sudoku-cell.sudoku-conflict span { color: #e57373; }
+
+/* Completed unit */
+.sudoku-cell.sudoku-unit-done { background-color: rgba(210,145,145,0.12); }
+.sudoku-cell.sudoku-selected.sudoku-unit-done { background-color: var(--accent); }
+
+@keyframes sk-unit-complete {
+  0%   { box-shadow: inset 0 0 0 200px rgba(210,145,145,0.00); }
+  28%  { box-shadow: inset 0 0 0 200px rgba(210,145,145,0.55); }
+  100% { box-shadow: inset 0 0 0 200px rgba(210,145,145,0.00); }
+}
+.sudoku-cell.sudoku-unit-flash { animation: sk-unit-complete 0.75s ease-out forwards; }
+
+/* ── Notes grid ── */
 .sudoku-notes-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   width: 100%;
   height: 100%;
-  padding: 1px;
+  padding: 2px;
 }
 .sudoku-notes-grid span {
-  font-size: clamp(0.28rem, 1.1vw, 0.42rem);
+  font-size: clamp(0.3rem, 1.2vw, 0.45rem);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--muted);
   line-height: 1;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-/* Numpad */
+/* ── Number pad ── */
 .sudoku-numpad {
   display: flex;
   justify-content: center;
-  gap: 5px;
-  margin: 12px auto;
-  max-width: 460px;
+  gap: 6px;
+  margin: 14px auto;
+  max-width: 440px;
 }
 
 .sudoku-num-btn {
   flex: 1;
-  max-width: 42px;
+  max-width: 44px;
   aspect-ratio: 1;
-  font-size: clamp(0.9rem, 3.5vw, 1.1rem);
-  font-weight: 500;
-  border: 1px solid var(--line);
-  border-radius: 8px;
+  font-size: clamp(1rem, 4.2vw, 1.25rem);
+  font-weight: 600;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
   background: var(--card-bg);
   color: var(--text);
   cursor: pointer;
-  transition: background 0.12s, color 0.12s, opacity 0.12s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  transition: background 0.1s, color 0.1s, border-color 0.1s, transform 0.08s, box-shadow 0.1s;
 }
-.sudoku-num-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-.sudoku-erase-btn     { font-size: clamp(0.75rem, 3vw, 0.95rem); }
-.sudoku-num-done      { opacity: 0.28; pointer-events: none; }
+.sudoku-num-btn:hover {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+}
+.sudoku-num-btn:active  { transform: translateY(0); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.sudoku-erase-btn       { font-size: clamp(0.8rem, 3.2vw, 1rem); }
+.sudoku-num-done        { opacity: 0.22; pointer-events: none; }
 
-/* Action buttons */
+/* ── Action buttons ── */
 .sudoku-actions {
   display: flex;
   justify-content: center;
   gap: 7px;
-  margin-top: 4px;
   flex-wrap: wrap;
-  max-width: 460px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 440px;
+  margin: 0 auto;
 }
 
 .sudoku-action-btn {
   font-size: 0.78rem;
   font-weight: 500;
-  padding: 0.32rem 0.75rem;
-  border: 1px solid var(--line);
-  border-radius: 6px;
+  padding: 0.35rem 0.85rem;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
   background: var(--card-bg);
   color: var(--text);
   cursor: pointer;
-  transition: border-color 0.12s, color 0.12s, background 0.12s;
+  transition: border-color 0.12s, color 0.12s, background 0.12s, transform 0.08s;
 }
-.sudoku-action-btn:hover      { border-color: var(--accent); color: var(--accent); }
-.sudoku-action-btn.active     { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-.sudoku-reveal-btn            { color: var(--muted); }
-.sudoku-reveal-btn:hover      { color: var(--muted); border-color: var(--muted); }
+.sudoku-action-btn:hover  { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+.sudoku-action-btn:active { transform: translateY(0); }
+.sudoku-action-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.sudoku-reveal-btn        { color: var(--muted); border-style: dashed; }
+.sudoku-reveal-btn:hover  { color: var(--muted); border-color: var(--muted); transform: none; }
 
-/* Message */
+/* ── Message ── */
 .sudoku-message {
   text-align: center;
-  font-size: 0.85rem;
-  min-height: 1.4em;
-  margin-top: 10px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  min-height: 1.5em;
+  margin-top: 12px;
+  transition: color 0.3s;
 }
 
-/* Mobile */
-@media (max-width: 500px) {
-  .sudoku-wrap  { padding-bottom: 16px; }
-  .sudoku-num-btn { border-radius: 6px; }
-}
-
-/* Completed unit highlight */
-.sudoku-cell.sudoku-unit-done {
-  background-color: rgba(76, 175, 80, 0.09);
-}
-
-@keyframes sk-unit-complete {
-  0%   { box-shadow: inset 0 0 0 200px rgba(76, 175, 80, 0.00); }
-  28%  { box-shadow: inset 0 0 0 200px rgba(76, 175, 80, 0.48); }
-  100% { box-shadow: inset 0 0 0 200px rgba(76, 175, 80, 0.00); }
-}
-
-.sudoku-cell.sudoku-unit-flash {
-  animation: sk-unit-complete 0.75s ease-out forwards;
-}
-
-/* Selection still wins over done tint */
-.sudoku-cell.sudoku-selected.sudoku-unit-done {
-  background-color: var(--accent);
-}
-
-/* Best times */
+/* ── Best times ── */
 .sudoku-bests {
   display: flex;
-  align-items: center;
-  gap: 18px;
-  margin-top: 16px;
-  max-width: 460px;
+  align-items: flex-start;
+  gap: 0;
+  margin-top: 20px;
+  max-width: 440px;
   margin-left: auto;
   margin-right: auto;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
   flex-wrap: wrap;
 }
 
 .sudoku-bests-label {
-  font-size: 0.72rem;
+  width: 100%;
+  font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-right: 4px;
+  margin-bottom: 10px;
 }
 
 .sudoku-best-item {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
+  min-width: 60px;
 }
 
 .sudoku-best-diff {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
+  font-weight: 500;
 }
 
 .sudoku-best-time {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.95rem;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--text);
+  letter-spacing: 0.02em;
 }
 
-.sudoku-best-item.sudoku-best-new .sudoku-best-time {
-  color: #4caf50;
+.sudoku-best-name {
+  font-size: 0.62rem;
+  color: var(--muted);
+  font-weight: 400;
 }
 
-/* Name prompt */
+.sudoku-best-item.sudoku-best-new .sudoku-best-time { color: #4caf50; }
+
+/* ── Name prompt ── */
 .sudoku-name-prompt {
   display: none;
   align-items: center;
   gap: 8px;
-  margin-top: 10px;
-  max-width: 460px;
+  margin-top: 12px;
+  max-width: 440px;
   margin-left: auto;
   margin-right: auto;
   justify-content: center;
   flex-wrap: wrap;
 }
-
 .sudoku-name-prompt.visible { display: flex; }
 
 .sudoku-name-label {
@@ -3066,63 +3130,34 @@ html[data-theme="dark"] .sudoku-cell.sudoku-conflict span { color: #ff6b6b; }
 
 .sudoku-name-input {
   font-size: 0.85rem;
-  padding: 0.3rem 0.6rem;
-  border: 1px solid var(--line);
-  border-radius: 6px;
+  padding: 0.32rem 0.65rem;
+  border: 1.5px solid var(--line);
+  border-radius: 7px;
   background: var(--card-bg);
   color: var(--text);
-  width: 140px;
+  width: 150px;
   transition: border-color 0.15s;
 }
 .sudoku-name-input:focus { outline: none; border-color: var(--accent); }
 
 .sudoku-name-save {
-  font-size: 0.8rem;
-  font-weight: 500;
-  padding: 0.3rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.32rem 0.8rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 7px;
   background: var(--accent);
   color: var(--bg);
   cursor: pointer;
-  transition: opacity 0.15s;
+  transition: opacity 0.15s, transform 0.1s;
   white-space: nowrap;
 }
-.sudoku-name-save:hover { opacity: 0.8; }
+.sudoku-name-save:hover  { opacity: 0.85; }
+.sudoku-name-save:active { transform: scale(0.97); }
 
-.sudoku-best-name {
-  font-size: 0.65rem;
-  color: var(--muted);
-  font-weight: 400;
-  margin-top: 1px;
-}
-
-/* Mistake dots */
-.sudoku-mistakes {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
-
-.sudoku-mistake-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  border: 1.5px solid var(--muted);
-  background: transparent;
-  transition: background 0.2s, border-color 0.2s;
-}
-
-.sudoku-mistake-dot.sudoku-mistake-used {
-  background: #e84040;
-  border-color: #e84040;
-}
-
-@keyframes sk-gameover {
-  0%, 100% { box-shadow: var(--shadow); }
-  30%       { box-shadow: 0 0 0 4px rgba(232, 64, 64, 0.55); }
-}
-
-.sudoku-board.sudoku-gameover {
-  animation: sk-gameover 0.55s ease;
+/* ── Mobile ── */
+@media (max-width: 500px) {
+  .sudoku-wrap    { padding-bottom: 16px; }
+  .sudoku-num-btn { border-radius: 8px; }
+  .sudoku-board   { border-radius: 7px; }
 }
