@@ -3096,3 +3096,33 @@ html[data-theme="dark"] .sudoku-cell.sudoku-conflict span { color: #ff6b6b; }
   font-weight: 400;
   margin-top: 1px;
 }
+
+/* Mistake dots */
+.sudoku-mistakes {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.sudoku-mistake-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--muted);
+  background: transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.sudoku-mistake-dot.sudoku-mistake-used {
+  background: #e84040;
+  border-color: #e84040;
+}
+
+@keyframes sk-gameover {
+  0%, 100% { box-shadow: var(--shadow); }
+  30%       { box-shadow: 0 0 0 4px rgba(232, 64, 64, 0.55); }
+}
+
+.sudoku-board.sudoku-gameover {
+  animation: sk-gameover 0.55s ease;
+}

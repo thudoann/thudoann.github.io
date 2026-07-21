@@ -120,7 +120,9 @@
     const diffEl   = panel.querySelector("[data-role='sudoku-difficulty']");
     const bestsEl      = panel.querySelector("[data-role='sudoku-bests']");
     const namePromptEl = panel.querySelector("[data-role='sudoku-name-prompt']");
+    const mistakesEl   = panel.querySelector("[data-role='sudoku-mistakes']");
     const fr = typeof isFr !== "undefined" && isFr;
+    const MAX_MISTAKES = 3;
 
     const BEST_KEY = "sudoku_best_v2";
     const NAME_KEY = "sudoku_player_name";
@@ -196,6 +198,7 @@
     let timerStart = 0, timerInterval = null;
     let isSolved = false;
     let completedUnits = new Set();
+    let mistakes = 0;
 
     /* Build numpad */
     for (let n = 1; n <= 9; n++) {
@@ -223,6 +226,7 @@
 
     newGame();
     renderBests(null);
+    renderMistakes();
 
     /* ---- New game ---- */
 
@@ -237,6 +241,8 @@
       stopTimer();
       if (timerEl) timerEl.textContent = "00:00";
       completedUnits = new Set();
+      mistakes = 0;
+      renderMistakes();
       selected = null;
 
       const diff = diffEl ? diffEl.value : "medium";
@@ -383,23 +389,39 @@
       const { r, c } = selected;
       if (given[r][c]) return;
 
-      const oldVal  = board[r][c];
+      const oldVal   = board[r][c];
       const oldNotes = new Set(notes[r][c]);
 
       if (notesMode && n !== 0) {
         if (notes[r][c].has(n)) notes[r][c].delete(n);
         else notes[r][c].add(n);
-      } else {
-        board[r][c] = n;
-        if (n !== 0) {
-          notes[r][c].clear();
-          eraseRelatedNotes(r, c, n);
+        undoStack.push({ r, c, oldVal, oldNotes });
+        refresh();
+        return;
+      }
+
+      /* Wrong number → count mistake */
+      if (n !== 0 && n !== solution[r][c]) {
+        mistakes++;
+        renderMistakes();
+        board[r][c] = n;          /* show the wrong digit briefly */
+        refresh();
+        if (mistakes >= MAX_MISTAKES) {
+          undoStack.push({ r, c, oldVal, oldNotes });
+          gameOver();
         }
+        return;
+      }
+
+      board[r][c] = n;
+      if (n !== 0) {
+        notes[r][c].clear();
+        eraseRelatedNotes(r, c, n);
       }
       undoStack.push({ r, c, oldVal, oldNotes });
 
       refresh();
-      if (n !== 0 && !notesMode) {
+      if (n !== 0) {
         checkUnitCompletions();
         autoWinCheck();
       }
@@ -503,6 +525,25 @@
       else if (e.key === "ArrowDown")  { e.preventDefault(); selectCell((r + 1) % 9, c); }
       else if (e.key === "ArrowLeft")  { e.preventDefault(); selectCell(r, (c + 8) % 9); }
       else if (e.key === "ArrowRight") { e.preventDefault(); selectCell(r, (c + 1) % 9); }
+    }
+
+    /* ---- Mistakes ---- */
+
+    function renderMistakes() {
+      if (!mistakesEl) return;
+      mistakesEl.innerHTML = Array.from({ length: MAX_MISTAKES }, (_, i) =>
+        `<span class="sudoku-mistake-dot${i < mistakes ? " sudoku-mistake-used" : ""}"></span>`
+      ).join("");
+    }
+
+    function gameOver() {
+      isSolved = true;
+      stopTimer();
+      boardEl.classList.add("sudoku-gameover");
+      setTimeout(() => boardEl.classList.remove("sudoku-gameover"), 600);
+      setMsg(fr
+        ? "3 erreurs — partie terminée. Lancez une nouvelle partie."
+        : "3 mistakes — game over. Start a new game.");
     }
 
     /* ---- Unit completion ---- */
