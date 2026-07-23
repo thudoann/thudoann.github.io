@@ -3470,17 +3470,29 @@ html[data-theme="dark"] .aiquiz-explanation { background: rgba(255,255,255,0.04)
 .aiquiz-glossary {
   margin-top: 12px;
 }
-.aiquiz-glossary-grid {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 4px 16px;
+.aiquiz-gloss-section { margin-bottom: 14px; }
+.aiquiz-gloss-heading {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 0 0 6px;
+  opacity: 0.6;
+}
+.aiquiz-glossary-grid { display: flex; flex-direction: column; gap: 3px; }
+.aiquiz-gloss-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
   font-size: 0.82rem;
+  line-height: 1.4;
 }
 .aiquiz-gloss-term {
   font-weight: 700;
-  font-variant-numeric: tabular-nums;
   color: var(--accent);
   white-space: nowrap;
+  min-width: 5.5rem;
+  flex-shrink: 0;
 }
 .aiquiz-gloss-def { color: var(--muted); }
 
