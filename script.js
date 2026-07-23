@@ -475,6 +475,8 @@ document.addEventListener("blur", (e) => {
 /* ---------- Time & calendar ---------- */
 const timeEl = document.getElementById("time");
 const dateEl = document.getElementById("date");
+const asideNoteEl = document.querySelector(".aside-note");
+let _lastNight = null;
 
 function updateTime() {
   const n = new Date();
@@ -482,6 +484,15 @@ function updateTime() {
   const dateOpts = { weekday: "long", month: "short", day: "numeric" };
   timeEl.textContent = n.toLocaleTimeString(locale, timeOpts);
   dateEl.textContent = n.toLocaleDateString(locale, dateOpts);
+
+  if (asideNoteEl) {
+    const h = parseInt(n.toLocaleString("en", { timeZone: "Europe/Paris", hour: "numeric", hour12: false }), 10);
+    const isNight = h >= 21 || h < 8;
+    if (isNight !== _lastNight) {
+      _lastNight = isNight;
+      asideNoteEl.hidden = !isNight;
+    }
+  }
 }
 
 updateTime();
