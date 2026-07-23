@@ -1,6 +1,71 @@
 /* ---------- AI Quiz ---------- */
 (function () {
 
+  const GLOSSARY = [
+    // Fields
+    { a: "AI",     d: "Artificial Intelligence" },
+    { a: "ML",     d: "Machine Learning" },
+    { a: "DL",     d: "Deep Learning" },
+    { a: "NLP",    d: "Natural Language Processing" },
+    { a: "CV",     d: "Computer Vision" },
+    { a: "RL",     d: "Reinforcement Learning" },
+    { a: "XAI",    d: "Explainable AI" },
+    // Models & architectures
+    { a: "LLM",    d: "Large Language Model" },
+    { a: "SLM",    d: "Small Language Model" },
+    { a: "VLM",    d: "Vision-Language Model" },
+    { a: "GPT",    d: "Generative Pre-trained Transformer" },
+    { a: "BERT",   d: "Bidirectional Encoder Representations from Transformers" },
+    { a: "CNN",    d: "Convolutional Neural Network" },
+    { a: "RNN",    d: "Recurrent Neural Network" },
+    { a: "LSTM",   d: "Long Short-Term Memory" },
+    { a: "GRU",    d: "Gated Recurrent Unit" },
+    { a: "GAN",    d: "Generative Adversarial Network" },
+    { a: "VAE",    d: "Variational Autoencoder" },
+    { a: "MoE",    d: "Mixture of Experts" },
+    { a: "SSM",    d: "State Space Model" },
+    { a: "MHA",    d: "Multi-Head Attention" },
+    { a: "FFN",    d: "Feed-Forward Network" },
+    // Training & alignment
+    { a: "SGD",    d: "Stochastic Gradient Descent" },
+    { a: "SFT",    d: "Supervised Fine-Tuning" },
+    { a: "RLHF",   d: "Reinforcement Learning from Human Feedback" },
+    { a: "RLAIF",  d: "Reinforcement Learning from AI Feedback" },
+    { a: "CoT",    d: "Chain-of-Thought (prompting)" },
+    { a: "RAG",    d: "Retrieval-Augmented Generation" },
+    { a: "KD",     d: "Knowledge Distillation" },
+    { a: "LoRA",   d: "Low-Rank Adaptation" },
+    { a: "QLoRA",  d: "Quantized Low-Rank Adaptation" },
+    { a: "PEFT",   d: "Parameter-Efficient Fine-Tuning" },
+    { a: "PPO",    d: "Proximal Policy Optimization" },
+    { a: "KL",     d: "Kullback–Leibler divergence" },
+    { a: "BPE",    d: "Byte-Pair Encoding" },
+    // Evaluation
+    { a: "PPL",    d: "Perplexity" },
+    { a: "BLEU",   d: "Bilingual Evaluation Understudy" },
+    { a: "ROUGE",  d: "Recall-Oriented Understudy for Gisting Evaluation" },
+    { a: "AUC",    d: "Area Under the (ROC) Curve" },
+    { a: "ROC",    d: "Receiver Operating Characteristic" },
+    { a: "F1",     d: "F1-score (harmonic mean of precision & recall)" },
+    { a: "NER",    d: "Named Entity Recognition" },
+    { a: "POS",    d: "Part-of-Speech (tagging)" },
+    { a: "TF-IDF", d: "Term Frequency–Inverse Document Frequency" },
+    { a: "BM25",   d: "Best Matching 25 (ranking function)" },
+    { a: "MMLU",   d: "Massive Multitask Language Understanding (benchmark)" },
+    { a: "SOTA",   d: "State of the Art" },
+    { a: "OOD",    d: "Out-of-Distribution" },
+    // Infrastructure
+    { a: "GPU",    d: "Graphics Processing Unit" },
+    { a: "TPU",    d: "Tensor Processing Unit" },
+    { a: "FP16",   d: "16-bit floating point (half precision)" },
+    { a: "BF16",   d: "Brain Float 16 (Google's 16-bit format)" },
+    { a: "INT8",   d: "8-bit integer quantization" },
+    { a: "ONNX",   d: "Open Neural Network Exchange" },
+    { a: "API",    d: "Application Programming Interface" },
+    { a: "ASR",    d: "Automatic Speech Recognition" },
+    { a: "TTS",    d: "Text-to-Speech" },
+  ];
+
   function initAiQuiz(panel) {
     const mainEl = panel.querySelector("[data-role='aiquiz-main']");
     if (!mainEl || mainEl.dataset.initialized) return;
@@ -46,6 +111,21 @@
         [a[i], a[j]] = [a[j], a[i]];
       }
       return a;
+    }
+
+    /* ---- Glossary toggle ---- */
+    const glossaryToggle = panel.querySelector("[data-role='aiquiz-glossary-toggle']");
+    const glossaryEl = panel.querySelector("[data-role='aiquiz-glossary']");
+    if (glossaryToggle && glossaryEl) {
+      glossaryEl.innerHTML = `<div class="aiquiz-glossary-grid">${
+        GLOSSARY.map(g => `<span class="aiquiz-gloss-term">${g.a}</span><span class="aiquiz-gloss-def">${g.d}</span>`).join("")
+      }</div>`;
+      glossaryToggle.addEventListener("click", () => {
+        const hidden = glossaryEl.hidden;
+        glossaryEl.hidden = !hidden;
+        const arrow = hidden ? "▲" : "▼";
+        glossaryToggle.textContent = glossaryToggle.textContent.replace(/[▼▲]/, arrow);
+      });
     }
 
     /* ---- Screens ---- */
@@ -136,7 +216,8 @@
       const expEl = mainEl.querySelector("[data-role='aiquiz-exp']");
       if (expEl) {
         const ok = chosen === correct;
-        expEl.innerHTML = `<span class="aiquiz-exp-icon">${ok ? "✓" : "✗"}</span> ${q.exp}`;
+        expEl.innerHTML = `<span class="aiquiz-exp-icon">${ok ? "✓" : "✗"}</span> ${q.exp}${
+          q.src ? `<cite class="aiquiz-src">📄 ${q.src}</cite>` : ""}`;
         expEl.classList.add("visible", ok ? "aiquiz-exp-ok" : "aiquiz-exp-bad");
       }
 

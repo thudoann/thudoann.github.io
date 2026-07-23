@@ -3438,6 +3438,52 @@ html[data-theme="dark"] .aiquiz-explanation { background: rgba(255,255,255,0.04)
 }
 .aiquiz-change-cat:hover { border-color: var(--accent); }
 
+/* ── Source citation ── */
+.aiquiz-src {
+  display: block;
+  margin-top: 8px;
+  font-style: italic;
+  font-size: 0.78rem;
+  opacity: 0.6;
+  font-family: inherit;
+}
+
+/* ── Acronym Glossary ── */
+.aiquiz-glossary-section {
+  margin-top: 32px;
+  border-top: 1px solid var(--border, rgba(0,0,0,0.1));
+  padding-top: 16px;
+}
+.aiquiz-glossary-toggle {
+  background: none;
+  border: 1px solid var(--border, rgba(0,0,0,0.15));
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  width: 100%;
+  text-align: left;
+}
+.aiquiz-glossary-toggle:hover { border-color: var(--accent); color: var(--text); }
+.aiquiz-glossary {
+  margin-top: 12px;
+}
+.aiquiz-glossary-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px 16px;
+  font-size: 0.82rem;
+}
+.aiquiz-gloss-term {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.aiquiz-gloss-def { color: var(--muted); }
+
 /* ── Mobile ── */
 @media (max-width: 480px) {
   .aiquiz-cats         { grid-template-columns: repeat(2, 1fr); }
