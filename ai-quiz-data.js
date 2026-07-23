@@ -1,5 +1,5 @@
 /* ---------- AI Quiz Question Bank ---------- */
-const AI_QUIZ_DATA = [
+var AI_QUIZ_DATA = [
 
   /* ======== MACHINE LEARNING ======== */
   {
