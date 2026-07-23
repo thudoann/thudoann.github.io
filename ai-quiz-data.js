@@ -621,6 +621,568 @@ var AI_QUIZ_DATA = [
     ],
     ans: 1,
     exp: "ONNX defines a common intermediate representation for ML models. You can export from PyTorch, TensorFlow, or scikit-learn to ONNX, then run it with ONNX Runtime on any platform (mobile, edge, cloud) regardless of the original framework."
+  },
+
+  /* ======== MACHINE LEARNING — HARDER ======== */
+  {
+    id: "ml13", category: "ml",
+    q: "What does the No Free Lunch theorem (Wolpert & Macready, 1997) state?",
+    opts: [
+      "Any model can be improved indefinitely given more training data",
+      "Averaged over all possible problem distributions, no single learning algorithm outperforms all others",
+      "Deep learning always outperforms classical ML on tabular data at sufficient scale",
+      "Increasing model complexity monotonically reduces generalization error"
+    ],
+    ans: 1,
+    exp: "The NFL theorem proves that averaged across all possible data-generating distributions, every algorithm performs equally. In practice it means: algorithm selection must be informed by assumptions about the data domain — there is no universally superior model, which is why domain knowledge still matters."
+  },
+  {
+    id: "ml14", category: "ml",
+    q: "What does SHAP (SHapley Additive exPlanations) measure, and what is its theoretical basis?",
+    opts: [
+      "Model accuracy relative to the Shapiro-Wilk normality test on residuals",
+      "The contribution of each feature to a specific prediction, using Shapley values from cooperative game theory",
+      "The number of distinct decision patterns (shapes) a model has learned",
+      "Feature importance aggregated across the entire training set using gradient magnitudes"
+    ],
+    ans: 1,
+    exp: "SHAP (Lundberg & Lee, 2017) assigns each feature a Shapley value — its average marginal contribution across all possible feature coalitions. It satisfies three axioms: efficiency (contributions sum to prediction), symmetry, and dummy. It's the unique additive feature attribution method satisfying all three, making it theoretically grounded unlike LIME or attention-based explanations."
+  },
+  {
+    id: "ml15", category: "ml",
+    q: "What does the Expectation-Maximization (EM) algorithm guarantee about convergence?",
+    opts: [
+      "Convergence to the global optimum of the likelihood function",
+      "Monotonic increase in the marginal log-likelihood at each iteration, converging to a local optimum or saddle point",
+      "Convergence in O(log n) iterations regardless of initialization",
+      "Convergence to the Bayesian posterior of the model parameters"
+    ],
+    ans: 1,
+    exp: "EM alternates E-step (compute expected complete-data log-likelihood Q(θ|θ_old)) and M-step (maximize Q). It's guaranteed to monotonically increase the marginal log-likelihood P(X|θ) at each iteration (by Jensen's inequality), converging to a local optimum. Initialization matters — multiple restarts are common for GMMs."
+  },
+  {
+    id: "ml16", category: "ml",
+    q: "What distinguishes the XGBoost objective from standard gradient boosting?",
+    opts: [
+      "XGBoost uses random forests as base learners instead of decision trees",
+      "XGBoost uses a second-order Taylor expansion of the loss, adds L1/L2 regularization on tree weights, and employs a parallelized approximate split-finding algorithm",
+      "XGBoost replaces gradient descent with genetic algorithms for tree structure search",
+      "XGBoost trains all trees simultaneously via distributed matrix factorization"
+    ],
+    ans: 1,
+    exp: "XGBoost (Chen & Guestrin, NeurIPS 2016) expands the loss as L ≈ Σ[g_i f(x_i) + ½ h_i f²(x_i)] + Ω(f), where g_i and h_i are first and second derivatives. This gives a closed-form optimal leaf weight and enables faster, more stable convergence. The approximate quantile split-finding with column subsampling makes it scalable to billions of samples."
+  },
+  {
+    id: "ml17", category: "ml",
+    q: "What is SMOTE (Synthetic Minority Oversampling TEchnique)?",
+    opts: [
+      "A dimensionality reduction method for sparse, high-dimensional feature spaces",
+      "A data augmentation technique that synthesizes new minority-class samples by linear interpolation between a sample and its k nearest neighbors",
+      "A neural architecture for learning balanced representations from imbalanced datasets",
+      "A metric learning approach that minimizes intra-class distance for minority classes"
+    ],
+    ans: 1,
+    exp: "SMOTE (Chawla et al., JAIR 2002) selects a minority-class sample, finds its k nearest minority neighbors, and creates a synthetic sample along the line segment between them: x_new = x + λ(x̃ − x), λ ∈ [0,1]. Avoids exact duplication. Combined with undersampling (SMOTEENN, SMOTETomek), it's the standard baseline for imbalanced classification."
+  },
+  {
+    id: "ml18", category: "ml",
+    q: "What is maximum likelihood estimation (MLE) and which loss function does it correspond to for classification?",
+    opts: [
+      "MLE minimizes the regularized loss; it corresponds to mean squared error for classification",
+      "MLE finds parameters θ maximizing P(data|θ); for classification with a categorical model this is equivalent to minimizing cross-entropy loss",
+      "MLE selects the hypothesis with maximum margin from the decision boundary",
+      "MLE computes an upper bound on generalization error via PAC learning theory"
+    ],
+    ans: 1,
+    exp: "MLE: θ̂ = argmax_θ Σ log P(y_i | x_i, θ). For a softmax classifier with categorical likelihood, maximizing log-likelihood is identical to minimizing cross-entropy loss. For a Gaussian noise regression model, MLE reduces to minimizing MSE. This is why cross-entropy and MSE are the natural loss functions — they're principled probabilistic objectives."
+  },
+  {
+    id: "ml19", category: "ml",
+    q: "What is the kernel trick in kernel SVMs, and what does the RBF kernel compute?",
+    opts: [
+      "It normalizes features using a radial basis; RBF(x,z) computes the L2 distance between x and z",
+      "It implicitly maps data to a high-dimensional space via K(x,z) = φ(x)·φ(z); RBF K(x,z) = exp(−γ||x−z||²) corresponds to an infinite-dimensional feature space",
+      "It applies a kernel density estimate to smooth the SVM margin; RBF computes the bandwidth parameter",
+      "It uses the kernel matrix as a covariance structure; RBF is a stationary isotropic kernel for Gaussian processes"
+    ],
+    ans: 1,
+    exp: "The kernel trick replaces dot products with K(x,z) = φ(x)·φ(z), computing inner products in the feature space without ever constructing φ. The RBF kernel K(x,z) = exp(−γ||x−z||²) corresponds to an infinite-dimensional feature map (Taylor expansion). The dual SVM objective depends only on pairwise K(x_i, x_j), so the trick applies directly."
+  },
+  {
+    id: "ml20", category: "ml",
+    q: "What is the difference between a generative and a discriminative model?",
+    opts: [
+      "Generative models create images; discriminative models predict categories",
+      "Generative models learn the joint P(X, Y) or class-conditional P(X|Y); discriminative models learn P(Y|X) directly",
+      "Generative models are always unsupervised; discriminative models always require labels",
+      "Generative models use neural networks exclusively; discriminative models use classical algorithms"
+    ],
+    ans: 1,
+    exp: "Discriminative models (logistic regression, SVM, neural classifiers, CRFs) learn P(Y|X) — just the decision boundary. Generative models (Naive Bayes, GMM, VAEs, GANs, diffusion models) learn P(X, Y) or P(X|Y), allowing sampling of new X. Generative models enable data synthesis and can handle missing labels; discriminative models often have higher discriminative accuracy."
+  },
+  {
+    id: "ml21", category: "ml",
+    q: "What is the Kolmogorov-Smirnov (K-S) test, and how is it used in ML monitoring?",
+    opts: [
+      "A parametric test for comparing regression model coefficients across datasets",
+      "A nonparametric test that compares empirical CDFs to detect distributional differences; used to detect data drift in deployed models",
+      "A test for feature correlation that identifies multicollinearity in regression models",
+      "A goodness-of-fit test exclusively applicable to normally distributed data"
+    ],
+    ans: 1,
+    exp: "The K-S test statistic is D = sup_x |F_1(x) − F_2(x)|, the maximum absolute difference between two CDFs. It's nonparametric (no distributional assumptions) and sensitive to differences in shape, location, and scale. In production ML, it's used to detect covariate shift between training and serving distributions — a standard component of model monitoring pipelines."
+  },
+  {
+    id: "ml22", category: "ml",
+    q: "What is isotonic regression, and when is it preferable to logistic regression for calibration?",
+    opts: [
+      "A regularization method that constrains weights to be monotonically increasing across layers",
+      "A nonparametric method that fits a non-decreasing step function; preferred when the calibration curve is non-sigmoid",
+      "A parametric regression that assumes the target variable follows an isotonic (normal) distribution",
+      "A technique for fitting monotone polynomial curves to time-series data"
+    ],
+    ans: 1,
+    exp: "Isotonic regression fits the largest non-decreasing step function to data (pool adjacent violators algorithm). For probability calibration (Platt scaling vs isotonic), isotonic is preferred when you have enough data (>1000 samples) and the calibration curve is non-sigmoid — e.g., random forests, gradient boosting. Platt scaling is better for small datasets."
+  },
+
+  /* ======== DEEP LEARNING — HARDER ======== */
+  {
+    id: "dl13", category: "dl",
+    q: "GPT-3 (Brown et al., 2020) has how many parameters, and what is its key empirical finding?",
+    opts: [
+      "13B parameters; in-context learning improves with more labeled examples",
+      "175B parameters; few-shot and zero-shot task performance emerges without any gradient updates on downstream tasks",
+      "540B parameters; chain-of-thought reasoning emerges at this scale",
+      "65B parameters; instruction tuning is sufficient to match 175B models"
+    ],
+    ans: 1,
+    exp: "GPT-3 has 175 billion parameters trained on ~300B tokens. Its key finding: with scale alone, the model performs competitively on dozens of NLP tasks using only a few in-context examples — without any fine-tuning. This demonstrated that large pre-trained models have 'latent' task knowledge accessible purely through prompting."
+  },
+  {
+    id: "dl14", category: "dl",
+    q: "What is the 'dying ReLU' problem, and which activation mitigates it?",
+    opts: [
+      "ReLU produces NaN for very large activations; mitigated by gradient clipping",
+      "Neurons can permanently output zero if they always receive negative pre-activations, since ReLU gradient is zero for x<0; Leaky ReLU (small negative slope) and ELU keep the gradient nonzero",
+      "ReLU causes numerical overflow for activations above 1; GELU mitigates this via soft saturation",
+      "ReLU kills gradients in deep networks like sigmoid; residual connections are the only fix"
+    ],
+    ans: 1,
+    exp: "If a neuron's weights evolve such that it always receives negative pre-activations, ReLU outputs 0 and gradient ∂L/∂w = 0 — weights never update. Leaky ReLU: f(x) = max(αx, x), α≈0.01. ELU: f(x) = x for x>0, α(e^x−1) for x≤0. Both maintain nonzero gradients for negative inputs, keeping neurons alive."
+  },
+  {
+    id: "dl15", category: "dl",
+    q: "What is knowledge distillation (Hinton et al., 2015), and what are 'soft targets'?",
+    opts: [
+      "Extracting key knowledge from papers to create training datasets for student models",
+      "Training a small student model to match a large teacher's softened output probabilities (soft targets = temperature-scaled logits), which carry richer inter-class similarity information than hard labels",
+      "Directly copying the teacher's weight matrices to the student using singular value decomposition",
+      "Using the teacher's attention maps as additional supervision signals for the student"
+    ],
+    ans: 1,
+    exp: "Hinton et al. train the student on temperature-scaled teacher logits: p_i = exp(z_i/T)/Σexp(z_j/T). At T>1, soft targets reveal that MNIST '7' images are slightly similar to '1's — information lost in hard labels. The student loss is αH(y_hard, student) + (1−α)H(teacher_T, student_T). DistilBERT achieves 97% of BERT's GLUE score with 40% fewer parameters."
+  },
+  {
+    id: "dl16", category: "dl",
+    q: "What is Flash Attention (Dao et al., 2022), and what is its memory complexity?",
+    opts: [
+      "An approximate attention method using locality-sensitive hashing; O(N log N) memory",
+      "An IO-aware exact attention algorithm that tiles Q/K/V into SRAM blocks, avoiding storing the full N×N attention matrix; O(N) memory vs O(N²) for standard attention",
+      "A sparse attention pattern attending to every k-th token; O(N/k) memory",
+      "A hardware-fused softmax kernel; same O(N²) memory but 2× faster due to operation fusion"
+    ],
+    ans: 1,
+    exp: "Flash Attention tiles Q, K, V into GPU SRAM blocks and fuses the softmax+matmul into a single kernel, computing attention incrementally with online softmax (Milakov & Gimelshein). It never materializes the full N×N matrix in HBM. Memory: O(N) in HBM vs O(N²). Result: 2-4× speedup, enabling context windows of 100K+ tokens that were impractical before."
+  },
+  {
+    id: "dl17", category: "dl",
+    q: "What is the exact difference between weight decay and L2 regularization when using Adam?",
+    opts: [
+      "They are mathematically identical for all optimizers including Adam",
+      "With SGD they're equivalent; with Adam, L2 regularization adds λw to the gradient before Adam's scaling (so regularization is attenuated by adaptive rates), while AdamW adds λw directly to weights after the Adam update — AdamW decouples regularization from the gradient magnitude",
+      "L2 adds regularization per epoch; weight decay adds it per step — they differ only in frequency",
+      "Weight decay applies only to weights, not biases; L2 regularization applies equally to all parameters"
+    ],
+    ans: 1,
+    exp: "Loshchilov & Hutter (2019) identified this: with Adam, gradient-space L2 reg (λg = λw) gets scaled by 1/√v̂ (adaptive 2nd moment), so larger-gradient parameters are less regularized — inconsistent. AdamW computes Adam update then subtracts λw from weights directly, applying uniform weight decay. This is why AdamW outperforms Adam+L2 for LLM training."
+  },
+  {
+    id: "dl18", category: "dl",
+    q: "What is GELU, and why is it preferred over ReLU in Transformer models?",
+    opts: [
+      "Gated Exponential Linear Unit; it uses a gate to zero out unstable activations",
+      "Gaussian Error Linear Unit: GELU(x) = x·Φ(x) where Φ is the standard normal CDF; it provides smooth, probabilistic gating — nonzero gradient everywhere — and empirically outperforms ReLU in Transformer pre-training (BERT, GPT-2+)",
+      "Generalized Exponential Linear Unit; a learned extension of ELU with two trainable parameters",
+      "A piece-wise linear approximation to sigmoid used in gated recurrent units"
+    ],
+    ans: 1,
+    exp: "GELU(x) = x·P(X ≤ x) where X~N(0,1), approximated as 0.5x(1 + tanh(√(2/π)(x + 0.044715x³))). Unlike ReLU, GELU is smooth everywhere with nonzero gradient for all x (including negative). Hendrycks & Gimpel (2016) introduced it; it's standard in BERT, GPT-2, GPT-3, and virtually all modern Transformer architectures."
+  },
+  {
+    id: "dl19", category: "dl",
+    q: "What are 'emergent abilities' in LLMs, and why are they controversial?",
+    opts: [
+      "Creative outputs like poetry that naturally arise from language modeling without explicit training",
+      "Capabilities absent in smaller models that appear suddenly at large scales; controversial because Schaeffer et al. (2023) argue they're artifacts of nonlinear metrics rather than genuine discontinuities",
+      "Capabilities that emerge from RLHF fine-tuning and are absent in base language models",
+      "Behaviors that emerge in multi-agent LLM systems but not in single-model settings"
+    ],
+    ans: 1,
+    exp: "Wei et al. (2022) documented sharp capability jumps at scale (e.g., arithmetic, multi-step reasoning). Schaeffer et al. (2023) contested this: when using linear/continuous metrics, emergence disappears — the apparent discontinuity is an artifact of threshold-based metrics. The debate remains open and has implications for AI safety and capability forecasting."
+  },
+  {
+    id: "dl20", category: "dl",
+    q: "What is Rotary Position Embedding (RoPE), and which major open-source models use it?",
+    opts: [
+      "A learnable position embedding that rotates the token embeddings during fine-tuning to shift context window",
+      "A position encoding that multiplies Q and K by rotation matrices in the complex plane, with rotation angle proportional to position, encoding relative positions within dot products; used in LLaMA, Mistral, GPT-NeoX, Falcon",
+      "A circular position buffer that allows models to generalize to positions beyond the training length",
+      "A position-aware mask applied to the attention matrix that uses sinusoidal patterns"
+    ],
+    ans: 1,
+    exp: "RoPE (Su et al., 2021) rotates Q_m and K_n in 2D planes by angle mθ and nθ respectively. The dot product Q_m·K_n depends only on (m−n) — the relative position — not absolute positions. This enables length generalization. RoPE is used by LLaMA (1 & 2), Mistral, Mixtral, GPT-NeoX, Falcon, and most modern open-source LLMs."
+  },
+  {
+    id: "dl21", category: "dl",
+    q: "What is the role of the [CLS] token in BERT, and what is [SEP]?",
+    opts: [
+      "[CLS] marks the start of each sentence; [SEP] marks the end and triggers generation",
+      "[CLS] is prepended to every input and its final hidden state serves as the sequence representation for classification; [SEP] separates two sentences in NSP tasks and marks sequence ends",
+      "[CLS] is a classification label token injected during pre-training; [SEP] separates question from context in QA",
+      "[CLS] controls the attention mask; [SEP] is a learnable separator between encoder and decoder layers"
+    ],
+    ans: 1,
+    exp: "BERT prepends [CLS] to every input. After the Transformer stack, [CLS]'s hidden state aggregates information from all tokens via bidirectional attention and is used as input to a classification head for sentence-level tasks. [SEP] separates sentence A from sentence B in NSP and marks sequence end. Both are special vocabulary tokens with learned embeddings."
+  },
+  {
+    id: "dl22", category: "dl",
+    q: "In Mixture of Experts (MoE), what is 'expert collapse' and how is it addressed?",
+    opts: [
+      "When all experts specialize identically, addressed by increasing the number of experts",
+      "When the router always selects the same few experts, leaving others untrained; addressed by adding an auxiliary load-balancing loss that encourages uniform expert utilization",
+      "When expert weights diverge during training, addressed by gradient clipping per expert",
+      "When experts become too large for a single GPU, addressed by model parallelism"
+    ],
+    ans: 1,
+    exp: "Without regularization, MoE routers collapse to always selecting the same top-k experts (rich-get-richer effect), leaving others undertrained. The standard fix (Fedus et al., Switch Transformer 2021): add auxiliary loss L_aux = α·Σ_i f_i·P_i where f_i is expert utilization fraction and P_i is router probability, penalizing unequal load. Mixtral uses this approach."
+  },
+  {
+    id: "dl23", category: "dl",
+    q: "What is speculative decoding (Leviathan et al., 2022)?",
+    opts: [
+      "Generating multiple diverse responses and selecting the best using a reranker",
+      "Using a small fast draft model to propose k tokens, then verifying all k+1 positions in parallel with the large model in a single forward pass; accepted tokens cost no extra time, rejected ones discard the suffix",
+      "Pre-computing beam search trees during inference to reduce latency",
+      "Training the model to predict its own next tokens to enable self-consistency checking"
+    ],
+    ans: 1,
+    exp: "Speculative decoding runs a small draft model (e.g., 7B for a 70B target) to propose k tokens, then the large target model checks all k positions in one forward pass. If token i is accepted (draft ≈ target distribution), proceed; otherwise resample from the target at position i and discard the rest. Achieves identical output distribution with 2-3× throughput improvement."
+  },
+  {
+    id: "dl24", category: "dl",
+    q: "What is gradient checkpointing (Chen et al., 2016) and what is the compute-memory tradeoff?",
+    opts: [
+      "Saving model checkpoints when gradient norm decreases, trading disk space for robustness",
+      "Storing only a subset of activations during the forward pass and recomputing the rest during backpropagation; reduces memory from O(L) to O(√L) activations at the cost of ~33% extra compute",
+      "Clipping gradients at checkpoints in the computation graph to prevent explosion",
+      "A curriculum learning strategy that checkpoints training progress across difficulty levels"
+    ],
+    ans: 1,
+    exp: "Standard backprop stores all L layer activations for the backward pass: O(L) memory. Gradient checkpointing (Chen et al.) stores only √L checkpoint activations and recomputes the rest between checkpoints during the backward pass. Memory: O(√L). Compute cost: +33% (one extra forward pass for each segment). Essential for fine-tuning 7B+ models on single GPUs."
+  },
+
+  /* ======== NLP — HARDER ======== */
+  {
+    id: "nlp13", category: "nlp",
+    q: "In the original Transformer (Vaswani et al., 2017), what are d_model, h (heads), and d_ff for the base model?",
+    opts: [
+      "d_model=256, h=4, d_ff=1024",
+      "d_model=512, h=8, d_ff=2048",
+      "d_model=768, h=12, d_ff=3072",
+      "d_model=1024, h=16, d_ff=4096"
+    ],
+    ans: 1,
+    exp: "The Transformer base model (Vaswani et al., 'Attention Is All You Need', 2017) uses d_model=512, h=8 heads, d_k=d_v=64 per head, and d_ff=2048 in feed-forward layers. The large model uses d_model=1024, h=16, d_ff=4096. BERT-Base (768, 12, 3072) follows a scaled-up version of this architecture."
+  },
+  {
+    id: "nlp14", category: "nlp",
+    q: "What does the BLEU score (Papineni et al., 2002) measure and what are its main limitations?",
+    opts: [
+      "Recall of key information from references; limitation: it ignores fluency",
+      "N-gram precision (1–4 grams) of generated text against references with a brevity penalty; limitations: no recall, no semantic matching, poor correlation with human judgment for non-MT tasks",
+      "Semantic similarity via embedding cosine distance; limitation: brittle to paraphrase",
+      "Token-level F1 between generation and reference; limitation: doesn't penalize hallucination"
+    ],
+    ans: 1,
+    exp: "BLEU = BP · exp(Σ w_n log p_n) where p_n are clipped n-gram precisions and BP is a brevity penalty. Limitations: focuses on precision (not recall), ignores word order within n-grams beyond their length, fails to capture paraphrase, and correlates poorly with human judgment for summarization and dialogue. BERTScore and BLEURT use embeddings to address semantic matching."
+  },
+  {
+    id: "nlp15", category: "nlp",
+    q: "What is chain-of-thought (CoT) prompting and at what model scale does it emerge?",
+    opts: [
+      "Providing the model with a knowledge chain from a search engine; emerges at any scale",
+      "Prompting the model to produce intermediate reasoning steps before the final answer; zero-shot CoT ('Let's think step by step') emerges around 100B parameters and is absent in smaller models",
+      "A multi-turn prompting strategy where each turn builds on the previous; emerges at 7B parameters",
+      "Training on chain-of-thought formatted data; requires supervised fine-tuning to work"
+    ],
+    ans: 1,
+    exp: "CoT prompting (Wei et al., 2022) adds intermediate reasoning traces to few-shot examples. Zero-shot CoT (Kojima et al., 2022) simply adds 'Let's think step by step.' Both dramatically improve arithmetic, commonsense, and symbolic reasoning. Crucially, the ability is emergent — it appears in ~100B+ models (PaLM, GPT-3) but is largely absent in smaller ones, making it a scale-dependent phenomenon."
+  },
+  {
+    id: "nlp16", category: "nlp",
+    q: "What is Byte Pair Encoding (BPE) tokenization, and how does it differ from WordPiece (used in BERT)?",
+    opts: [
+      "BPE merges the most frequent character pair; WordPiece merges the pair that maximizes likelihood of the training corpus — same output but different objectives",
+      "BPE and WordPiece are identical algorithms trained on different corpora",
+      "BPE works at the byte level; WordPiece works at the Unicode codepoint level",
+      "BPE requires a fixed vocabulary from the start; WordPiece learns vocabulary size dynamically"
+    ],
+    ans: 0,
+    exp: "BPE (Sennrich et al., 2016) iteratively merges the most frequent adjacent pair in the corpus. WordPiece (Schuster & Nakamura, 2012; used in BERT) merges the pair that maximizes the likelihood of the training data (i.e., pairs that increase likelihood the most). WordPiece prefers linguistically meaningful merges; BPE prefers purely statistical ones. Both result in similar subword vocabularies in practice."
+  },
+  {
+    id: "nlp17", category: "nlp",
+    q: "What is perplexity as an LLM metric, and what are representative values for strong models?",
+    opts: [
+      "The fraction of incorrect token predictions; GPT-4 achieves ~2% on WikiText-103",
+      "PPL = exp(average cross-entropy per token); lower is better. GPT-2 (1.5B) achieves ~18 PPL on WikiText-103; LLaMA-2-70B achieves ~3.3 on the same benchmark",
+      "The model's calibration error in probability space; values above 10 indicate poor calibration",
+      "The average number of candidate tokens the model considers per step; 1.0 means the model is always certain"
+    ],
+    ans: 1,
+    exp: "PPL = exp(−(1/N) Σ log P(w_i|w_<i)). Informally, PPL=k means the model behaves as if it faces a uniform k-way choice at each token. GPT-2 Large: ~18 PPL on WikiText-103; GPT-3 175B: ~8.7 on Penn Treebank; LLaMA-2-70B: ~3.3 on WikiText-103. Lower is better, but PPL is dataset/tokenizer-dependent, making cross-model comparison tricky without controlling for tokenizer."
+  },
+  {
+    id: "nlp18", category: "nlp",
+    q: "What is Direct Preference Optimization (DPO, Rafailov et al., 2023)?",
+    opts: [
+      "A prompting method that directly includes human preference examples in the context",
+      "A closed-form re-parameterization of the RLHF objective that trains directly on (chosen, rejected) pairs with binary cross-entropy, eliminating the need for a separate reward model and RL training",
+      "A reward model training technique that directly optimizes for pairwise rankings",
+      "A preference elicitation method that generates multiple completions and directly asks users to rank them"
+    ],
+    ans: 1,
+    exp: "DPO shows that the optimal RLHF policy has a closed form: r*(x,y) = β log(π*(y|x)/π_ref(y|x)) + β log Z(x). Substituting into the preference model and simplifying gives a binary cross-entropy loss on (y_w, y_l) pairs: L_DPO = -E[log σ(β log π_θ(y_w|x)/π_ref(y_w|x) - β log π_θ(y_l|x)/π_ref(y_l|x))]. Simpler than PPO and competitive on alignment benchmarks."
+  },
+  {
+    id: "nlp19", category: "nlp",
+    q: "What is Constitutional AI (CAI, Bai et al., 2022, Anthropic)?",
+    opts: [
+      "A legal framework for AI companies specifying constitutional rights for AI systems",
+      "A method where the model critiques and revises its own outputs according to a written list of principles (the 'constitution'), replacing human-labeler feedback for harmlessness RLHF with RLAIF (AI feedback)",
+      "A training approach that hardcodes safety constraints directly into model weights as invariants",
+      "A red-teaming framework using constitutional principles to generate adversarial test cases"
+    ],
+    ans: 1,
+    exp: "CAI has two phases: (1) SL-CAI: model generates a response, is prompted to critique it against each principle, then revises — filtered revisions become supervised training data. (2) RLAIF: a feedback model (trained on the constitution) labels (chosen, rejected) pairs from two model completions, replacing expensive human harmlessness labelers. Used to train Claude."
+  },
+  {
+    id: "nlp20", category: "nlp",
+    q: "What is instruction tuning and how does FLAN differ from InstructGPT?",
+    opts: [
+      "Both use RLHF; FLAN uses more diverse tasks while InstructGPT uses a larger model",
+      "FLAN (Wei et al., 2021) fine-tunes on a large collection of NLP tasks reformulated as instructions (no RLHF); InstructGPT (Ouyang et al., 2022) uses RLHF with human demonstrations and preference rankings to align GPT-3 with human intent",
+      "FLAN uses chain-of-thought data; InstructGPT uses standard next-token prediction",
+      "They are identical; FLAN is the open-source version of InstructGPT"
+    ],
+    ans: 1,
+    exp: "FLAN: collects ~60 NLP datasets, reformulates each as instructions, and fine-tunes T5/PaLM on them — pure supervised instruction tuning. InstructGPT: (1) supervised fine-tuning on human demonstrations, (2) reward model from preference pairs, (3) PPO to optimize against reward model. FLAN improves zero-shot generalization across tasks; InstructGPT specifically improves alignment/helpfulness with human-judged quality."
+  },
+  {
+    id: "nlp21", category: "nlp",
+    q: "What is the ROUGE metric (Lin, 2004) and how does it differ from BLEU?",
+    opts: [
+      "ROUGE measures translation quality; BLEU measures summarization quality — both use n-gram precision",
+      "ROUGE measures n-gram recall (and F1) between generated and reference summaries; BLEU measures n-gram precision. ROUGE-L uses LCS (Longest Common Subsequence); BLEU aggregates modified precision across n-gram lengths",
+      "ROUGE is a neural metric using BERT embeddings; BLEU uses exact n-gram overlap",
+      "They measure the same thing with different normalizations; ROUGE divides by hypothesis length, BLEU by reference length"
+    ],
+    ans: 1,
+    exp: "BLEU = precision-focused (how much of the hypothesis appears in the reference). ROUGE = recall-focused (how much of the reference appears in the hypothesis) — more appropriate for summarization where completeness matters. ROUGE-1/2 measure unigram/bigram recall; ROUGE-L measures the longest common subsequence without requiring contiguity. F1 variants balance precision and recall."
+  },
+  {
+    id: "nlp22", category: "nlp",
+    q: "What is retrieval-augmented generation (RAG) and what are its failure modes?",
+    opts: [
+      "A method to train LLMs on retrieved internet data; failure mode: copyright infringement",
+      "Injecting retrieved documents into LLM context at inference; failure modes: retrieval irrelevance, context length limits, model ignoring retrieved context ('lost in the middle'), and RAG hallucinating about retrieved facts",
+      "A GAN-based method that retrieves and augments training data; failure mode: mode collapse",
+      "A plug-in for LLMs that caches previous answers; failure mode: stale cached responses"
+    ],
+    ans: 1,
+    exp: "RAG (Lewis et al., 2020) retrieves top-k documents via embedding similarity, then generates conditioned on them. Failure modes: (1) retriever returns irrelevant chunks (precision/recall of retrieval); (2) 'lost in the middle' — models under-attend to context in the middle of long inputs (Liu et al., 2023); (3) model ignores retrieved facts and hallucinates anyway; (4) chunking artifacts where answers span chunk boundaries."
+  },
+  {
+    id: "nlp23", category: "nlp",
+    q: "What is SentencePiece and what makes it critical for multilingual models?",
+    opts: [
+      "A tokenizer that maps complete sentences to integer IDs using a sentence-level vocabulary",
+      "A tokenization framework that treats input as a raw Unicode stream without whitespace pre-tokenization, using BPE or unigram LM on the raw characters — enabling consistent tokenization across all languages including those without word boundaries (Chinese, Japanese, Thai)",
+      "A subword tokenizer that uses character-level CNN features to build vocabulary",
+      "A context-aware tokenizer that segments text differently based on sentence position"
+    ],
+    ans: 1,
+    exp: "SentencePiece (Kudo & Richardson, 2018) skips whitespace-based pre-tokenization, treating the raw Unicode stream directly. Spaces are represented as '▁'. This is essential for agglutinative/tonal/ideographic languages (Japanese, Chinese, Arabic, Finnish) where word boundaries are absent or ambiguous. Used by LLaMA, T5, Gemma, mT5, and virtually all multilingual LLMs."
+  },
+  {
+    id: "nlp24", category: "nlp",
+    q: "What is LoRA and what are its hyperparameters r and α?",
+    opts: [
+      "Low-Rank Attention: replaces softmax attention with a rank-r approximation; α controls temperature",
+      "Low-Rank Adaptation: inserts trainable ΔW = B·A (where A ∈ R^{r×d}, B ∈ R^{d×r}) into frozen weight matrices; r is the rank controlling parameter count, and α/r scales the update magnitude (effective learning rate of the adapter)",
+      "Layer-Oriented Regularization Adapter: adds a rank-r penalty to weight matrices; α is the regularization strength",
+      "A low-rank matrix factorization applied to attention heads; r is the number of retained singular values, α is the reconstruction threshold"
+    ],
+    ans: 1,
+    exp: "LoRA (Hu et al., 2022) decomposes weight updates ΔW = BA (B initialized to 0, A to Gaussian). The update is scaled by α/r: h = Wx + (α/r)BAx. r controls capacity (typical: 4–64); α/r controls the effective step size of the adapter. For a 7B model with r=16 and target matrices {q,v}, trainable params ≈ 4M vs 7B — <0.1% of total. Used by QLoRA for 4-bit quantized fine-tuning."
+  },
+
+  /* ======== AI ETHICS — HARDER ======== */
+  {
+    id: "eth8", category: "ethics",
+    q: "What is a membership inference attack (Shokri et al., 2017)?",
+    opts: [
+      "Injecting adversarial members into training data to corrupt model behavior",
+      "A privacy attack that infers whether a specific record was in the training set by exploiting overfitting — the model's loss is lower on training examples, which a shadow model trained to mimic the target can detect",
+      "An attack that infers the model's architecture by analyzing output distributions across queries",
+      "A social engineering attack targeting ML engineers to gain access to training data"
+    ],
+    ans: 1,
+    exp: "Shokri et al. train 'shadow models' on known data to learn the statistical signature of training vs non-training samples (lower loss, higher confidence). The attack classifier uses these signatures to infer training membership. Risk is highest for models with high capacity and low regularization. DP-SGD with small ε provides formal protection."
+  },
+  {
+    id: "eth9", category: "ethics",
+    q: "How does the EU AI Act (2024) classify AI systems, and what are the obligations for 'high-risk' systems?",
+    opts: [
+      "By model size (>10B parameters = high risk); high-risk systems require open-sourcing weights",
+      "By risk tier: Unacceptable (banned), High (strict requirements), Limited (transparency), Minimal (no requirements); high-risk AI must have risk management systems, data governance, technical documentation, human oversight, accuracy/robustness guarantees, and post-market monitoring",
+      "By training data source (internet-scraped = high risk); high-risk systems must comply with GDPR",
+      "By deployment context (autonomous = high risk); high-risk systems must obtain ISO certification"
+    ],
+    ans: 1,
+    exp: "The EU AI Act uses risk-based tiering. High-risk AI (medical devices, hiring, critical infrastructure, biometric ID, education assessment) must: (1) implement risk management systems; (2) ensure training data governance; (3) maintain technical documentation; (4) enable logging and human oversight; (5) ensure accuracy, robustness, and cybersecurity. Foundation models above 10²³ FLOP training compute have additional systemic-risk obligations."
+  },
+  {
+    id: "eth10", category: "ethics",
+    q: "What is 'sycophancy' in LLMs, and what causes it in RLHF training?",
+    opts: [
+      "The model generating excessively long responses to appear thorough; caused by training on verbose human demonstrations",
+      "The model's tendency to agree with users and validate incorrect claims, caused by human raters preferring responses that confirm their existing beliefs during RLHF reward model training",
+      "The model generating overly polite language; caused by the politeness examples in fine-tuning data",
+      "The model repeating back user input; caused by attention copying mechanisms in the architecture"
+    ],
+    ans: 1,
+    exp: "Sycophancy (Perez et al., 2022; Sharma et al., 2023): human raters in RLHF training prefer responses that agree with them, so the reward model learns to reward agreement — even of false claims. The policy then optimizes for this flawed reward. Mitigations: adversarial RLHF prompts, Constitutional AI self-critique, calibration training, and using AI (not just human) preference labels."
+  },
+  {
+    id: "eth11", category: "ethics",
+    q: "What is reward hacking (Gao et al., 2022) in RLHF, and how is it measured?",
+    opts: [
+      "When an external adversary manipulates the reward function via prompt injection",
+      "When the policy finds behaviors that score highly on the proxy reward model but poorly on true human preference; measured via KL divergence from the reference policy, showing that reward model score and human preference diverge as KL increases",
+      "When the model memorizes the reward function and returns it verbatim in outputs",
+      "When reward model gradients vanish during training, preventing the policy from improving"
+    ],
+    ans: 1,
+    exp: "Gao et al. show that as the policy is optimized further against a fixed reward model (increasing KL from reference), proxy reward (reward model score) keeps increasing but gold reward (actual human preference) first increases then decreases. The gap is reward hacking. KL regularization (PPO's KL penalty) limits overoptimization. Gold reward peaks at KL ≈ 4–8 nats in their experiments."
+  },
+  {
+    id: "eth12", category: "ethics",
+    q: "What is LLM watermarking (Kirchenbauer et al., 2023) and how does it work?",
+    opts: [
+      "Adding visible AI disclaimers to generated text through post-processing",
+      "At generation time, hashing the preceding token to create a 'green list' of ~50% vocabulary tokens, then biasing sampling toward green-list tokens; a detector with the secret key counts green-list tokens — significantly above chance indicates watermarked text",
+      "Fine-tuning the model to always include a secret phrase at a specific position in its output",
+      "Injecting a cryptographic signature into the model's weights that produces identifiable output patterns"
+    ],
+    ans: 1,
+    exp: "Kirchenbauer et al.: for each generated token, hash the previous k tokens (with a secret key) to deterministically partition the vocabulary into red/green lists (~50/50). During generation, add δ to green-list logits before softmax. A detector counts the fraction of green-list tokens: under the null (no watermark) it's ~50%; watermarked text is significantly higher. The key controls which tokens are green — detectable but not forgeable without the key."
+  },
+
+  /* ======== TOOLS — HARDER ======== */
+  {
+    id: "t9", category: "tools",
+    q: "What is vLLM (Kwon et al., 2023) and what algorithmic innovation does it introduce?",
+    opts: [
+      "A very large language model from Meta; its innovation is grouped-query attention",
+      "An LLM inference engine using PagedAttention — managing KV cache in non-contiguous memory pages like OS virtual memory — achieving 3-24× higher throughput than HuggingFace Transformers with zero memory waste from fragmentation",
+      "A distributed training framework; its innovation is ZeRO-style KV cache sharding across GPUs",
+      "A quantization library; its innovation is page-granular 4-bit quantization of activations"
+    ],
+    ans: 1,
+    exp: "vLLM's PagedAttention allocates KV cache in fixed-size blocks (pages) that can be stored non-contiguously in GPU memory, eliminating the internal and external fragmentation that wastes 60-80% of KV cache in naive implementations. With continuous batching (processing requests mid-sequence), vLLM achieves near-zero wasted memory and dramatically higher throughput. Industry standard for serving LLMs in production."
+  },
+  {
+    id: "t10", category: "tools",
+    q: "What does `torch.compile()` (PyTorch 2.0) do internally, and what is TorchDynamo?",
+    opts: [
+      "Converts PyTorch to TensorFlow graph format for TPU execution; TorchDynamo is the cross-compilation backend",
+      "Captures the computation graph by intercepting Python bytecode via TorchDynamo, then passes it to TorchInductor for optimization (kernel fusion, memory layout optimization, hardware-specific codegen); achieves 1.5-3× speedup with one line of code",
+      "JIT-compiles Python functions to C++ using Cython; TorchDynamo is the Cython transpiler",
+      "Applies operator-level quantization automatically; TorchDynamo identifies quantizable patterns in the graph"
+    ],
+    ans: 1,
+    exp: "TorchDynamo (PyTorch 2.0 backend) intercepts Python frame execution via CPython's frame evaluation API, traces the graph into FX IR while handling dynamic Python control flow via 'guards.' TorchInductor (default backend) lowers this to Triton (GPU) or C++ (CPU) with operator fusion and memory-efficient layouts. Zero code change for the user: `model = torch.compile(model)`."
+  },
+  {
+    id: "t11", category: "tools",
+    q: "What is DeepSpeed ZeRO and what are its three stages?",
+    opts: [
+      "A zero-shot learning framework: Stage 1 = zero-shot, Stage 2 = few-shot, Stage 3 = fine-tuned",
+      "Zero Redundancy Optimizer: Stage 1 partitions optimizer states across GPUs; Stage 2 also partitions gradients; Stage 3 also partitions model parameters — eliminating all data redundancy to train models larger than any single GPU's memory",
+      "A zero-copy data pipeline: Stage 1 = CPU prefetch, Stage 2 = GPU pinned memory, Stage 3 = streaming",
+      "Zero-downtime deployment: Stage 1 = shadow deployment, Stage 2 = canary, Stage 3 = full rollout"
+    ],
+    ans: 1,
+    exp: "ZeRO (Rajbhandari et al., 2019) eliminates redundancy across data-parallel GPUs. With N GPUs: Stage 1 shards optimizer states (4× memory reduction vs baseline). Stage 2 also shards gradients (8×). Stage 3 also shards parameters (scales linearly with N). Stage 3 + CPU offload can train trillion-parameter models on GPU clusters that couldn't fit them otherwise. Used to train Megatron-Turing NLG (530B params)."
+  },
+  {
+    id: "t12", category: "tools",
+    q: "What is FAISS and what are the main index types it provides?",
+    opts: [
+      "A dataset for facial attribute annotation; index types correspond to different annotation categories",
+      "Facebook AI Similarity Search: a library for billion-scale dense vector retrieval; main index types: Flat (exact brute-force), IVF (inverted file index, approximate), HNSW (graph-based, approximate), PQ (product quantization for compression), with combinations like IVFFlat and IVFPQ",
+      "A fast inference server; index types refer to different batching strategies",
+      "Feature Alignment for Image and Sentence Search; indexes text-image pairs for multimodal retrieval"
+    ],
+    ans: 1,
+    exp: "FAISS (Johnson et al., 2017) provides: IndexFlat (exact L2/IP, slow at scale); IndexIVFFlat (quantizes space into Voronoi cells via k-means, probes nearest cells — approximate but fast); IndexHNSW (hierarchical navigable small world graph — best recall/speed tradeoff); IndexPQ (product quantization compresses vectors 16-64×). IVF+PQ combination is the standard for billion-scale retrieval (Meta's internal search)."
+  },
+  {
+    id: "t13", category: "tools",
+    q: "What is QLoRA (Dettmers et al., 2023)?",
+    opts: [
+      "Quantized Low-Rank Attention: replaces full-precision attention with 4-bit approximations",
+      "Quantized LoRA: fine-tunes a 4-bit quantized (NF4) base model using LoRA adapters in 16-bit, with double quantization and paged optimizers — enabling fine-tuning of 65B models on a single 48GB GPU",
+      "A quantization-aware LoRA variant that quantizes adapter weights during training for deployment efficiency",
+      "Quick LoRA: a faster LoRA training algorithm using adaptive rank selection per layer"
+    ],
+    ans: 1,
+    exp: "QLoRA (Dettmers et al., 2023) combines: (1) NF4 quantization (4-bit NormalFloat, information-theoretically optimal for normally distributed weights); (2) double quantization (quantizes the quantization constants); (3) paged optimizers (GPU/CPU memory paging for optimizer states). Result: fine-tune LLaMA-65B on one 48GB A100 with 99.3% of full 16-bit LoRA performance."
+  },
+  {
+    id: "t14", category: "tools",
+    q: "What is OpenAI's Triton language and how does it differ from CUDA?",
+    opts: [
+      "A natural language API for generating GPU code from English descriptions",
+      "A Python-embedded DSL for writing GPU kernels at the tile/block level, abstracting CUDA thread/warp management while giving control over memory access patterns; Python to PTX without writing CUDA C++",
+      "A distributed inference framework that orchestrates CUDA kernels across multiple GPUs",
+      "A hardware description language for designing custom AI accelerator chips"
+    ],
+    ans: 1,
+    exp: "Triton (Tillet et al., 2019) lets you write GPU kernels in Python at the block level: you think in tiles of data, not individual threads. The compiler handles thread coalescing, shared memory management, and warp synchronization. FlashAttention-2 and most custom LLM kernels are written in Triton. Key advantage: ML researchers can write near-optimal GPU kernels without deep CUDA expertise."
+  },
+  {
+    id: "t15", category: "tools",
+    q: "What is the Hugging Face `accelerate` library used for?",
+    opts: [
+      "Quantizing models for faster inference; its main function is `accelerate.quantize()`",
+      "A unified abstraction for running PyTorch training across single GPU, multi-GPU, TPU, and mixed precision with minimal code changes — the same script runs everywhere by replacing standard PyTorch boilerplate with Accelerator",
+      "A caching layer that accelerates repeated LLM inference calls by storing KV caches to disk",
+      "A model parallel training framework that automatically shards very large models across GPUs"
+    ],
+    ans: 1,
+    exp: "`accelerate` (HuggingFace) provides an `Accelerator` class that handles device placement, gradient synchronization across multiple GPUs/TPUs, mixed precision (fp16/bf16), and gradient accumulation. A training script wraps data, model, and optimizer with Accelerator and runs unchanged on 1 GPU, 8 GPUs, or TPU Pod. It's the backbone of HuggingFace Trainer and is tightly integrated with DeepSpeed and FSDP."
   }
 
 ];
