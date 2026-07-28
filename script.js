@@ -486,7 +486,8 @@ function updateTime() {
   dateEl.textContent = n.toLocaleDateString(locale, dateOpts);
 
   if (asideNoteEl) {
-    const h = parseInt(n.toLocaleString("en", { timeZone: "Europe/Paris", hour: "numeric", hour12: false }), 10);
+    const parts = new Intl.DateTimeFormat("en", { timeZone: "Europe/Paris", hour: "2-digit", hour12: false }).formatToParts(n);
+    const h = parseInt(parts.find(p => p.type === "hour").value, 10);
     const isNight = h >= 21 || h < 8;
     if (isNight !== _lastNight) {
       _lastNight = isNight;
