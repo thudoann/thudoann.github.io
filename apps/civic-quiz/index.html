@@ -3904,9 +3904,9 @@ function showResult() {
 
   let mention, sub, color;
   if (isExam) {
-    const passed = pct >= 75;
+    const passed = pct >= 80;
     mention = passed ? "Admis" : "Ajourné";
-    sub = passed ? `${pct} % — seuil de 75 % atteint.` : `${pct} % — le seuil requis est 75 %.`;
+    sub = passed ? `${pct} % — seuil de 80 % atteint.` : `${pct} % — le seuil requis est 80 %.`;
     color = passed ? "var(--green)" : "var(--red)";
     const mentionEl = document.getElementById("res-mention");
     mentionEl.className = passed ? "result-mention pass" : "result-mention fail";
