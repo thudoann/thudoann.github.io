@@ -2530,5 +2530,413 @@
     "answer": 2,
     "exp": "Plusieurs villes (Dunkerque, Montpellier…) ont mis en place la gratuité des transports en commun pour favoriser la mobilité de tous.",
     "expEn": "Several cities (Dunkirk, Montpellier...) have introduced free public transport to promote mobility for all."
+  },
+  {
+    "q": "Situation : Vous jetez un mégot de cigarette sur le trottoir. Que risquez-vous ?",
+    "choices": [
+      "Rien, cela est toléré en France",
+      "Une peine de prison ferme",
+      "Un simple avertissement oral de la police",
+      "Une amende forfaitaire pour dépôt de déchet sur la voie publique"
+    ],
+    "answer": 3,
+    "exp": "Un mégot jeté au sol constitue un dépôt irrégulier de déchet sur l'espace public, sanctionné par une amende forfaitaire de 135 €.",
+    "expEn": "A cigarette butt thrown on the ground is an irregular deposit of waste in public space, punishable by a fixed fine of €135."
+  },
+  {
+    "q": "Pourquoi le principe de laïcité doit-il être respecté à l'école ?",
+    "choices": [
+      "Pour protéger la conscience des élèves de tout prosélytisme",
+      "Pour empêcher toute référence aux faits religieux dans les programmes",
+      "Pour interdire tout enseignement de l'histoire des religions",
+      "Pour imposer une pensée unique aux élèves"
+    ],
+    "answer": 0,
+    "exp": "La laïcité scolaire garantit la neutralité du service public et protège la liberté de conscience des élèves. Elle n'interdit pas l'étude des faits religieux mais exclut le prosélytisme.",
+    "expEn": "School secularism ensures the neutrality of the public service and protects pupils' freedom of conscience. It does not ban the study of religious facts but excludes proselytism."
+  },
+  {
+    "q": "Situation : Un policier vous demande vos papiers d'identité dans la rue. Que devez-vous faire ?",
+    "choices": [
+      "Refuser, car le contrôle d'identité est inconstitutionnel",
+      "Présenter vos papiers, car le contrôle d'identité est autorisé par la loi",
+      "Exiger un mandat écrit avant tout contrôle",
+      "Partir, car la police ne peut vous arrêter sans raison grave"
+    ],
+    "answer": 1,
+    "exp": "Le contrôle d'identité est prévu par le Code de procédure pénale et s'impose à la personne contrôlée. Toute contestation se fait ensuite par les voies de recours légales.",
+    "expEn": "Identity checks are provided for by the Code of Criminal Procedure and are binding on the person checked. Any challenge must be made afterwards through legal channels, not by immediate refusal."
+  },
+  {
+    "q": "Lequel de ces droits est un droit fondamental ?",
+    "choices": [
+      "Le droit à un logement attribué automatiquement",
+      "Le droit à un emploi garanti par l'État",
+      "La liberté d'expression",
+      "Le droit à un revenu universel inconditionnel"
+    ],
+    "answer": 2,
+    "exp": "La liberté d'expression est un droit fondamental protégé par la Constitution et la Convention européenne des droits de l'homme.",
+    "expEn": "Freedom of expression is a fundamental right protected by the Constitution and the European Convention on Human Rights."
+  },
+  {
+    "q": "Qu'est-ce que la Marseillaise ?",
+    "choices": [
+      "Un chant patriotique utilisé lors de cérémonies locales uniquement",
+      "La devise nationale de la République",
+      "Un poème révolutionnaire sans statut officiel",
+      "L'hymne national français"
+    ],
+    "answer": 3,
+    "exp": "La Marseillaise est l'hymne national de la République française, symbole officiel de l'État au même titre que le drapeau tricolore.",
+    "expEn": "La Marseillaise is the national anthem of the French Republic, an official symbol of the State on a par with the tricolour flag."
+  },
+  {
+    "q": "Quelle liberté permet à une personne de ne pas avoir de religion ?",
+    "choices": [
+      "La liberté de conscience",
+      "La liberté d'association",
+      "La liberté de la presse",
+      "La liberté de culte"
+    ],
+    "answer": 0,
+    "exp": "La liberté de conscience protège le choix de croire, de changer de croyance ou de ne pas croire. La liberté de culte concerne uniquement la pratique d'une religion.",
+    "expEn": "Freedom of conscience protects the choice to believe, to change belief or not to believe at all. Freedom of worship only concerns the practice of a religion."
+  },
+  {
+    "q": "Situation : Un policier demande à un citoyen de circuler lors d'un rassemblement non autorisé. Quelle obligation a le citoyen ?",
+    "choices": [
+      "Il peut rester s'il estime que sa présence est pacifique",
+      "Il a l'obligation d'obtempérer aux ordres légaux des forces de l'ordre pour garantir la sécurité publique",
+      "Il peut filmer sans bouger",
+      "Il doit d'abord demander une confirmation écrite à un supérieur hiérarchique"
+    ],
+    "answer": 1,
+    "exp": "Lorsqu'un ordre de police est légal, il doit être exécuté immédiatement pour préserver l'ordre public. Toute contestation se fait ensuite devant l'autorité compétente.",
+    "expEn": "When a police order is lawful, it must be obeyed immediately to preserve public order. Any challenge is made afterwards before the competent authority."
+  },
+  {
+    "q": "Comment peut-on réduire ses déchets ?",
+    "choices": [
+      "En mélangeant les déchets ménagers pour simplifier la collecte",
+      "En brûlant les déchets dans son jardin",
+      "En triant, recyclant et compostant",
+      "En jetant les encombrants sur la voie publique"
+    ],
+    "answer": 2,
+    "exp": "La réduction des déchets passe par le tri des flux, le recyclage des matières et le compostage des biodéchets. Ces pratiques diminuent le volume d'ordures résiduelles.",
+    "expEn": "Waste reduction involves sorting streams, recycling materials and composting biodegradable waste. These practices reduce the volume of residual rubbish."
+  },
+  {
+    "q": "Sur quel continent se situe la France métropolitaine ?",
+    "choices": [
+      "L'Afrique",
+      "L'Asie",
+      "L'Amérique",
+      "L'Europe"
+    ],
+    "answer": 3,
+    "exp": "La France métropolitaine est située en Europe occidentale. Les territoires d'outre-mer se trouvent sur d'autres continents.",
+    "expEn": "Metropolitan France is located in Western Europe. Overseas territories are found on other continents."
+  },
+  {
+    "q": "Situation : On vous demande ce qu'est le 14 juillet en France. Quelle est la bonne réponse ?",
+    "choices": [
+      "La fête nationale qui célèbre la Révolution française",
+      "Un jour férié commercial sans signification historique",
+      "L'anniversaire de la Ve République",
+      "Le jour de l'abolition de la peine de mort"
+    ],
+    "answer": 0,
+    "exp": "Le 14 juillet est la fête nationale française. Elle renvoie à la prise de la Bastille (1789) et à la Fête de la Fédération (1790), deux références fondatrices de l'histoire républicaine.",
+    "expEn": "14 July is the French national holiday. It refers to the storming of the Bastille (1789) and the Fête de la Fédération (1790), two founding events in republican history."
+  },
+  {
+    "q": "Situation : Un ami veut conduire sa voiture après avoir trop bu d'alcool. Que faites-vous ?",
+    "choices": [
+      "Vous le laissez faire s'il se sent capable",
+      "Vous l'empêchez de prendre le volant pour sa sécurité et celle des autres",
+      "Vous lui conseillez de rouler lentement",
+      "Vous appelez la police uniquement s'il est impliqué dans un accident"
+    ],
+    "answer": 1,
+    "exp": "Empêcher une conduite sous l'emprise de l'alcool est la conduite responsable. Il faut empêcher le départ et organiser une alternative sûre.",
+    "expEn": "Preventing drink-driving is the responsible approach. The right reaction is to stop the person from leaving and to arrange a safe alternative."
+  },
+  {
+    "q": "En quelle année a débuté la Révolution française ?",
+    "choices": [
+      "En 1776",
+      "En 1815",
+      "En 1789",
+      "En 1848"
+    ],
+    "answer": 2,
+    "exp": "La Révolution française débute en 1789, notamment avec la réunion des États généraux et la prise de la Bastille. 1815 est l'année de la défaite de Napoléon à Waterloo.",
+    "expEn": "The French Revolution began in 1789, notably with the Estates-General and the storming of the Bastille. 1815 was the year of Napoleon's defeat at Waterloo."
+  },
+  {
+    "q": "Situation : Quelle est la fonction principale du Conseil d'État lorsqu'il est saisi par un citoyen ?",
+    "choices": [
+      "Il tranche les litiges entre particuliers",
+      "Il vote les lois en remplacement du Parlement",
+      "Il contrôle les comptes des ministères",
+      "Il juge les litiges entre les particuliers et l'administration (État, collectivités, hôpitaux)"
+    ],
+    "answer": 3,
+    "exp": "Le Conseil d'État est la juridiction suprême de l'ordre administratif. Il tranche les litiges opposant les administrés à l'administration et vérifie la légalité de l'action administrative.",
+    "expEn": "The Council of State is the supreme court of the administrative order. It settles disputes between citizens and the administration and reviews the legality of administrative action."
+  },
+  {
+    "q": "Qui dirige la commune ?",
+    "choices": [
+      "Le maire, élu par le conseil municipal",
+      "Le préfet, nommé pour administrer la commune",
+      "Le sous-préfet désigné par le gouvernement",
+      "Le président du conseil général"
+    ],
+    "answer": 0,
+    "exp": "La direction politique et administrative de la commune relève du maire, élu par le conseil municipal. Le préfet représente l'État dans le département, mais ne dirige pas la commune.",
+    "expEn": "The political and administrative management of the municipality falls to the mayor, elected by the municipal council. The prefect represents the State in the department but does not manage the municipality."
+  },
+  {
+    "q": "Situation : Un commerçant refuse de vous vendre du pain à cause de votre religion. C'est :",
+    "choices": [
+      "Une pratique tolérée dès lors que le commerce est privé",
+      "Une discrimination punie par la loi",
+      "Autorisé si le commerçant affiche un avis explicatif",
+      "Un droit de l'entreprise lié à la liberté d'entreprendre"
+    ],
+    "answer": 1,
+    "exp": "Refuser l'accès à un bien ou un service en raison de la religion est une discrimination interdite par la loi. Ce comportement peut engager la responsabilité pénale de son auteur.",
+    "expEn": "Refusing access to a good or service on the grounds of religion is discrimination prohibited by law. This behaviour may result in criminal liability."
+  },
+  {
+    "q": "Qui était Jean de La Fontaine ?",
+    "choices": [
+      "Un auteur de tragédies classiques sous Louis XIV",
+      "Un philosophe des Lumières du XVIIIe siècle",
+      "Un poète et fabuliste français du XVIIe siècle",
+      "Un romancier réaliste du XIXe siècle"
+    ],
+    "answer": 2,
+    "exp": "Jean de La Fontaine (1621-1695) est surtout connu pour ses Fables, qui associent récit bref et portée morale. Son œuvre en fait une référence majeure de la littérature française classique.",
+    "expEn": "Jean de La Fontaine (1621-1695) is best known for his Fables, which combine brief narrative with moral purpose. His work makes him a major reference in classical French literature."
+  },
+  {
+    "q": "Quel animal est un symbole de la France ?",
+    "choices": [
+      "L'aigle",
+      "Le lion",
+      "Le taureau",
+      "Le coq"
+    ],
+    "answer": 3,
+    "exp": "Le coq gaulois est un symbole traditionnellement associé à la France, notamment dans les représentations sportives et commémoratives.",
+    "expEn": "The Gallic rooster is a symbol traditionally associated with France, particularly in sporting and commemorative representations."
+  },
+  {
+    "q": "Quand célèbre-t-on la Journée de l'Europe ?",
+    "choices": [
+      "Le 9 mai",
+      "Le 1er janvier",
+      "Le 25 mars",
+      "Le 11 novembre"
+    ],
+    "answer": 0,
+    "exp": "La Journée de l'Europe est célébrée le 9 mai, date de la déclaration Schuman de 1950, qui a lancé la construction européenne.",
+    "expEn": "Europe Day is celebrated on 9 May, the date of the Schuman Declaration of 1950, which launched the European construction."
+  },
+  {
+    "q": "Situation : Vous voyez un sac abandonné dans le métro. Que faites-vous ?",
+    "choices": [
+      "Vous ouvrez le sac pour vérifier son contenu",
+      "Vous prévenez un agent ou appelez le 17",
+      "Vous l'emportez au bureau des objets trouvés",
+      "Vous ignorez le sac, cela ne vous concerne pas"
+    ],
+    "answer": 1,
+    "exp": "Face à un objet abandonné, il faut éviter toute manipulation et alerter immédiatement les agents ou la police. Cette conduite limite les risques pour les usagers et permet une intervention sécurisée.",
+    "expEn": "When faced with an abandoned object, you must avoid any handling and immediately alert staff or police. This minimises risks and allows a safe response."
+  },
+  {
+    "q": "Que doit faire un employeur pour fixer un salaire ?",
+    "choices": [
+      "Fixer librement le salaire sans contrainte légale",
+      "Respecter uniquement le salaire négocié avec le salarié",
+      "Respecter le SMIC et les conventions collectives applicables",
+      "Appliquer uniquement le barème fixé par le préfet"
+    ],
+    "answer": 2,
+    "exp": "L'employeur doit respecter le SMIC et, le cas échéant, les minima conventionnels de la branche. Le salaire ne peut pas être fixé en dessous de ces seuils légaux, même avec l'accord du salarié.",
+    "expEn": "The employer must comply with the SMIC and, where applicable, the branch's collectively agreed minima. Wages cannot be set below these legal thresholds, even with the employee's agreement."
+  },
+  {
+    "q": "Situation : On vous demande ce que signifie le principe de « République sociale ». Comment se manifeste-t-il ?",
+    "choices": [
+      "Par la suppression de l'économie de marché",
+      "Par l'uniformité totale des situations individuelles",
+      "Par l'interdiction de toute inégalité de revenus",
+      "Par la mise en œuvre de dispositifs d'aide aux plus démunis pour garantir la dignité humaine"
+    ],
+    "answer": 3,
+    "exp": "La République sociale implique des mécanismes de solidarité et de protection sociale pour réduire les inégalités et préserver la dignité. Elle ne supprime pas l'économie de marché.",
+    "expEn": "The social Republic implies solidarity mechanisms and social protection to reduce inequalities and preserve dignity. It does not abolish the market economy."
+  },
+  {
+    "q": "Concernant les partis politiques, quelle proposition est correcte ?",
+    "choices": [
+      "Ils concourent à l'expression du suffrage",
+      "Ils ne peuvent présenter des candidats qu'aux élections nationales",
+      "Ils sont interdits pendant les campagnes électorales",
+      "Ils sont financés exclusivement par leurs adhérents"
+    ],
+    "answer": 0,
+    "exp": "L'article 4 de la Constitution dispose que les partis et groupements politiques concourent à l'expression du suffrage. Ils sont libres de se constituer et d'agir dans le respect des principes démocratiques.",
+    "expEn": "Article 4 of the Constitution states that political parties and groupings contribute to the expression of suffrage. They are free to form and act within democratic principles."
+  },
+  {
+    "q": "Que doit faire une personne témoin d'un accident ?",
+    "choices": [
+      "Se limiter à observer la scène pour éviter toute responsabilité",
+      "Porter assistance : appeler les secours et protéger les victimes",
+      "Partir rapidement pour ne pas gêner les secours",
+      "Attendre que d'autres passants prennent l'initiative"
+    ],
+    "answer": 1,
+    "exp": "La loi impose de porter assistance à une personne en danger, au minimum en alertant les secours et en protégeant les lieux. S'abstenir volontairement peut constituer le délit de non-assistance à personne en danger.",
+    "expEn": "The law requires assisting a person in danger, at minimum by alerting emergency services and securing the scene. Deliberate inaction may constitute the criminal offence of failure to assist."
+  },
+  {
+    "q": "Qui était Charles Baudelaire ?",
+    "choices": [
+      "Un romancier réaliste de la fin du XVe siècle",
+      "Un dramaturge classique du XVIIe siècle",
+      "Un poète français du XIXe siècle",
+      "Un philosophe des Lumières du XVIIIe siècle"
+    ],
+    "answer": 2,
+    "exp": "Charles Baudelaire (1821-1867) est un poète majeur du XIXe siècle, auteur notamment des Fleurs du Mal. Son œuvre a fortement influencé la modernité poétique française.",
+    "expEn": "Charles Baudelaire (1821-1867) is a major 19th-century poet, author notably of Les Fleurs du Mal. His work profoundly influenced French poetic modernity."
+  },
+  {
+    "q": "« La France est une République indivisible, ..., démocratique et sociale. » Complétez l'article 1er de la Constitution :",
+    "choices": [
+      "souveraine",
+      "décentralisée",
+      "fraternelle",
+      "laïque"
+    ],
+    "answer": 3,
+    "exp": "L'article 1er de la Constitution qualifie la France de République « indivisible, laïque, démocratique et sociale ». Le terme attendu est « laïque », exprimant la neutralité de l'État vis-à-vis des religions.",
+    "expEn": "Article 1 of the Constitution describes France as an 'indivisible, secular, democratic and social' Republic. The missing word is 'secular', expressing the State's neutrality towards religions."
+  },
+  {
+    "q": "Quand sont renouvelés les sénateurs ?",
+    "choices": [
+      "Par moitié tous les 3 ans",
+      "Tous les 6 ans en totalité",
+      "Tous les 5 ans en totalité",
+      "Tous les 4 ans selon les régions"
+    ],
+    "answer": 0,
+    "exp": "Les sénateurs ont un mandat de six ans, mais le Sénat est renouvelé par moitié tous les trois ans. La périodicité effective du scrutin sénatorial est donc de trois ans.",
+    "expEn": "Senators have a six-year term, but the Senate is renewed by halves every three years. The effective frequency of senatorial elections is therefore three years."
+  },
+  {
+    "q": "Déposer une machine à laver cassée sur le trottoir est :",
+    "choices": [
+      "Autorisé si l'appareil est bien visible",
+      "Un dépôt sauvage interdit — les encombrants doivent être déposés en déchetterie ou selon les consignes locales",
+      "Toléré dans les zones rurales",
+      "Obligatoire avant le passage des éboueurs"
+    ],
+    "answer": 1,
+    "exp": "Laisser un appareil électroménager sur le trottoir hors dispositif municipal constitue un dépôt sauvage. Les encombrants doivent être déposés en déchetterie ou sortis selon les consignes locales.",
+    "expEn": "Leaving a household appliance on the pavement outside of the municipal collection scheme constitutes illegal dumping. Bulky waste must be taken to a recycling centre or put out according to local rules."
+  },
+  {
+    "q": "Que célèbre-t-on précisément le 14 juillet ?",
+    "choices": [
+      "L'adoption de la Déclaration universelle des droits de l'homme",
+      "La naissance de la Ve République",
+      "La prise de la Bastille (1789) et la Fête de la Fédération (1790)",
+      "L'abolition de la peine de mort"
+    ],
+    "answer": 2,
+    "exp": "La fête nationale du 14 juillet renvoie à deux événements : la prise de la Bastille en 1789 et la Fête de la Fédération en 1790, commémorant la rupture révolutionnaire et l'unité nationale.",
+    "expEn": "The national holiday of 14 July refers to two events: the storming of the Bastille in 1789 and the Fête de la Fédération in 1790, commemorating the revolutionary break and national unity."
+  },
+  {
+    "q": "Auprès de quel organisme faut-il demander le remboursement des frais de santé ?",
+    "choices": [
+      "Uniquement la mutuelle privée",
+      "La mairie du lieu de résidence",
+      "Le médecin traitant directement",
+      "La Sécurité sociale (assurance maladie) et, si on a une mutuelle, auprès de la mutuelle"
+    ],
+    "answer": 3,
+    "exp": "Le remboursement de base est géré par l'Assurance maladie. La mutuelle complémentaire intervient ensuite pour tout ou partie du reste à charge, selon le contrat.",
+    "expEn": "Basic reimbursement is handled by Health Insurance. The top-up mutuelle then covers all or part of the remaining costs, according to the contract."
+  },
+  {
+    "q": "Situation : Un citoyen souhaite contester le montant de ses impôts locaux. Quel principe fonde ce droit ?",
+    "choices": [
+      "Le droit des citoyens de constater la nécessité de la contribution publique et d'en suivre l'emploi",
+      "Le principe de non-rétroactivité de la loi fiscale",
+      "Le droit à l'anonymat fiscal",
+      "Le droit à la déduction automatique des charges"
+    ],
+    "answer": 0,
+    "exp": "L'article 14 de la Déclaration des droits de l'homme et du citoyen reconnaît le droit des citoyens de constater la nécessité de la contribution publique et d'en suivre l'emploi.",
+    "expEn": "Article 14 of the Declaration of the Rights of Man and of the Citizen recognises citizens' right to verify the necessity of public contributions and to monitor their use."
+  },
+  {
+    "q": "Quel pouvoir détient un juge ?",
+    "choices": [
+      "Le pouvoir législatif",
+      "Le pouvoir judiciaire",
+      "Le pouvoir exécutif",
+      "Le pouvoir réglementaire"
+    ],
+    "answer": 1,
+    "exp": "Le juge appartient à l'autorité judiciaire, distincte des pouvoirs législatif et exécutif. Cette séparation garantit l'indépendance de la justice dans l'application du droit.",
+    "expEn": "The judge belongs to the judicial authority, separate from the legislative and executive powers. This separation guarantees the independence of justice in applying the law."
+  },
+  {
+    "q": "Situation : Vous souhaitez divorcer officiellement. Comment faire ?",
+    "choices": [
+      "Notifier la séparation par lettre recommandée pour la rendre opposable",
+      "Se séparer de fait pendant 2 ans, ce qui suffit légalement",
+      "Engager une procédure légale avec un avocat",
+      "Déposer un formulaire en mairie sans avocat"
+    ],
+    "answer": 2,
+    "exp": "Le divorce suit une procédure juridique encadrée et nécessite l'intervention d'un avocat. Même en divorce par consentement mutuel sans juge, chaque époux doit être assisté et la convention est déposée chez un notaire.",
+    "expEn": "Divorce follows a regulated legal procedure and requires a lawyer. Even in mutual-consent divorce without a judge, each spouse must be represented and the agreement is filed with a notary."
+  },
+  {
+    "q": "Qui était Marc Chagall ?",
+    "choices": [
+      "Un compositeur d'opéras français du XXe siècle",
+      "Un écrivain surréaliste belge",
+      "Un sculpteur du XIXe siècle",
+      "Un peintre majeur du XXe siècle ayant vécu et travaillé en France"
+    ],
+    "answer": 3,
+    "exp": "Marc Chagall (1887-1985) est un peintre majeur du XXe siècle, reconnu pour son univers poétique et coloré. Il a réalisé une part importante de son œuvre en France.",
+    "expEn": "Marc Chagall (1887-1985) was a major 20th-century painter, renowned for his poetic and colourful world. He produced a significant part of his work in France."
+  },
+  {
+    "q": "À quoi sert une mutuelle santé ?",
+    "choices": [
+      "À rembourser les frais non couverts par la Sécurité sociale (couverture complémentaire)",
+      "À remplacer entièrement la Sécurité sociale",
+      "À financer les retraites complémentaires",
+      "À couvrir uniquement les accidents du travail"
+    ],
+    "answer": 0,
+    "exp": "La mutuelle santé est une couverture complémentaire : elle prend en charge tout ou partie des dépenses restant après remboursement par la Sécurité sociale. Elle complète l'assurance maladie obligatoire, sans s'y substituer.",
+    "expEn": "A health mutuelle is a top-up cover: it pays all or part of the costs remaining after reimbursement by Social Security. It supplements mandatory health insurance without replacing it."
   }
 ]
