@@ -18,7 +18,6 @@ const PROJECTS_CONFIG = {
     "Fine-tuning-Image-Captioning-Models-for-Chest-X-ray-Interpretation",
     "Fine-tuned-Retrieval-Augmented-Generation-RAG-Chatbot",
     "Fine-tuning-SAM-for-Cellular-Images-Segmentation",
-    "Mapify_My_Travels",
   ],
 
   exclude: [
@@ -27,6 +26,7 @@ const PROJECTS_CONFIG = {
     "test",
     "NAB",
     "Command-Cheatsheet",
+    "Mapify_My_Travels",
   ],
 
   descriptions: {
@@ -45,7 +45,7 @@ const PROJECTS_CONFIG = {
     "Fine-tuning-SAM-for-Cellular-Images-Segmentation":
       "Segment Anything Model (SAM) adapted for cellular microscopy image segmentation.",
     "Mapify_My_Travels":
-      "Interactive travel map built with Python and Folium — visualise visited places on a world map.",
+      "Interactive travel map built with Python and Folium — visualise visited places on a world map.", // kept for reference
     "gp-bayesopt":
       "Gaussian process Bayesian optimisation experiments and benchmarks.",
     "rnaseq-pipeline-interface":
