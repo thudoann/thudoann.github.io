@@ -3,17 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){
+  var apply=function(t){document.documentElement.setAttribute('data-theme',t)};
+  try{
+    var p=window.parent&&window.parent!==window?window.parent.document.documentElement:null;
+    if(p){
+      apply(p.getAttribute('data-theme')||'light');
+      new MutationObserver(function(){apply(p.getAttribute('data-theme')||'light')}).observe(p,{attributes:true,attributeFilter:['data-theme']});
+    } else apply('light');
+  if(window.parent!==window){
+    var sendH=function(){window.parent.postMessage({type:'lab-height',h:Math.ceil(Math.max(document.documentElement.scrollHeight,document.body.scrollHeight))+16},'*')};
+    new ResizeObserver(sendH).observe(document.body);
+    window.addEventListener('load',sendH); setTimeout(sendH,300);
+  }
+  }catch(e){apply('light')}
+})();
+</script>
 <title>Docker Lab — learn Docker by doing</title>
 <style>
 :root{
-  --bg:#f5f7fb; --card:#fff; --ink:#14213d; --muted:#5b6478; --line:#e3e8f0;
+  --bg:transparent; --card:rgba(255,255,255,0.6); --ink:#14213d; --muted:#5b6478; --line:#e3e8f0;
   --blue:#1d63ed; --blue-soft:#e8f0ff; --green:#14996b; --green-soft:#e3f6ee;
   --red:#d64545; --red-soft:#fdeaea; --amber:#b7791f; --amber-soft:#fdf3e1;
   --term:#0d1526; --term-ink:#d6e2ff; --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5}
-header{background:var(--card);border-bottom:1px solid var(--line);padding:16px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:12px 14px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:19px}
 .whale{width:36px;height:36px;border-radius:9px;background:var(--blue);display:grid;place-items:center;color:#fff;font-size:18px}
 .progress-wrap{flex:1;min-width:220px;display:flex;align-items:center;gap:12px}
@@ -23,7 +40,7 @@ header{background:var(--card);border-bottom:1px solid var(--line);padding:16px 2
 nav.tabs{display:flex;gap:6px}
 nav.tabs button{border:1px solid var(--line);background:var(--card);padding:7px 14px;border-radius:8px;cursor:pointer;font:inherit;font-size:14px;color:var(--muted)}
 nav.tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-main{padding:20px 24px;max-width:1500px;margin:0 auto}
+main{padding:12px 14px;margin:0 auto}
 .view{display:none}.view.on{display:block}
 .grid{display:grid;grid-template-columns:300px minmax(0,1fr) 320px;gap:18px;align-items:start}
 @media(max-width:1150px){.grid{grid-template-columns:1fr}}
@@ -106,6 +123,38 @@ h2{font-size:15px;margin:0 0 12px;font-weight:600;display:flex;align-items:cente
 .btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;transition:.4s;z-index:9;box-shadow:0 8px 30px rgba(0,0,0,.25)}
 .toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ---- site theme (synced from the parent page) ---- */
+html[data-theme="dark"]{--bg:transparent;--card:rgba(37,35,32,0.62);--ink:#e8e6e3;--muted:#a39f99;--line:#3d3a36;--blue-soft:#243457;--green-soft:#1f3a2f;--red-soft:#432424;--amber-soft:#3d3222}
+html[data-theme="dark"] code{background:#33302c;color:#e8e6e3}
+html[data-theme="dark"] .mission .body{color:#cfcac3}
+html[data-theme="dark"] .pill.exit{background:#33302c;color:#b5b0a8}
+html[data-theme="dark"] .concept .an{color:#e7c27d}
+html[data-theme="dark"] .cheat tr:hover td{background:#2d2b28}
+html[data-theme="dark"] .tag.v{background:#2e2839;color:#c3a8ff}
+
+/* Glass look, same as the CI/CD card on the main page */
+body{background:transparent}
+header,.card{-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%)}
+.card{box-shadow:0 10px 30px rgba(45,45,45,.06)}
+
+/* ---- Site skin: same palette, glass cards and pill tabs as the CI/CD tab ---- */
+:root{--ink:#2d2d2d;--muted:#7a7672;--line:rgba(45,45,45,.1);--on-accent:#fff;--glass:rgba(255,255,255,.58)}
+html[data-theme="dark"]{--ink:#e8e6e3;--muted:#a39f99;--line:rgba(255,255,255,.08);--on-accent:#1c1b19;--glass:rgba(37,35,32,.6)}
+html,body{background:transparent}
+header{border:1px solid var(--line);border-radius:16px;background:var(--glass);margin:0 0 14px;padding:14px 18px}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 30px rgba(45,45,45,.06);transition:box-shadow .3s ease,border-color .3s ease}
+.card:hover{border-color:rgba(139,115,85,.3)}
+html[data-theme="dark"] .card{box-shadow:0 10px 30px rgba(0,0,0,.25)}
+html[data-theme="dark"] header{box-shadow:0 10px 30px rgba(0,0,0,.25)}
+header{box-shadow:0 10px 30px rgba(45,45,45,.06)}
+nav.tabs button{border-radius:999px;background:transparent;transition:background .2s ease,color .2s ease,border-color .2s ease}
+nav.tabs button:hover{background:var(--hover-bg,rgba(45,45,45,.04))}
+nav.tabs button.on{background:var(--blue);color:var(--on-accent);border-color:var(--blue)}
+.btn{background:var(--blue);color:var(--on-accent);border-radius:999px}
+.btn.ghost{border-radius:999px}
+:root{--blue:#8b7355;--blue-soft:rgba(139,115,85,.12)}
+html[data-theme="dark"]{--blue:#c4a574;--blue-soft:rgba(196,165,116,.16)}
 </style>
 </head>
 <body>

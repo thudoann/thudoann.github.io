@@ -4370,15 +4370,40 @@ html { scroll-padding-top: 110px; }
 }
 
 /* ══ AI Skill Lab sub-tabs + embedded Docker Lab ══ */
+/* Same framed glass card as the CI/CD explainer */
+#sub-docker,
+#sub-evals {
+  max-width: 760px;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  background: linear-gradient(160deg, var(--glass-bg), rgba(139, 115, 85, 0.05));
+  box-shadow: var(--glass-shadow-hover);
+}
+
 #sub-docker .docker-frame {
   display: block;
   width: 100%;
-  height: 1150px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: #f5f7fb;
+  height: 600px;
+  transition: height 0.2s ease;
+  border: 0;
+  background: transparent;
+  color-scheme: light dark;
 }
 
-@media (max-width: 640px) {
-  #sub-docker .docker-frame { height: 1500px; }
+
+/* Evals Lab frame (AI Skill Lab sub-tab) */
+#sub-evals .evals-frame {
+  display: block;
+  margin: 0;
+  width: 100%;
+  height: 600px;
+  transition: height 0.2s ease;
+  border: 0;
+  background: transparent;
+  color-scheme: light dark;
 }
+
+
+/* Lab frames follow the site's dark mode */
+

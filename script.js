@@ -1008,3 +1008,25 @@ function initPipelineDiagram(panel) {
     });
   });
 }
+
+/* ---------- Embedded labs: fit each frame to its content height ---------- */
+function initLabFrames() {
+  // Same-origin labs: read the real content height straight from the iframe.
+  const fit = (frame) => {
+    try {
+      const doc = frame.contentDocument;
+      if (!doc || !doc.documentElement) return;
+      const h = Math.max(doc.documentElement.scrollHeight, doc.body ? doc.body.scrollHeight : 0) + 24;
+      frame.style.height = Math.max(h, 300) + "px";
+    } catch (err) { /* cross-origin or not ready: keep the default height */ }
+  };
+  const frames = () => document.querySelectorAll(".docker-frame, .evals-frame");
+  frames().forEach((frame) => frame.addEventListener("load", () => fit(frame)));
+  window.addEventListener("message", (e) => {
+    if (!e.data || e.data.type !== "lab-height") return;
+    frames().forEach((frame) => { if (frame.contentWindow === e.source) fit(frame); });
+  });
+  // Content can grow after load (quiz answers, expanded missions): re-check often.
+  setInterval(() => frames().forEach((frame) => { if (frame.offsetParent !== null) fit(frame); }), 500);
+}
+initLabFrames();
