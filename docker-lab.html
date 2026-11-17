@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docker Lab — learn Docker by doing</title>
+<style>
+:root{
+  --bg:#f5f7fb; --card:#fff; --ink:#14213d; --muted:#5b6478; --line:#e3e8f0;
+  --blue:#1d63ed; --blue-soft:#e8f0ff; --green:#14996b; --green-soft:#e3f6ee;
+  --red:#d64545; --red-soft:#fdeaea; --amber:#b7791f; --amber-soft:#fdf3e1;
+  --term:#0d1526; --term-ink:#d6e2ff; --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:16px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:19px}
+.whale{width:36px;height:36px;border-radius:9px;background:var(--blue);display:grid;place-items:center;color:#fff;font-size:18px}
+.progress-wrap{flex:1;min-width:220px;display:flex;align-items:center;gap:12px}
+.bar{flex:1;height:10px;background:var(--line);border-radius:6px;overflow:hidden}
+.bar>div{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));width:0;transition:width .5s}
+.ptext{font-size:13px;color:var(--muted);white-space:nowrap}
+nav.tabs{display:flex;gap:6px}
+nav.tabs button{border:1px solid var(--line);background:var(--card);padding:7px 14px;border-radius:8px;cursor:pointer;font:inherit;font-size:14px;color:var(--muted)}
+nav.tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+main{padding:20px 24px;max-width:1500px;margin:0 auto}
+.view{display:none}.view.on{display:block}
+.grid{display:grid;grid-template-columns:300px minmax(0,1fr) 320px;gap:18px;align-items:start}
+@media(max-width:1150px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+h2{font-size:15px;margin:0 0 12px;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.small{font-size:12.5px;color:var(--muted)}
+/* missions */
+.mission{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:.15s}
+.mission:hover{border-color:#b9c6dd}
+.mission .t{display:flex;gap:9px;align-items:center;font-weight:500;font-size:14px}
+.num{width:22px;height:22px;border-radius:50%;background:var(--line);display:grid;place-items:center;font-size:11.5px;flex:none;color:var(--muted);font-weight:600}
+.mission.done .num{background:var(--green);color:#fff}
+.mission.done .t{color:var(--muted)}
+.mission.active{border-color:var(--blue);background:var(--blue-soft)}
+.mission.active .num{background:var(--blue);color:#fff}
+.mission .body{display:none;margin-top:8px;font-size:13.5px;color:#33405a}
+.mission.active .body{display:block}
+.mission code,.explain code,.qa code,.cheat code{font-family:var(--mono);font-size:12.5px;background:#eef2f8;padding:1px 5px;border-radius:4px}
+.hintbtn{margin-top:8px;font:inherit;font-size:12.5px;border:1px dashed var(--blue);color:var(--blue);background:transparent;border-radius:6px;padding:4px 9px;cursor:pointer}
+.hint{display:none;margin-top:6px;font-family:var(--mono);font-size:12.5px;background:var(--term);color:#9ef0c6;padding:7px 9px;border-radius:6px;cursor:pointer;word-break:break-all}
+.hint.show{display:block}
+/* terminal */
+.term{background:var(--term);border-radius:14px;overflow:hidden;border:1px solid #1d2a44}
+.term-top{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#131e35;color:#8aa0c8;font-size:12.5px}
+.dot{width:11px;height:11px;border-radius:50%}
+.term-top .sp{flex:1}
+.term-top button{background:#1f2c48;color:#c9d6f2;border:0;border-radius:6px;padding:4px 10px;font:inherit;font-size:12px;cursor:pointer}
+#screen{height:440px;overflow-y:auto;padding:14px 16px;font-family:var(--mono);font-size:13px;color:var(--term-ink);line-height:1.55;white-space:pre-wrap;word-break:break-word}
+#screen .cmd{color:#fff}#screen .p{color:#5fd7a1}
+#screen .err{color:#ff8a8a}#screen .ok{color:#7ee2b0}#screen .dim{color:#7d8db0}#screen .warn{color:#ffd27a}#screen .acc{color:#8fb5ff}
+.inrow{display:flex;align-items:center;gap:8px;padding:10px 16px;border-top:1px solid #1d2a44;background:#0b1220}
+.inrow .p{color:#5fd7a1;font-family:var(--mono);font-size:13px;white-space:nowrap}
+#cmd{flex:1;background:transparent;border:0;outline:0;color:#fff;font-family:var(--mono);font-size:13.5px;caret-color:#5fd7a1}
+.explain{margin-top:14px;border-left:4px solid var(--blue);background:var(--card);border-radius:0 12px 12px 0;padding:12px 16px;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.explain .h{font-weight:600;font-size:14px;margin-bottom:4px}
+.explain.bad{border-left-color:var(--red)}
+.explain.good{border-left-color:var(--green)}
+.flow{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.fstep{flex:1;min-width:110px;text-align:center;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 6px;font-size:13px;transition:.3s}
+.fstep b{display:block;font-size:14px}
+.fstep.lit{border-color:var(--blue);background:var(--blue-soft);transform:translateY(-2px)}
+.arrow{color:var(--muted)}
+/* state */
+.sec{margin-bottom:16px}
+.sec h3{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 8px;font-weight:600;display:flex;justify-content:space-between}
+.empty{font-size:13px;color:#98a2b6;font-style:italic;padding:6px 0}
+.obj{border:1px solid var(--line);border-radius:9px;padding:8px 10px;margin-bottom:6px;font-size:13px;animation:pop .35s}
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:none;opacity:1}}
+.obj .n{font-family:var(--mono);font-weight:600;font-size:12.5px;display:flex;justify-content:space-between;gap:6px}
+.obj .m{color:var(--muted);font-size:12px;margin-top:2px}
+.pill{font-family:system-ui,sans-serif;font-size:11px;padding:1px 8px;border-radius:20px;font-weight:600}
+.pill.run{background:var(--green-soft);color:var(--green)}
+.pill.exit{background:#eef0f4;color:#6b7280}
+.pill.fail{background:var(--red-soft);color:var(--red)}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;background:var(--amber-soft);color:var(--amber);padding:1px 6px;border-radius:5px;margin:3px 4px 0 0}
+.tag.v{background:#efe9ff;color:#6a43c7}
+.obj.img{border-left:4px solid var(--blue)}
+.obj.ctr{border-left:4px solid var(--green)}
+.obj.ctr.stopped{border-left-color:#c2c8d3}
+.obj.vol{border-left:4px solid #8a63e6}
+/* learn & quiz */
+.lgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.concept h3{margin:0 0 6px;font-size:16px}
+.concept .an{background:var(--amber-soft);color:#7a5414;border-radius:8px;padding:8px 10px;font-size:13.5px;margin-top:8px}
+.qa{max-width:760px;margin:0 auto}
+.q{margin-bottom:16px}
+.q .qt{font-weight:600;margin-bottom:10px}
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:9px;padding:9px 12px;margin-bottom:7px;cursor:pointer;font:inherit;font-size:14px;color:var(--ink)}
+.opt:hover:not([disabled]){border-color:var(--blue)}
+.opt.right{background:var(--green-soft);border-color:var(--green)}
+.opt.wrong{background:var(--red-soft);border-color:var(--red)}
+.fb{font-size:13.5px;margin-top:4px;display:none}
+.fb.show{display:block}
+.score{text-align:center;font-size:18px;font-weight:600;margin:10px 0 20px}
+.cheat table{width:100%;border-collapse:collapse;font-size:13.5px}
+.cheat td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.cheat td:first-child{width:46%}
+.cheat tr:hover td{background:#f7f9fd;cursor:pointer}
+.btn{border:0;background:var(--blue);color:#fff;font:inherit;font-size:14px;padding:8px 16px;border-radius:8px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;transition:.4s;z-index:9;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><div class="whale">🐳</div>Docker Lab</div>
+  <div class="progress-wrap"><div class="bar"><div id="pbar"></div></div><div class="ptext" id="ptext">0 / 13 missions</div></div>
+  <nav class="tabs">
+    <button data-v="lab" class="on">🧪 Lab</button>
+    <button data-v="learn">📘 Concepts</button>
+    <button data-v="cheat">⌨️ Cheat sheet</button>
+    <button data-v="quiz">✅ Quiz</button>
+  </nav>
+</header>
+
+<main>
+<!-- LAB -->
+<section class="view on" id="v-lab">
+<div class="grid">
+  <div class="card">
+    <h2>Missions <button class="btn ghost" style="padding:3px 9px;font-size:12px" onclick="resetAll()">Reset</button></h2>
+    <div class="small" style="margin-bottom:10px">Type commands in the terminal. Each mission teaches one idea. Stuck? Click <b>Show hint</b>, then click the hint to paste it.</div>
+    <div id="missions"></div>
+  </div>
+
+  <div>
+    <div class="term">
+      <div class="term-top"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="sp">&nbsp; simulated terminal — ~/myproject</span><button onclick="clearScreen()">clear</button><button onclick="run('help')">help</button></div>
+      <div id="screen"></div>
+      <div class="inrow"><span class="p" id="prompt">you@laptop:~/myproject$</span><input id="cmd" autocomplete="off" spellcheck="false" placeholder="type a command, e.g. docker run hello-world" autofocus></div>
+    </div>
+    <div class="flow">
+      <div class="fstep" id="f-file"><b>📄 Dockerfile</b>the recipe</div><span class="arrow">→ build →</span>
+      <div class="fstep" id="f-img"><b>📦 Image</b>frozen package</div><span class="arrow">→ run →</span>
+      <div class="fstep" id="f-ctr"><b>▶️ Container</b>running copy</div>
+    </div>
+    <div class="explain" id="explain"><div class="h">👋 Welcome!</div>This is a safe simulator. Nothing is installed on your computer, so you can't break anything. Start with mission 1 on the left, or type <code>help</code>.</div>
+  </div>
+
+  <div class="card">
+    <h2>Your Docker world <span class="small">live</span></h2>
+    <div class="sec"><h3>📦 Images <span id="ci">0</span></h3><div id="s-img"></div></div>
+    <div class="sec"><h3>▶️ Containers <span id="cc">0</span></h3><div id="s-ctr"></div></div>
+    <div class="sec"><h3>💾 Volumes <span id="cv">0</span></h3><div id="s-vol"></div></div>
+  </div>
+</div>
+</section>
+
+<!-- LEARN -->
+<section class="view" id="v-learn">
+<div class="lgrid" id="concepts"></div>
+</section>
+
+<!-- CHEAT -->
+<section class="view" id="v-cheat">
+<div class="card cheat" style="max-width:900px;margin:0 auto">
+<h2>Cheat sheet <span class="small">click a row to try it in the Lab</span></h2>
+<table id="cheatT"></table>
+</div>
+</section>
+
+<!-- QUIZ -->
+<section class="view" id="v-quiz">
+<div class="qa"><div class="score" id="score"></div><div id="quiz"></div>
+<div style="text-align:center"><button class="btn" onclick="buildQuiz()">Restart quiz</button></div></div>
+</section>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- virtual files ---------- */
+const FILES={
+'Dockerfile':`# 1. Start from an official image that already has Python
+FROM python:3.12-slim
+
+# 2. Work inside /app in the container
+WORKDIR /app
+
+# 3. Install libraries first (cached layer!)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 4. Copy the rest of the code
+COPY . .
+
+# 5. Document the port and set the start command
+EXPOSE 8000
+CMD ["python", "app.py"]`,
+'app.py':`from http.server import BaseHTTPRequestHandler, HTTPServer
+import json
+
+class Handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
+        self.wfile.write(json.dumps({"message": "Hello from inside a container!"}).encode())
+
+print("Server running on port 8000")
+HTTPServer(("0.0.0.0", 8000), Handler).serve_forever()`,
+'requirements.txt':`requests==2.32.3`,
+'.dockerignore':`.git
+__pycache__
+venv
+.env`,
+'docker-compose.yml':`services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: example
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+volumes:
+  dbdata:`
+};
+const HUB={'hello-world:latest':'13.3kB','nginx:latest':'192MB','python:3.12-slim':'124MB','postgres:16':'435MB','redis:7':'117MB','ubuntu:latest':'78MB'};
+
+/* ---------- state ---------- */
+let S;
+function fresh(){return{images:{},containers:[],volumes:[],shell:null,builds:0,network:false}}
+S=fresh();
+let done={};try{done=JSON.parse(localStorage.getItem('dl_done')||'{}')}catch(e){}
+const hist=[];let hi=0,busy=false;
+
+const $=id=>document.getElementById(id);
+const screen=$('screen'),input=$('cmd');
+const hex=n=>[...Array(n)].map(()=>'0123456789abcdef'[Math.random()*16|0]).join('');
+const ADJ=['brave','happy','eager','quirky','jolly','zen','sleepy','clever'],SCI=['turing','curie','hopper','lovelace','tesla','darwin','noether','knuth'];
+const rname=()=>ADJ[Math.random()*8|0]+'_'+SCI[Math.random()*8|0];
+const norm=i=>i.includes(':')?i:i+':latest';
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+function out(t,c){t.split('\n').forEach(l=>{const d=document.createElement('div');if(c)d.className=c;d.textContent=l||' ';screen.appendChild(d)});screen.scrollTop=screen.scrollHeight}
+async function slow(lines,ms=180){for(const [t,c] of lines){out(t,c);await sleep(ms)}}
+function clearScreen(){screen.innerHTML=''}
+function explain(h,html,kind){const e=$('explain');e.className='explain'+(kind?' '+kind:'');e.innerHTML='<div class="h">'+h+'</div>'+html}
+function lit(...ids){['f-file','f-img','f-ctr'].forEach(i=>$(i).classList.toggle('lit',ids.includes(i)))}
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2600)}
+function findC(q){return S.containers.find(c=>c.name===q)||S.containers.find(c=>q&&q.length>=2&&c.id.startsWith(q))}
+function setPrompt(){$('prompt').textContent=S.shell?`root@${S.shell.id.slice(0,12)}:/app#`:'you@laptop:~/myproject$'}
+
+/* ---------- missions ---------- */
+const M=[
+{t:'Say hello to Docker',b:'Run your very first container. Docker will download the image automatically if you don\'t have it.',h:'docker run hello-world',k:e=>e.type==='run'&&e.image==='hello-world:latest'},
+{t:'Download an image',b:'Images live in a <b>registry</b> (Docker Hub). <code>pull</code> downloads one without running it. Get the <code>nginx</code> web server.',h:'docker pull nginx',k:e=>e.type==='pull'&&e.image==='nginx:latest'},
+{t:'List your images',b:'See every image stored on your machine, the "frozen meals" in your freezer.',h:'docker images',k:e=>e.type==='images'},
+{t:'Read the recipe',b:'Look at the <b>Dockerfile</b> in this project. Read each line; the comments explain them.',h:'cat Dockerfile',k:e=>e.type==='cat'&&e.file==='Dockerfile'},
+{t:'Build your own image',b:'Turn the Dockerfile into an image called <code>myapp</code>. The <code>.</code> means "use the current folder". Try building <b>twice</b> to see caching!',h:'docker build -t myapp .',k:e=>e.type==='build'&&e.name==='myapp:latest'},
+{t:'Run it in the background',b:'Start <code>myapp</code> <b>detached</b> (<code>-d</code>), name it <code>web</code>, and map port 8000 on your laptop to port 8000 in the container (<code>-p</code>).',h:'docker run -d -p 8000:8000 --name web myapp',k:e=>e.type==='run'&&e.image==='myapp:latest'&&e.name==='web'&&e.ports.some(p=>p.h==='8000'&&p.c==='8000')},
+{t:'Visit your app',b:'Send a request to your app through the mapped port, just like opening it in a browser.',h:'curl localhost:8000',k:e=>e.type==='curl'&&e.ok&&e.port==='8000'},
+{t:'See running containers',b:'List the containers that are running right now.',h:'docker ps',k:e=>e.type==='ps'},
+{t:'Read the logs',b:'Containers print output to <b>logs</b>. This is your #1 debugging tool.',h:'docker logs web',k:e=>e.type==='logs'&&e.name==='web'},
+{t:'Step inside the container',b:'Open a shell <b>inside</b> the running container. Look around with <code>ls</code>, <code>pwd</code> and <code>python --version</code>, then type <code>exit</code>.',h:'docker exec -it web bash',k:e=>e.type==='exec'},
+{t:'Clean up',b:'Stop the <code>web</code> container, then remove it. (Try <code>docker rm web</code> first while it is running and see what happens!)',h:'docker stop web   then   docker rm web',k:e=>e.type==='rm'&&e.name==='web'},
+{t:'Database with a volume',b:'Run Postgres in the background with a <b>volume</b> so data survives, and a password via <code>-e</code>. (Forget the password and watch it crash. Check its logs!)',h:'docker run -d --name db -e POSTGRES_PASSWORD=secret -v dbdata:/var/lib/postgresql/data postgres:16',k:e=>e.type==='run'&&e.image==='postgres:16'&&e.vols.length&&e.status==='running'},
+{t:'Many containers at once',b:'Read <code>docker-compose.yml</code>, then start the whole app (web + database) with one command. Tip: remove old containers using port 8000 first.',h:'cat docker-compose.yml   then   docker compose up -d',k:e=>e.type==='compose-up'}
+];
+let active=0;
+function renderMissions(){
+  const n=Object.keys(done).length;$('pbar').style.width=(n/M.length*100)+'%';$('ptext').textContent=`${n} / ${M.length} missions`;
+  const first=M.findIndex((m,i)=>!done[i]);if(first>=0&&done[active])active=first;
+  $('missions').innerHTML=M.map((m,i)=>`<div class="mission ${done[i]?'done':''} ${i===active?'active':''}" onclick="setActive(${i})">
+   <div class="t"><span class="num">${done[i]?'✓':i+1}</span>${m.t}</div>
+   <div class="body">${m.b}<br><button class="hintbtn" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('show')">Show hint</button>
+   <div class="hint" onclick="event.stopPropagation();paste(${JSON.stringify(m.h.split('   then   ')[0]).replace(/"/g,'&quot;')})">$ ${m.h.replace(/   then   /g,'\n  …then…\n$ ')}</div></div></div>`).join('');
+}
+function setActive(i){active=i;renderMissions()}
+function paste(t){input.value=t;input.focus()}
+function check(e){M.forEach((m,i)=>{if(!done[i]&&m.k(e)){done[i]=1;toast('🎉 Mission '+(i+1)+' complete: '+m.t);
+  try{localStorage.setItem('dl_done',JSON.stringify(done))}catch(x){}
+  const nx=M.findIndex((mm,j)=>!done[j]);if(nx>=0)active=nx;
+  if(Object.keys(done).length===M.length)setTimeout(()=>toast('🏆 All missions done! Try the Quiz tab.'),2800)}});renderMissions()}
+
+/* ---------- state panel ---------- */
+function renderState(){
+  const im=Object.entries(S.images);$('ci').textContent=im.length;
+  $('s-img').innerHTML=im.length?im.map(([k,v])=>`<div class="obj img"><div class="n">${k}<span class="small">${v.size}</span></div><div class="m">ID ${v.id}</div></div>`).join(''):'<div class="empty">No images yet. Try docker pull</div>';
+  $('cc').textContent=S.containers.length;
+  $('s-ctr').innerHTML=S.containers.length?S.containers.map(c=>{const st=c.status==='running'?'<span class="pill run">● running</span>':c.code?`<span class="pill fail">exited (${c.code})</span>`:'<span class="pill exit">exited (0)</span>';
+   return `<div class="obj ctr ${c.status!=='running'?'stopped':''}"><div class="n">${c.name}${st}</div><div class="m">from ${c.image} · ${c.id.slice(0,12)}</div>${c.ports.map(p=>`<span class="tag">:${p.h} → :${p.c}</span>`).join('')}${c.vols.map(v=>`<span class="tag v">💾 ${v.split(':')[0]}</span>`).join('')}</div>`}).join(''):'<div class="empty">No containers. Try docker run</div>';
+  $('cv').textContent=S.volumes.length;
+  $('s-vol').innerHTML=S.volumes.length?S.volumes.map(v=>`<div class="obj vol"><div class="n">${v}</div><div class="m">survives container removal</div></div>`).join(''):'<div class="empty">No volumes yet</div>';
+}
+
+/* ---------- commands ---------- */
+const tok=s=>(s.match(/"[^"]*"|'[^']*'|\S+/g)||[]).map(t=>t.replace(/^["']|["']$/g,''));
+
+async function run(line){
+  line=line.trim();if(!line)return;
+  out((S.shell?`root@${S.shell.id.slice(0,12)}:/app# `:'$ ')+line,'cmd');
+  hist.push(line);hi=hist.length;
+  if(S.shell)return shellCmd(line);
+  for(const part of line.split('&&')){const ok=await exec1(part.trim());if(ok===false)break}
+  renderState();
+}
+
+async function exec1(line){
+  const a=tok(line);const c0=a[0];
+  if(c0==='clear'){clearScreen();return}
+  if(c0==='help')return help();
+  if(c0==='ls'){out(Object.keys(FILES).filter(f=>f[0]!=='.'||a.includes('-a')).join('   '));explain('📁 Project files','These are the files of a small Python web app. Try <code>cat Dockerfile</code>. (<code>ls -a</code> also shows the hidden <code>.dockerignore</code>.)');return}
+  if(c0==='cat'){const f=a[1];if(FILES[f]!==undefined){out(FILES[f],'acc');check({type:'cat',file:f});
+     if(f==='Dockerfile'){lit('f-file');explain('📄 The Dockerfile = the recipe','<code>FROM</code> picks a base image · <code>WORKDIR</code> sets the folder · <code>COPY</code> copies files in · <code>RUN</code> runs a command <b>while building</b> · <code>CMD</code> runs <b>when the container starts</b>. Next: <code>docker build -t myapp .</code>')}
+     else if(f==='docker-compose.yml')explain('🧩 Compose file','It describes <b>two services</b>: <code>web</code> (built from your Dockerfile) and <code>db</code> (Postgres). The web app can reach the database simply at the hostname <code>db</code>. Start everything with <code>docker compose up -d</code>.');
+     else if(f==='.dockerignore')explain('🙈 .dockerignore','Like .gitignore: these files are NOT copied into the image. This keeps images small and keeps secrets (.env) out.');
+     else explain('📄 '+f,'A normal project file. <code>COPY . .</code> in the Dockerfile puts it inside the image.');}
+   else{out(`cat: ${f||''}: No such file or directory`,'err')}return}
+  if(c0==='curl')return curl(a[1]||'');
+  if(c0==='python'||c0==='pip'||c0==='psql'){out(`${c0}: command not found`,'err');explain('🤔 Not installed on your laptop','That\'s exactly the point of Docker: you don\'t need Python or Postgres on your machine. They live <b>inside</b> containers. Try <code>docker exec -it web bash</code> and run it there.','bad');return false}
+  if(c0!=='docker'){out(`${c0}: command not found. Type "help" for ideas.`,'err');return false}
+  const sub=a[1],r=a.slice(2);
+  switch(sub){
+    case undefined:case '--help':return help();
+    case '--version':case 'version':out('Docker version 27.3.1, build ce12230 (simulated)');return;
+    case 'pull':return pull(r[0]);
+    case 'images':out(imagesTable());check({type:'images'});explain('📦 Images = frozen packages','Each image is a read-only template. You can start many containers from one image. The <b>SIZE</b> column is why people prefer <code>slim</code> base images.');lit('f-img');return;
+    case 'image':if(r[0]==='ls'){out(imagesTable());check({type:'images'});return}break;
+    case 'build':return build(r);
+    case 'run':return runC(r);
+    case 'ps':out(psTable(r.includes('-a')||r.includes('--all')));check({type:'ps'});
+      explain('▶️ docker ps','Shows <b>running</b> containers only. Add <code>-a</code> to also see stopped ones. Check the <b>PORTS</b> column: <code>0.0.0.0:8000->8000/tcp</code> means laptop port 8000 forwards to container port 8000.');return;
+    case 'container':if(r[0]==='ls'){out(psTable(r.includes('-a')));check({type:'ps'});return}break;
+    case 'stop':case 'start':case 'restart':return lifecycle(sub,r);
+    case 'rm':return rm(r);
+    case 'rmi':return rmi(r);
+    case 'logs':return logs(r);
+    case 'exec':return execC(r);
+    case 'volume':return volume(r);
+    case 'compose':return compose(r);
+    case 'system':if(r[0]==='prune'){const n=S.containers.filter(c=>c.status!=='running').length;S.containers=S.containers.filter(c=>c.status==='running');out(`Deleted ${n} stopped container(s).\nTotal reclaimed space: ${n*12}MB`,'ok');explain('🧹 Prune','Cleans up stopped containers and unused stuff. Volumes are kept unless you add <code>--volumes</code>.');return}break;
+  }
+  out(`docker: '${sub}' is not a docker command (in this simulator). Type "help".`,'err');return false;
+}
+
+function help(){out(`Commands you can try:
+  docker run hello-world          docker pull nginx
+  docker images                   docker build -t myapp .
+  docker run -d -p 8000:8000 --name web myapp
+  docker ps  /  docker ps -a      docker logs web
+  docker exec -it web bash        docker stop web / docker start web
+  docker rm web  (-f to force)    docker rmi myapp
+  docker volume ls / create NAME  docker compose up -d / down / ps
+  ls, cat FILE, curl localhost:PORT, clear
+Tip: ↑ / ↓ arrows = command history`,'dim')}
+
+function imagesTable(){const rows=Object.entries(S.images);if(!rows.length)return 'REPOSITORY   TAG   IMAGE ID   SIZE\n(no images yet)';
+  return 'REPOSITORY'.padEnd(18)+'TAG'.padEnd(12)+'IMAGE ID'.padEnd(15)+'SIZE\n'+rows.map(([k,v])=>{const [n,t]=k.split(':');return n.padEnd(18)+t.padEnd(12)+v.id.padEnd(15)+v.size}).join('\n')}
+function psTable(all){const rows=S.containers.filter(c=>all||c.status==='running');
+  const head='CONTAINER ID'.padEnd(15)+'IMAGE'.padEnd(18)+'STATUS'.padEnd(18)+'PORTS'.padEnd(26)+'NAMES';
+  return head+'\n'+(rows.length?rows.map(c=>c.id.slice(0,12).padEnd(15)+c.image.replace(':latest','').padEnd(18)+(c.status==='running'?'Up '+ago(c.t):`Exited (${c.code||0})`).padEnd(18)+c.ports.map(p=>`0.0.0.0:${p.h}->${p.c}/tcp`).join(',').padEnd(26)+c.name).join('\n'):all?'(none)':'(no running containers, try docker ps -a)')}
+function ago(t){const s=(Date.now()-t)/1000|0;return s<60?s+' seconds':((s/60|0)+' minutes')}
+
+async function pull(img,quiet){
+  if(!img){out('"docker pull" requires 1 argument.','err');return false}
+  const k=norm(img);
+  if(!HUB[k]){out(`Error response from daemon: pull access denied for ${img.split(':')[0]}, repository does not exist`,'err');
+    if(!quiet)explain('❌ Not on Docker Hub','In this simulator you can pull: <code>hello-world</code>, <code>nginx</code>, <code>python:3.12-slim</code>, <code>postgres:16</code>, <code>redis:7</code>, <code>ubuntu</code>. Your own images (like <code>myapp</code>) must be <b>built</b>, not pulled.','bad');return false}
+  busy=true;const [n,t]=k.split(':');
+  await slow([[`${t}: Pulling from library/${n}`,'dim'],[`${hex(12)}: Pull complete`,'dim'],[`${hex(12)}: Pull complete`,'dim'],[`Digest: sha256:${hex(32)}`,'dim'],[`Status: Downloaded newer image for ${k}`,'ok']],160);
+  busy=false;
+  if(!S.images[k])S.images[k]={id:hex(12),size:HUB[k]};
+  renderState();lit('f-img');
+  if(!quiet){check({type:'pull',image:k});explain('⬇️ Pulled from the registry','The image was downloaded from <b>Docker Hub</b>, an online store of images. It\'s made of <b>layers</b> (the "Pull complete" lines). Now see it with <code>docker images</code>.','good')}
+}
+
+async function build(r){
+  let name=null;for(let i=0;i<r.length;i++){if(r[i]==='-t'||r[i]==='--tag')name=r[++i];}
+  if(!r.includes('.')){out('ERROR: "docker build" requires exactly 1 argument (the build context, usually ".")','err');explain('❌ Missing the dot','The <code>.</code> at the end tells Docker which folder to send for the build. Try <code>docker build -t myapp .</code>','bad');return false}
+  busy=true;const cached=S.builds>0;S.builds++;
+  const base=!S.images['python:3.12-slim'];
+  const L=[['[+] Building '+(cached?'0.8s':'14.2s')+' (10/10) FINISHED','acc'],[' => [internal] load build definition from Dockerfile','dim'],[' => [internal] load .dockerignore','dim'],
+   [' => [1/5] FROM docker.io/library/python:3.12-slim'+(base?'  (downloading…)':'  CACHED'),''],
+   [' => '+(cached?'CACHED ':'')+'[2/5] WORKDIR /app',cached?'ok':''],[' => '+(cached?'CACHED ':'')+'[3/5] COPY requirements.txt .',cached?'ok':''],
+   [' => '+(cached?'CACHED ':'')+'[4/5] RUN pip install --no-cache-dir -r requirements.txt',cached?'ok':''],[' => [5/5] COPY . .',''],[' => exporting to image','dim'],[' => naming to docker.io/library/'+norm(name||'<none>'),'ok']];
+  await slow(L,cached?90:260);busy=false;
+  if(base)S.images['python:3.12-slim']={id:hex(12),size:'124MB'};
+  const k=name?norm(name):'<none>:<none>';
+  S.images[k]={id:hex(12),size:'131MB'};
+  renderState();lit('f-file','f-img');check({type:'build',name:k});
+  if(!name){explain('⚠️ Built, but no name','Without <code>-t name</code> your image is called <code>&lt;none&gt;</code>, which is hard to use. Try <code>docker build -t myapp .</code>','bad');return}
+  if(cached)explain('⚡ CACHED! That\'s layer caching','Docker saw that the first steps didn\'t change, so it reused them. That\'s why we <code>COPY requirements.txt</code> <b>before</b> <code>COPY . .</code>: changing your code doesn\'t reinstall all libraries.','good');
+  else explain('🏗️ Image built!','Docker followed the Dockerfile <b>step by step</b>; each step became a <b>layer</b>. Your image <code>'+k+'</code> is ready. Build it again to see caching, or run it: <code>docker run -d -p 8000:8000 --name web myapp</code>','good');
+}
+
+function parseRun(args){
+  const o={d:false,it:false,ports:[],name:null,vols:[],env:{},rm:false,image:null,cmd:[]};
+  for(let i=0;i<args.length;i++){const a=args[i];
+    if(o.image){o.cmd.push(a);continue}
+    if(a==='-d'||a==='--detach')o.d=true;
+    else if(['-it','-ti','-i','-t'].includes(a))o.it=true;
+    else if(a==='-dit'||a==='-itd'){o.d=true;o.it=true}
+    else if(a==='-p'||a==='--publish')o.ports.push(args[++i]||'');
+    else if(a==='--name')o.name=args[++i];
+    else if(a.startsWith('--name='))o.name=a.slice(7);
+    else if(a==='-v'||a==='--volume')o.vols.push(args[++i]||'');
+    else if(a==='-e'||a==='--env'){const kv=args[++i]||'';const [k,...rr]=kv.split('=');o.env[k]=rr.join('=')}
+    else if(a==='--rm')o.rm=true;
+    else if(a.startsWith('-'))return{err:'unknown flag: '+a};
+    else o.image=a}
+  return o}
+
+async function runC(r){
+  const o=parseRun(r);
+  if(o.err){out('docker: '+o.err,'err');return false}
+  if(!o.image){out('"docker run" requires at least 1 argument (the image).','err');return false}
+  for(const p of o.ports)if(!/^\d+:\d+$/.test(p)){out(`docker: invalid publish format "${p}". Use HOST_PORT:CONTAINER_PORT, e.g. 8000:8000`,'err');return false}
+  const k=norm(o.image);
+  if(o.name&&S.containers.some(c=>c.name===o.name)){out(`docker: Error response from daemon: Conflict. The container name "/${o.name}" is already in use. You have to remove (or rename) that container to be able to reuse that name.`,'err');
+    explain('❌ Name already taken','Container names must be unique, <b>even for stopped containers</b>. Remove the old one with <code>docker rm '+o.name+'</code> (add <code>-f</code> if it\'s running).','bad');return false}
+  const ports=o.ports.map(p=>{const [h,c]=p.split(':');return{h,c}});
+  for(const p of ports){const u=S.containers.find(c=>c.status==='running'&&c.ports.some(q=>q.h===p.h));
+    if(u){out(`docker: Error response from daemon: Bind for 0.0.0.0:${p.h} failed: port is already allocated.`,'err');explain('❌ Port already in use','Container <code>'+u.name+'</code> already uses laptop port '+p.h+'. Stop it (<code>docker stop '+u.name+'</code>) or pick another host port, e.g. <code>-p 8001:'+p.c+'</code>.','bad');return false}}
+  if(!S.images[k]){
+    if(!HUB[k]){out(`Unable to find image '${k}' locally`,'warn');out(`docker: Error response from daemon: pull access denied for ${o.image.split(':')[0]}, repository does not exist or may require 'docker login'.`,'err');
+      explain('❌ Image not found','Docker looked on your machine, then on Docker Hub, and found nothing. '+(k==='myapp:latest'?'You need to <b>build</b> it first: <code>docker build -t myapp .</code>':'Check the spelling.'),'bad');return false}
+    out(`Unable to find image '${k}' locally`,'warn');await pull(o.image,true);
+  }
+  for(const v of o.vols){const n=v.split(':')[0];if(n&&!n.startsWith('/')&&!S.volumes.includes(n))S.volumes.push(n)}
+  const c={id:hex(64),name:o.name||rname(),image:k,status:'running',code:0,ports,vols:o.vols,env:o.env,t:Date.now(),logs:[]};
+  let msg;
+  if(k==='hello-world:latest'){
+    c.status='exited';c.logs=['Hello from Docker!','This message shows that your installation appears to be working correctly.'];
+    out(`
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client.`,'ok');
+    msg=['🎉 Your first container!','Docker <b>pulled</b> the image, <b>created</b> a container from it, ran it, printed the message, and the container <b>exited</b> because its job was done. See it on the right (status: exited). Containers live only as long as their main process.','good'];
+  } else if(k.startsWith('postgres')&&!o.env.POSTGRES_PASSWORD){
+    c.status='exited';c.code=1;c.logs=['Error: Database is uninitialized and superuser password is not specified.','       You must specify POSTGRES_PASSWORD to a non-empty value for the','       superuser. For example, "-e POSTGRES_PASSWORD=password" on "docker run".'];
+    if(o.d)out(c.id,'dim');else out(c.logs.join('\n'),'err');
+    msg=['💥 It crashed. Let\'s debug!','The container started and then immediately <b>exited with code 1</b>. Real-world tip: when a container dies, run <code>docker logs '+c.name+'</code> to find out why. (Spoiler: it needs <code>-e POSTGRES_PASSWORD=...</code>.)','bad'];
+  } else {
+    if(k.startsWith('postgres'))c.logs=['PostgreSQL init process complete; ready for start up.','LOG:  starting PostgreSQL 16.4 on x86_64-pc-linux-gnu','LOG:  listening on IPv4 address "0.0.0.0", port 5432','LOG:  database system is ready to accept connections'];
+    else if(k.startsWith('nginx'))c.logs=['/docker-entrypoint.sh: Configuration complete; ready for start up','nginx/1.27.2 start worker processes'];
+    else if(k.startsWith('redis'))c.logs=['Redis version=7.4.1, bits=64','* Ready to accept connections tcp'];
+    else if(k.startsWith('python')||k.startsWith('ubuntu')){c.status='exited';c.logs=[]}
+    else c.logs=['Server running on port 8000'];
+    if(o.d)out(c.id,'dim');else{out(c.logs.join('\n'));if(c.status==='running')out('(simulator: in real Docker your terminal would now be "attached" to the container. Use -d to run it in the background.)','warn')}
+    if(c.status==='exited')msg=['⏹️ Started and exited','This image has no long-running process, so it exits straight away. To play inside it, use <code>docker run -it '+o.image+' bash</code>... (or run a server image like nginx).'];
+    else msg=['▶️ Container running!',(o.d?'<code>-d</code> = <b>detached</b>: it runs in the background and Docker printed its ID. ':'')+(ports.length?'Port mapping <code>'+ports.map(p=>p.h+':'+p.c).join(', ')+'</code>: laptop port → container port. Test it: <code>curl localhost:'+ports[0].h+'</code>. ':'No <code>-p</code>, so it\'s unreachable from your laptop. ')+(o.vols.length?'The volume <code>'+o.vols[0].split(':')[0]+'</code> stores data <b>outside</b> the container, so it survives deletion. ':'')+(Object.keys(o.env).length?'<code>-e</code> passed settings as environment variables (never bake secrets into images!).':''),'good'];
+  }
+  if(o.rm&&c.status!=='running'){}else S.containers.push(c);
+  renderState();lit('f-img','f-ctr');explain(...msg);
+  check({type:'run',image:k,name:c.name,ports,vols:o.vols,status:c.status,d:o.d});
+}
+
+function curl(u){
+  const m=u.match(/(?:https?:\/\/)?(?:localhost|127\.0\.0\.1):(\d+)/);
+  if(!m){out('curl: (3) URL rejected. Try: curl localhost:8000','err');return false}
+  const port=m[1];const c=S.containers.find(c=>c.status==='running'&&c.ports.some(p=>p.h===port));
+  if(!c){out(`curl: (7) Failed to connect to localhost port ${port}: Connection refused`,'err');
+    const hidden=S.containers.find(c=>c.status==='running'&&!c.ports.length);
+    explain('❌ Connection refused','Nothing is listening on laptop port '+port+'. '+(hidden?'Container <code>'+hidden.name+'</code> is running but has <b>no port mapping</b>, and containers are isolated by default! Re-run it with <code>-p '+port+':8000</code>.':'Is your container running (<code>docker ps</code>) and started with <code>-p '+port+':…</code>?'),'bad');check({type:'curl',ok:false,port});return false}
+  if(c.image.startsWith('nginx'))out('<!DOCTYPE html><html><head><title>Welcome to nginx!</title></head>\n<body><h1>Welcome to nginx!</h1></body></html>','ok');
+  else if(c.image.startsWith('postgres')||c.image.startsWith('redis')){out('curl: (52) Empty reply from server','warn');explain('🤷 Not a web server','This container speaks a database protocol, not HTTP. The port works, but curl isn\'t the right client.');return}
+  else out('{"message": "Hello from inside a container!"}','ok');
+  c.logs.push(`172.17.0.1 - - "GET / HTTP/1.1" 200 -`);
+  explain('🌐 It works!','Your request went to <b>laptop port '+port+'</b> → Docker forwarded it → <b>container port '+c.ports.find(p=>p.h===port).c+'</b> → the app answered. That\'s what <code>-p</code> does. (It also added a line to <code>docker logs '+c.name+'</code>.)','good');
+  check({type:'curl',ok:true,port});
+}
+
+function lifecycle(sub,r){
+  if(!r.length){out(`"docker ${sub}" requires at least 1 argument.`,'err');return false}
+  for(const q of r){const c=findC(q);if(!c){out(`Error response from daemon: No such container: ${q}`,'err');continue}
+    if(sub==='stop'){c.status='exited';c.code=0;c.logs.push('Received SIGTERM, shutting down');out(q)}
+    else{if(c.image.startsWith('postgres')&&!c.env.POSTGRES_PASSWORD){out(q);c.status='exited';c.code=1;continue}
+      if(c.image==='hello-world:latest'){out(q);continue}
+      const clash=S.containers.find(x=>x!==c&&x.status==='running'&&x.ports.some(p=>c.ports.some(q=>q.h===p.h)));
+      if(clash){out(`Error response from daemon: port is already allocated (used by ${clash.name})`,'err');continue}
+      c.status='running';c.t=Date.now();out(q)}}
+  renderState();lit('f-ctr');
+  explain(sub==='stop'?'⏹️ Stopped (not deleted!)':'▶️ Started again',sub==='stop'?'The container is stopped but still exists. See it with <code>docker ps -a</code>. You can <code>docker start</code> it again, or delete it with <code>docker rm</code>.':'A stopped container can be started again with the same settings and files.');
+}
+
+function rm(r){
+  const f=r.includes('-f')||r.includes('--force');const names=r.filter(x=>!x.startsWith('-'));
+  if(!names.length){out('"docker rm" requires at least 1 argument.','err');return false}
+  for(const q of names){const c=findC(q);
+    if(!c){out(`Error response from daemon: No such container: ${q}`,'err');continue}
+    if(c.status==='running'&&!f){out(`Error response from daemon: cannot remove container "/${c.name}": container is running: stop the container before removing or force remove`,'err');
+      explain('🛑 Safety first','Docker refuses to delete a <b>running</b> container. Either <code>docker stop '+c.name+'</code> first, or force it with <code>docker rm -f '+c.name+'</code>.','bad');continue}
+    S.containers=S.containers.filter(x=>x!==c);out(q);
+    explain('🗑️ Container removed','The container and everything written <b>inside</b> it are gone. The <b>image</b> is still there, so you can start a fresh container anytime.'+(c.vols.length?' Its <b>volume</b> also survived, so the data is safe! 💾':''),'good');
+    check({type:'rm',name:c.name})}
+  renderState();
+}
+
+function rmi(r){const q=r.find(x=>!x.startsWith('-'));if(!q){out('"docker rmi" requires at least 1 argument.','err');return false}
+  const k=norm(q);if(!S.images[k]){out(`Error response from daemon: No such image: ${q}`,'err');return false}
+  const u=S.containers.find(c=>c.image===k);
+  if(u&&!r.includes('-f')){out(`Error response from daemon: conflict: unable to remove repository reference "${q}" - container ${u.id.slice(0,12)} is using its referenced image`,'err');
+    explain('🔗 Image is in use','A container (<code>'+u.name+'</code>) was created from this image. Remove the container first with <code>docker rm '+u.name+'</code>.','bad');return false}
+  delete S.images[k];out(`Untagged: ${k}\nDeleted: sha256:${hex(32)}`);explain('🗑️ Image deleted','The template is gone. You\'d need to pull or build it again to run new containers from it.');renderState()}
+
+function logs(r){const q=r.find(x=>!x.startsWith('-'));const c=findC(q);
+  if(!c){out(`Error response from daemon: No such container: ${q||''}`,'err');return false}
+  out(c.logs.length?c.logs.join('\n'):'(no output)');check({type:'logs',name:c.name});
+  explain('📜 Logs','Everything the app prints goes here. When a container misbehaves or crashes, <b>logs are the first place to look</b>. Add <code>-f</code> in real Docker to follow them live.',c.code?'bad':'')}
+
+function execC(r){const ns=r.filter(x=>!x.startsWith('-'));const c=findC(ns[0]);
+  if(!c){out(`Error response from daemon: No such container: ${ns[0]||''}`,'err');return false}
+  if(c.status!=='running'){out(`Error response from daemon: container ${c.id.slice(0,12)} is not running`,'err');explain('❌ Not running','You can only <code>exec</code> into a <b>running</b> container. Start it with <code>docker start '+c.name+'</code>.','bad');return false}
+  if(!['bash','sh','/bin/bash','/bin/sh'].includes(ns[1])){out('In this simulator, use: docker exec -it '+c.name+' bash','warn');return false}
+  S.shell=c;setPrompt();out('(you are now INSIDE the container. Try: ls, pwd, whoami, python --version, env, exit)','dim');
+  explain('🚪 You\'re inside the container','This shell runs <b>inside</b> the container: a separate little Linux world. Notice Python is installed here even though it isn\'t on your laptop. Type <code>exit</code> to leave (the container keeps running).');
+  check({type:'exec'})}
+
+function shellCmd(line){const c=S.shell,a=tok(line);const app=c.image.startsWith('myapp')||c.image.startsWith('app-web');
+  switch(a[0]){
+    case 'exit':S.shell=null;setPrompt();out('exit','dim');explain('👋 Back on your laptop','You left the container. It is still running in the background. Changes you made inside are lost when the container is removed.');renderState();return;
+    case 'ls':out(app?'Dockerfile  app.py  docker-compose.yml  requirements.txt':'bin  boot  dev  etc  home  lib  root  tmp  usr  var');return;
+    case 'pwd':out(app?'/app':'/');return;
+    case 'whoami':out('root');explain('⚠️ Running as root','By default containers run as root. In production, add a <code>USER</code> line in the Dockerfile to run as a normal user. Safer!');return;
+    case 'hostname':out(c.id.slice(0,12));explain('🏷️ Hostname = container ID','Each container gets its own hostname and network identity.');return;
+    case 'python':case 'python3':if(app&&a[1]==='--version'){out('Python 3.12.7');return}break;
+    case 'env':out(['HOSTNAME='+c.id.slice(0,12),'HOME=/root','PATH=/usr/local/bin:/usr/bin:/bin',...Object.entries(c.env).map(([k,v])=>k+'='+v)].join('\n'));explain('🔧 Environment variables','Values passed with <code>-e</code> show up here. That\'s how apps read config and secrets safely.');return;
+    case 'cat':if(app&&FILES[a[1]]){out(FILES[a[1]],'acc');return}out(`cat: ${a[1]||''}: No such file or directory`,'err');return;
+    case 'ps':out('PID  CMD\n  1  '+(app?'python app.py':c.image.split(':')[0])+'\n 27  bash\n 34  ps');explain('🔢 PID 1','The main process (PID 1) <b>is</b> the container. If it stops, the container stops.');return;
+    case 'clear':clearScreen();return;
+  }
+  out(`bash: ${a[0]}: command not found`,'err')}
+
+function volume(r){
+  if(r[0]==='ls'){out('DRIVER    VOLUME NAME\n'+(S.volumes.map(v=>'local     '+v).join('\n')||'(none)'));explain('💾 Volumes','Volumes are storage that lives <b>outside</b> containers. Delete a container and its volume (and your data) stays.');return}
+  if(r[0]==='create'&&r[1]){if(!S.volumes.includes(r[1]))S.volumes.push(r[1]);out(r[1]);renderState();explain('💾 Volume created','Attach it with <code>-v '+r[1]+':/path/in/container</code>.','good');return}
+  if(r[0]==='rm'&&r[1]){const u=S.containers.find(c=>c.vols.some(v=>v.split(':')[0]===r[1]));if(u){out(`Error response from daemon: remove ${r[1]}: volume is in use - [${u.id.slice(0,12)}]`,'err');return false}
+    S.volumes=S.volumes.filter(v=>v!==r[1]);out(r[1]);renderState();explain('🗑️ Volume deleted','Now the data is really gone. Be careful with this one in real life!','bad');return}
+  out('Usage: docker volume ls | create NAME | rm NAME','warn')}
+
+async function compose(r){
+  const sub=r[0];
+  if(sub==='up'){
+    const clash=S.containers.find(c=>c.status==='running'&&!c.name.startsWith('app-')&&c.ports.some(p=>p.h==='8000'));
+    if(S.containers.some(c=>c.name==='app-web-1')){out('Container app-db-1  Running\nContainer app-web-1  Running','dim');return}
+    busy=true;
+    const L=[];if(!S.images['postgres:16'])L.push([' ✔ db Pulled','ok']);
+    L.push([' ✔ web Built','ok'],[' ✔ Network app_default        Created','ok'],[' ✔ Volume "app_dbdata"        Created','ok'],[' ✔ Container app-db-1         Started','ok']);
+    await slow(L,250);
+    if(clash){out(' ✘ Container app-web-1  Error response from daemon: Bind for 0.0.0.0:8000 failed: port is already allocated','err');busy=false;
+      explain('❌ Port 8000 is busy','Your old <code>'+clash.name+'</code> container still uses port 8000. Run <code>docker rm -f '+clash.name+'</code> then <code>docker compose up -d</code> again.','bad');
+      if(!S.containers.some(c=>c.name==='app-db-1'))S.containers.push(mkC('app-db-1','postgres:16',[],['app_dbdata:/var/lib/postgresql/data'],{POSTGRES_PASSWORD:'example'}));if(!S.volumes.includes('app_dbdata'))S.volumes.push('app_dbdata');renderState();return false}
+    out(' ✔ Container app-web-1        Started','ok');busy=false;
+    S.images['postgres:16']=S.images['postgres:16']||{id:hex(12),size:'435MB'};S.images['app-web:latest']={id:hex(12),size:'131MB'};
+    if(!S.volumes.includes('app_dbdata'))S.volumes.push('app_dbdata');
+    if(!S.containers.some(c=>c.name==='app-db-1'))S.containers.push(mkC('app-db-1','postgres:16',[],['app_dbdata:/var/lib/postgresql/data'],{POSTGRES_PASSWORD:'example'}));
+    S.containers.push(mkC('app-web-1','app-web:latest',[{h:'8000',c:'8000'}],[],{}));
+    if(!r.includes('-d'))out('(simulator: without -d, compose would stay attached and stream logs.)','warn');
+    renderState();lit('f-file','f-img','f-ctr');
+    explain('🧩 Whole app started with ONE command','Compose created a <b>network</b> (so <code>web</code> can reach the database at hostname <code>db</code>), a <b>volume</b> for the data, and both <b>containers</b>. Try <code>curl localhost:8000</code>, <code>docker compose ps</code>, then <code>docker compose down</code>.','good');
+    check({type:'compose-up'});return}
+  if(sub==='down'){const had=S.containers.filter(c=>c.name.startsWith('app-'));S.containers=S.containers.filter(c=>!c.name.startsWith('app-'));
+    await slow([...had.map(c=>[` ✔ Container ${c.name}  Removed`,'ok']),[' ✔ Network app_default  Removed','ok']],150);renderState();
+    explain('⬇️ compose down','All containers and the network are removed, but the <b>volume <code>app_dbdata</code> is kept</b>, so your database data survives. (Add <code>-v</code> to delete volumes too.)','good');return}
+  if(sub==='ps'){const cs=S.containers.filter(c=>c.name.startsWith('app-'));out('NAME         IMAGE            STATUS     PORTS\n'+(cs.map(c=>c.name.padEnd(13)+c.image.replace(':latest','').padEnd(17)+(c.status==='running'?'Up':'Exited').padEnd(11)+c.ports.map(p=>'0.0.0.0:'+p.h+'->'+p.c+'/tcp').join('')).join('\n')||'(none)'));return}
+  if(sub==='logs'){S.containers.filter(c=>c.name.startsWith('app-')).forEach(c=>c.logs.forEach(l=>out(c.name.replace('app-','').replace('-1','')+'-1  | '+l)));return}
+  out('Usage: docker compose up -d | down | ps | logs','warn')}
+function mkC(name,image,ports,vols,env){const isDb=image.startsWith('postgres');return{id:hex(64),name,image,status:'running',code:0,ports,vols,env,t:Date.now(),logs:isDb?['LOG:  database system is ready to accept connections']:['Server running on port 8000','Connected to database at db:5432']}}
+
+/* ---------- input ---------- */
+input.addEventListener('keydown',async e=>{
+  if(e.key==='Enter'){if(busy)return;const v=input.value;input.value='';await run(v)}
+  else if(e.key==='ArrowUp'){if(hi>0){hi--;input.value=hist[hi]}e.preventDefault()}
+  else if(e.key==='ArrowDown'){if(hi<hist.length-1){hi++;input.value=hist[hi]}else{hi=hist.length;input.value=''}e.preventDefault()}
+});
+screen.addEventListener('click',()=>input.focus());
+
+function resetAll(){S=fresh();done={};try{localStorage.removeItem('dl_done')}catch(e){}active=0;clearScreen();setPrompt();renderState();renderMissions();lit();
+  explain('🔄 Fresh start','Everything is reset. Begin with mission 1!');welcome()}
+function welcome(){out('Welcome to Docker Lab 🐳  (simulated, safe to experiment)','acc');out('Type "help" to see commands, or follow the missions on the left.\n','dim')}
+
+/* ---------- tabs ---------- */
+document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav.tabs button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v));if(b.dataset.v==='lab')input.focus()});
+
+/* ---------- concepts ---------- */
+const C=[
+['🤕 The problem','"It works on my machine!" Apps break on other computers because of different versions, missing libraries, or another OS.','Docker = a lunchbox 🍱. You hand over the ready meal, not a shopping list.'],
+['📄 Dockerfile','A text file with step-by-step instructions to build your image: base image, files to copy, packages to install, start command.','The recipe.'],
+['📦 Image','A read-only, frozen package built from a Dockerfile, made of cached layers. Shared through registries like Docker Hub.','The frozen meal in the freezer.'],
+['▶️ Container','A running instance of an image. Isolated, lightweight, starts in seconds. You can run many from one image. Deleting it loses data written inside.','The meal heated up and being eaten.'],
+['🔌 Ports (-p)','Containers are isolated. -p 8000:80 forwards laptop port 8000 → container port 80. Format: HOST:CONTAINER.','A door from the street into one apartment.'],
+['💾 Volumes (-v)','Storage that lives outside the container, so data (like a database) survives restarts and deletion.','A storage locker that stays when you move out.'],
+['🔐 Env variables (-e)','Pass config and secrets at run time. Never put passwords or API keys inside the Dockerfile or image.','A sealed note given to the chef when cooking starts.'],
+['🧩 Docker Compose','One YAML file describes several containers (app + db + cache). docker compose up starts them all; they reach each other by service name.','The whole menu ordered at once.'],
+['🏠 Container vs VM','A VM fakes a whole computer with its own OS (heavy, minutes to start). Containers share the host kernel (light, seconds).','VM = separate house. Containers = apartments in one building.'],
+['🚀 Docker in CI/CD','CI builds the image and runs tests in it → pushes to a registry → CD deploys the exact same image to production.','The same sealed lunchbox from kitchen to customer.'],
+['☸️ What\'s next: Kubernetes','Runs and manages many containers across many servers: auto-restart, scaling, rolling updates.','The manager of the apartment buildings.'],
+['✅ Good habits','Slim base images · .dockerignore · pin versions (postgres:16) · one process per container · no secrets in images · non-root USER · multi-stage builds.','What interviewers love to hear.']];
+$('concepts').innerHTML=C.map(c=>`<div class="card concept"><h3>${c[0]}</h3><div>${c[1]}</div><div class="an">💡 ${c[2]}</div></div>`).join('');
+
+/* ---------- cheat sheet ---------- */
+const CH=[['docker run hello-world','Test that Docker works'],['docker pull nginx','Download an image'],['docker images','List images'],['docker build -t myapp .','Build an image from the Dockerfile in this folder'],['docker run -d -p 8000:8000 --name web myapp','Run in background, map port, give a name'],['docker ps','Running containers (-a = all)'],['docker logs web','See container output'],['docker exec -it web bash','Open a shell inside a running container'],['docker stop web','Stop a container'],['docker start web','Start a stopped container'],['docker rm web','Delete a container (-f to force)'],['docker rmi myapp','Delete an image'],['docker volume ls','List volumes'],['docker run -d --name db -e POSTGRES_PASSWORD=secret -v dbdata:/var/lib/postgresql/data postgres:16','Database with password + persistent volume'],['docker compose up -d','Start all services from docker-compose.yml'],['docker compose down','Stop & remove them (volumes kept)'],['docker system prune','Clean up stopped containers']];
+$('cheatT').innerHTML=CH.map(c=>`<tr data-c="${c[0]}"><td><code>${c[0]}</code></td><td>${c[1]}</td></tr>`).join('');
+document.querySelectorAll('#cheatT tr').forEach(tr=>tr.onclick=()=>{document.querySelector('nav.tabs button[data-v=lab]').click();paste(tr.dataset.c)});
+
+/* ---------- quiz ---------- */
+const Q=[
+['What is the difference between an image and a container?',['They are the same thing','A container is a running instance of an image','An image is a running container','An image is a virtual machine'],1,'The image is the frozen template; a container is a live, running copy of it. One image → many containers.'],
+['What does -p 8080:80 mean?',['Container port 8080 → laptop port 80','Laptop port 8080 → container port 80','Use 8080 MB of memory','Run 80 copies'],1,'Format is HOST:CONTAINER. Your laptop\'s 8080 forwards to the app listening on 80 inside.'],
+['You write data inside a container, then run docker rm. What happens to the data?',['It\'s saved in the image','It\'s lost, unless it was stored in a volume','It moves to Docker Hub','Nothing, containers can\'t be removed'],1,'Container filesystems are temporary. Use volumes (-v) for data that must survive.'],
+['Why copy requirements.txt BEFORE copying the rest of the code?',['It\'s required by Python','To use layer caching so dependencies aren\'t reinstalled on every code change','To make the image bigger','It has no effect'],1,'Docker caches each step. If requirements.txt didn\'t change, the slow pip install step is reused.'],
+['Where should you put an API key?',['In the Dockerfile with ENV','Hard-coded in app.py','Pass it at run time with -e or --env-file','In the image name'],2,'Anything in the Dockerfile ends up in the image and can be read by anyone who has it.'],
+['docker rm web fails with "container is running". What do you do?',['Delete Docker','docker stop web first (or docker rm -f web)','docker pull web','docker build web'],1,'Docker protects running containers. Stop first, or force with -f.'],
+['In Docker Compose, how does the web service connect to the db service?',['Using localhost','Using the hostname "db"','Using your laptop\'s IP','They can\'t talk'],1,'Compose puts services on a shared network where each service name is a hostname.'],
+['RUN vs CMD in a Dockerfile?',['Same thing','RUN executes at build time; CMD is the command when the container starts','CMD runs at build time','RUN only works on Windows'],1,'RUN bakes results into the image (e.g. installing packages). CMD is what the container does when it runs.'],
+['Why are containers lighter than virtual machines?',['They use no memory','They share the host\'s OS kernel instead of running a full OS','They only run Python','They run in the browser'],1,'VMs boot a whole guest OS; containers just isolate processes on the host kernel.'],
+['A container keeps crashing. What is the FIRST command to run?',['docker rmi','docker logs <name>','docker pull','docker volume rm'],1,'Logs show what the app printed before it died. Most problems become obvious there.']];
+let qs={};
+function buildQuiz(){qs={};$('quiz').innerHTML=Q.map((q,i)=>`<div class="card q"><div class="qt">${i+1}. ${q[0]}</div>${q[1].map((o,j)=>`<button class="opt" data-q="${i}" data-o="${j}">${o}</button>`).join('')}<div class="fb" id="fb${i}"></div></div>`).join('');
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>answer(+b.dataset.q,+b.dataset.o));score()}
+function answer(i,j){if(qs[i]!==undefined)return;qs[i]=j===Q[i][2];
+  document.querySelectorAll(`.opt[data-q="${i}"]`).forEach(b=>{const o=+b.dataset.o;b.disabled=true;if(o===Q[i][2])b.classList.add('right');else if(o===j)b.classList.add('wrong')});
+  const f=$('fb'+i);f.innerHTML=(qs[i]?'✅ <b>Correct!</b> ':'❌ <b>Not quite.</b> ')+Q[i][3];f.classList.add('show');score()}
+function score(){const n=Object.keys(qs).length,c=Object.values(qs).filter(Boolean).length;
+  $('score').textContent=n<Q.length?`Score: ${c} / ${n} answered (of ${Q.length})`:(c>=8?`🏆 ${c}/${Q.length}: Docker ready!`:`${c}/${Q.length}: review the Concepts tab and try again 💪`)}
+
+/* ---------- init ---------- */
+welcome();renderMissions();renderState();buildQuiz();
+</script>
+</body>
+</html>

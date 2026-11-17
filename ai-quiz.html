@@ -1,10 +1,83 @@
 <div class="aiquiz-wrap">
-  <h2 class="aiquiz-title">🤖 AI Quiz</h2>
+  <h2 class="aiquiz-title">AI Skill Lab</h2>
+  <div class="sub-tabs" role="tablist" aria-label="AI Skill Lab sections">
+    <button type="button" class="sub-tab" role="tab" data-subtab="quiz" aria-selected="true">Quiz</button>
+    <button type="button" class="sub-tab" role="tab" data-subtab="cicd" aria-selected="false">CI/CD</button>
+    <button type="button" class="sub-tab" role="tab" data-subtab="docker" aria-selected="false">Docker</button>
+    <button type="button" class="sub-tab" role="tab" data-subtab="glossary" aria-selected="false">Glossary</button>
+  </div>
+  <div class="sub-panel active" id="sub-quiz">
   <div class="aiquiz-main" data-role="aiquiz-main" aria-live="polite"></div>
+  </div>
+  <div class="sub-panel" id="sub-cicd">
+  <details class="aiquiz-explainer" open>
+    <summary>CI/CD explained in plain words</summary>
+    <div class="aiquiz-explainer-body">
+      <p><strong>The idea:</strong> software is built by many people changing the same code. CI/CD is an automatic assembly line that checks every change before it reaches users.</p>
+      <ol class="aiquiz-explainer-steps">
+        <li><strong>Commit.</strong> A developer saves a change and pushes it to the shared code (for example on GitHub).</li>
+        <li><strong>CI (Continuous Integration).</strong> A robot immediately builds the project and runs the tests. If something breaks, you know within minutes, while the change is still small and easy to fix.</li>
+        <li><strong>CD (Continuous Delivery).</strong> If all checks pass, the new version is packaged and kept ready to ship at any time. A person chooses when to release it.</li>
+        <li><strong>CD (Continuous Deployment).</strong> Same idea, but the robot also sends every passing change to users automatically.</li>
+      </ol>
+  <figure class="pipe-figure">
+    <svg class="pipe-svg" viewBox="0 0 680 290" role="group" aria-label="CI/CD and AI production pipeline diagram">
+      <defs><marker id="pipe-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <g class="pipe-node pipe-dev" data-step="write" tabindex="0" role="button" aria-pressed="false">
+        <rect x="45" y="40" width="125" height="56" rx="8"/>
+        <text class="pipe-title" x="107" y="59">Write code</text>
+        <text class="pipe-sub" x="107" y="78">Push changes</text>
+      </g>
+      <g class="pipe-node pipe-ci" data-step="ci" tabindex="0" role="button" aria-pressed="false">
+        <rect x="200" y="40" width="125" height="56" rx="8"/>
+        <text class="pipe-title" x="262" y="59">CI</text>
+        <text class="pipe-sub" x="262" y="78">Build + tests</text>
+      </g>
+      <g class="pipe-node pipe-ci" data-step="cd" tabindex="0" role="button" aria-pressed="false">
+        <rect x="355" y="40" width="125" height="56" rx="8"/>
+        <text class="pipe-title" x="417" y="59">CD</text>
+        <text class="pipe-sub" x="417" y="78">Auto-release</text>
+      </g>
+      <g class="pipe-node pipe-prod" data-step="prod" tabindex="0" role="button" aria-pressed="false">
+        <rect x="510" y="40" width="125" height="56" rx="8"/>
+        <text class="pipe-title" x="572" y="59">Production</text>
+        <text class="pipe-sub" x="572" y="78">Real users</text>
+      </g>
+      <g class="pipe-node pipe-ai" data-step="monitor" tabindex="0" role="button" aria-pressed="false">
+        <rect x="510" y="170" width="125" height="56" rx="8"/>
+        <text class="pipe-title" x="572" y="189">Monitor</text>
+        <text class="pipe-sub" x="572" y="208">Check quality</text>
+      </g>
+      <g class="pipe-node pipe-ai" data-step="retrain" tabindex="0" role="button" aria-pressed="false">
+        <rect x="355" y="170" width="125" height="56" rx="8"/>
+        <text class="pipe-title" x="417" y="189">Retrain model</text>
+        <text class="pipe-sub" x="417" y="208">Fresh data</text>
+      </g>
+      <path class="pipe-arrow" d="M170 68 L197 68" marker-end="url(#pipe-arrowhead)"/>
+      <path class="pipe-arrow" d="M325 68 L352 68" marker-end="url(#pipe-arrowhead)"/>
+      <path class="pipe-arrow" d="M480 68 L507 68" marker-end="url(#pipe-arrowhead)"/>
+      <path class="pipe-arrow" d="M572 96 L572 167" marker-end="url(#pipe-arrowhead)"/>
+      <path class="pipe-arrow" d="M510 198 L483 198" marker-end="url(#pipe-arrowhead)"/>
+      <path class="pipe-arrow" d="M355 198 L262 198 L262 99" marker-end="url(#pipe-arrowhead)"/>
+      <text class="pipe-legend" x="340" y="280" text-anchor="middle">Purple = CI/CD · Coral = extra loop for AI (MLOps)</text>
+    </svg>
+    <figcaption class="pipe-detail" aria-live="polite"></figcaption>
+  </figure>
+      <p><strong>The pipeline:</strong> these steps, in order, are called a pipeline: code, then build, then test, then package, then deploy. Quick checks run first, so a broken change stops early.</p>
+      <p><strong>Where it lives:</strong> on GitHub, the steps are written in a YAML file inside <code>.github/workflows/</code>. The file says what to run and when, for example on every push.</p>
+      <p><strong>Why it matters:</strong> many small, tested releases are safer than one big release that nobody has fully tested.</p>
+    </div>
+  </details>
+  </div>
+  <div class="sub-panel" id="sub-docker">
+    <iframe class="docker-frame" src="docker-lab.html" title="Docker Lab" loading="lazy"></iframe>
+  </div>
+  <div class="sub-panel" id="sub-glossary">
   <div class="aiquiz-glossary-section">
     <button type="button" class="aiquiz-glossary-toggle" data-role="aiquiz-glossary-toggle">
       AI Acronym Glossary ▼
     </button>
     <div class="aiquiz-glossary" data-role="aiquiz-glossary" hidden></div>
+  </div>
   </div>
 </div>

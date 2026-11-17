@@ -1,10 +1,83 @@
 <div class="aiquiz-wrap">
-  <h2 class="aiquiz-title">🤖 Quiz IA</h2>
+  <h2 class="aiquiz-title">Labo IA</h2>
+  <div class="sub-tabs" role="tablist" aria-label="AI Skill Lab sections">
+    <button type="button" class="sub-tab" role="tab" data-subtab="quiz" aria-selected="true">Quiz</button>
+    <button type="button" class="sub-tab" role="tab" data-subtab="cicd" aria-selected="false">CI/CD</button>
+    <button type="button" class="sub-tab" role="tab" data-subtab="docker" aria-selected="false">Docker</button>
+    <button type="button" class="sub-tab" role="tab" data-subtab="glossary" aria-selected="false">Glossaire</button>
+  </div>
+  <div class="sub-panel active" id="sub-quiz">
   <div class="aiquiz-main" data-role="aiquiz-main" aria-live="polite"></div>
+  </div>
+  <div class="sub-panel" id="sub-cicd">
+  <details class="aiquiz-explainer" open>
+    <summary>Le CI/CD expliqué simplement</summary>
+    <div class="aiquiz-explainer-body">
+      <p><strong>L’idée :</strong> plusieurs personnes modifient le même code. Le CI/CD est une chaîne de montage automatique qui vérifie chaque modification avant qu’elle n’atteigne les utilisateurs.</p>
+      <ol class="aiquiz-explainer-steps">
+        <li><strong>Commit.</strong> Un développeur enregistre une modification et la envoie dans le code partagé (par exemple sur GitHub).</li>
+        <li><strong>CI (intégration continue).</strong> Un robot construit immédiatement le projet et lance les tests. Si quelque chose casse, on le sait en quelques minutes, quand la modification est encore petite et facile à corriger.</li>
+        <li><strong>CD (livraison continue).</strong> Si toutes les vérifications passent, la nouvelle version est empaquetée et prête à être publiée à tout moment. Une personne choisit le moment de la mise en ligne.</li>
+        <li><strong>CD (déploiement continu).</strong> Même principe, mais le robot envoie aussi automatiquement chaque modification validée aux utilisateurs.</li>
+      </ol>
+  <figure class="pipe-figure">
+    <svg class="pipe-svg" viewBox="0 0 680 290" role="group" aria-label="Schéma du pipeline CI/CD et IA en production">
+      <defs><marker id="pipe-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <g class="pipe-node pipe-dev" data-step="write" tabindex="0" role="button" aria-pressed="false">
+        <rect x="45" y="40" width="125" height="56" rx="8"/>
+        <text class="pipe-title" x="107" y="59">Écrire le code</text>
+        <text class="pipe-sub" x="107" y="78">Envoyer les modifications</text>
+      </g>
+      <g class="pipe-node pipe-ci" data-step="ci" tabindex="0" role="button" aria-pressed="false">
+        <rect x="200" y="40" width="125" height="56" rx="8"/>
+        <text class="pipe-title" x="262" y="59">CI</text>
+        <text class="pipe-sub" x="262" y="78">Build + tests</text>
+      </g>
+      <g class="pipe-node pipe-ci" data-step="cd" tabindex="0" role="button" aria-pressed="false">
+        <rect x="355" y="40" width="125" height="56" rx="8"/>
+        <text class="pipe-title" x="417" y="59">CD</text>
+        <text class="pipe-sub" x="417" y="78">Mise en ligne auto</text>
+      </g>
+      <g class="pipe-node pipe-prod" data-step="prod" tabindex="0" role="button" aria-pressed="false">
+        <rect x="510" y="40" width="125" height="56" rx="8"/>
+        <text class="pipe-title" x="572" y="59">Production</text>
+        <text class="pipe-sub" x="572" y="78">Vrais utilisateurs</text>
+      </g>
+      <g class="pipe-node pipe-ai" data-step="monitor" tabindex="0" role="button" aria-pressed="false">
+        <rect x="510" y="170" width="125" height="56" rx="8"/>
+        <text class="pipe-title" x="572" y="189">Surveiller</text>
+        <text class="pipe-sub" x="572" y="208">Qualité</text>
+      </g>
+      <g class="pipe-node pipe-ai" data-step="retrain" tabindex="0" role="button" aria-pressed="false">
+        <rect x="355" y="170" width="125" height="56" rx="8"/>
+        <text class="pipe-title" x="417" y="189">Réentraîner</text>
+        <text class="pipe-sub" x="417" y="208">Nouvelles données</text>
+      </g>
+      <path class="pipe-arrow" d="M170 68 L197 68" marker-end="url(#pipe-arrowhead)"/>
+      <path class="pipe-arrow" d="M325 68 L352 68" marker-end="url(#pipe-arrowhead)"/>
+      <path class="pipe-arrow" d="M480 68 L507 68" marker-end="url(#pipe-arrowhead)"/>
+      <path class="pipe-arrow" d="M572 96 L572 167" marker-end="url(#pipe-arrowhead)"/>
+      <path class="pipe-arrow" d="M510 198 L483 198" marker-end="url(#pipe-arrowhead)"/>
+      <path class="pipe-arrow" d="M355 198 L262 198 L262 99" marker-end="url(#pipe-arrowhead)"/>
+      <text class="pipe-legend" x="340" y="280" text-anchor="middle">Violet = CI/CD · Corail = boucle IA supplémentaire (MLOps)</text>
+    </svg>
+    <figcaption class="pipe-detail" aria-live="polite"></figcaption>
+  </figure>
+      <p><strong>Le pipeline :</strong> ces étapes, dans l’ordre, forment un pipeline : code, puis construction, tests, empaquetage et déploiement. Les vérifications rapides sont faites en premier, pour arrêter tôt une modification défectueuse.</p>
+      <p><strong>Où il se trouve :</strong> sur GitHub, les étapes sont écrites dans un fichier YAML placé dans <code>.github/workflows/</code>. Ce fichier indique quoi exécuter et quand, par exemple à chaque envoi de code.</p>
+      <p><strong>Pourquoi c’est utile :</strong> beaucoup de petites livraisons testées sont plus sûres qu’une grande livraison que personne n’a vraiment testée.</p>
+    </div>
+  </details>
+  </div>
+  <div class="sub-panel" id="sub-docker">
+    <iframe class="docker-frame" src="../docker-lab.html" title="Docker Lab" loading="lazy"></iframe>
+  </div>
+  <div class="sub-panel" id="sub-glossary">
   <div class="aiquiz-glossary-section">
     <button type="button" class="aiquiz-glossary-toggle" data-role="aiquiz-glossary-toggle">
       Glossaire des acronymes IA ▼
     </button>
     <div class="aiquiz-glossary" data-role="aiquiz-glossary" hidden></div>
+  </div>
   </div>
 </div>

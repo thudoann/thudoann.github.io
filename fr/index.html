@@ -26,7 +26,10 @@
   <a href="#about" class="skip-link">Aller au contenu principal</a>
   <main class="wrap" id="main-content">
     <header class="site-header">
-      <h1>Anh Thu DOAN</h1>
+      <div class="site-title">
+        <h1>Anh Thu DOAN</h1>
+        <p class="hero-role" id="hero-role" aria-live="off"></p>
+      </div>
       <div class="header-actions">
         <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Mode sombre" title="Mode sombre">
           <svg class="icon-light" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 6 6c0 2.2-1.2 4.1-3 5.2V19a1 1 0 0 1-2 0v-4.8C5.2 13.1 4 11.2 4 9a6 6 0 0 0 6-6 1 1 0 0 1 2 0z"/></svg>
@@ -40,24 +43,26 @@
       <span class="keyboard-hint-text"></span>
       <button type="button" class="keyboard-hint-dismiss" aria-label="Fermer">×</button>
     </p>
-    <div class="tabs">
-      <button class="tab" data-tab="about" aria-selected="true">À propos</button>
-      <button class="tab" data-tab="projects">Projets</button>
-      <button class="tab" data-tab="quiz">Quiz</button>
-      <button class="tab" data-tab="papers">Publications</button>
-      <button class="tab" data-tab="hobbies">Loisirs</button>
-      <button class="tab" data-tab="rabbitholes">Rabbit Holes</button>
-      <button class="tab" data-tab="sudoku">Sudoku</button>
-      <button class="tab" data-tab="aiquiz">Quiz IA</button>
-      <button class="tab" data-tab="contact">Contact</button>
-    </div>
+    <nav class="nav" aria-label="Sections">
+      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-tabs">
+        <span class="nav-toggle-label">À propos</span>
+        <svg class="nav-toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="tabs" id="nav-tabs">
+        <button class="tab" data-tab="about" aria-selected="true">À propos</button>
+        <button class="tab" data-tab="projects">Projets</button>
+        <button class="tab" data-tab="papers">Publications</button>
+        <button class="tab" data-tab="aiquiz">Labo IA</button>
+        <button class="tab" data-tab="contact">Contact</button>
+      </div>
+    </nav>
 
     <section class="panel active" id="about">
-      <p class="muted">Je dors avec mon chat et mon ordinateur.</p>
+      <p class="muted cat-line" title="Cliquez-moi">Je dors avec mon chat et mon ordinateur.</p>
       <div class="about-content">
         <div id="about-cv" class="about-cv">
           <p class="muted">
-            Si vous voulez voir mon CV détaillé, vous pouvez l’ouvrir ci‑dessous. Sinon, n’hésitez pas à parcourir les projets et loisirs.
+            Si vous voulez voir mon CV détaillé, vous pouvez l’ouvrir ci‑dessous. Sinon, n’hésitez pas à parcourir mes projets.
           </p>
           <button type="button" class="planner-secondary-btn about-cv-toggle" data-role="about-cv-toggle">
             Voir le CV détaillé →
@@ -67,11 +72,7 @@
     </section>
 
     <section class="panel" id="projects"></section>
-    <section class="panel" id="quiz"></section>
     <section class="panel" id="papers"></section>
-    <section class="panel" id="hobbies"></section>
-    <section class="panel" id="rabbitholes"></section>
-    <section class="panel" id="sudoku"></section>
     <section class="panel" id="aiquiz"></section>
     <section class="panel" id="contact"></section>
   </main>
@@ -99,6 +100,7 @@
       </p>
       <p class="aside-info-line">
         <a href="mailto:thudoann45@gmail.com" class="aside-link">Dire bonjour →</a>
+        <button type="button" class="aside-copy" id="copy-email">Copier l’adresse</button>
       </p>
       <p class="aside-info-line aside-note muted">CV mis à jour janv. 2025</p>
     </div>
@@ -109,15 +111,10 @@
   </footer>
 
   <script src="../script.js"></script>
-  <script src="../travel-planner.js"></script>
-  <script src="../cameras-data.js"></script>
-  <script src="../camera-guide.js"></script>
-  <script src="../knowledge-data.js"></script>
-  <script src="../knowledge-guide.js"></script>
   <script src="../projects-config.js"></script>
   <script src="../projects-guide.js"></script>
-  <script src="../sudoku.js"></script>
   <script src="../ai-quiz-data.js"></script>
   <script src="../ai-quiz.js"></script>
+  <script src="../cute-cat.js" data-fur="#FBF8F3" data-spot="#A89C92" data-pixel="2" data-speed="3.5"></script>
 </body>
 </html>

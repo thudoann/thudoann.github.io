@@ -81,12 +81,12 @@
     const PER_ROUND = 10;
 
     const CATS = [
-      { id: "all",    label: fr ? "Tout"          : "All",          icon: "🧠" },
-      { id: "ml",     label: fr ? "ML Classique"  : "ML Basics",    icon: "📐" },
-      { id: "dl",     label: fr ? "Deep Learning" : "Deep Learning", icon: "🔬" },
-      { id: "nlp",    label: fr ? "NLP"           : "NLP",          icon: "💬" },
-      { id: "ethics", label: fr ? "Éthique IA"    : "AI Ethics",    icon: "⚖️" },
-      { id: "tools",  label: fr ? "Outils"        : "Tools",        icon: "🛠️" },
+      { id: "all",    label: fr ? "Tout"          : "All" },
+      { id: "ml",     label: fr ? "ML Classique"  : "ML Basics" },
+      { id: "dl",     label: fr ? "Deep Learning" : "Deep Learning" },
+      { id: "nlp",    label: fr ? "NLP"           : "NLP" },
+      { id: "ethics", label: fr ? "Éthique IA"    : "AI Ethics" },
+      { id: "tools",  label: fr ? "Outils"        : "Tools" },
     ];
 
     let questions = [], idx = 0, score = 0, answered = false, curCat = "all";
@@ -152,7 +152,6 @@
             const best = bests[c.id];
             const total = Math.min(PER_ROUND, pool.length);
             return `<button type="button" class="aiquiz-cat-btn" data-cat="${c.id}">
-              <span class="aiquiz-cat-icon">${c.icon}</span>
               <span class="aiquiz-cat-label">${c.label}</span>
               <span class="aiquiz-cat-count muted">${pool.length} ${fr ? "questions" : "questions"}</span>
               ${best !== undefined
@@ -227,7 +226,7 @@
       if (expEl) {
         const ok = chosen === correct;
         expEl.innerHTML = `<span class="aiquiz-exp-icon">${ok ? "✓" : "✗"}</span> ${q.exp}${
-          q.src ? `<cite class="aiquiz-src">📄 ${q.src}</cite>` : ""}`;
+          q.src ? `<cite class="aiquiz-src">${q.src}</cite>` : ""}`;
         expEl.classList.add("visible", ok ? "aiquiz-exp-ok" : "aiquiz-exp-bad");
       }
 
@@ -248,10 +247,10 @@
       const total = questions.length;
 
       let msg;
-      if (pct >= 90)      msg = fr ? "Excellent ! 🏆 Tu maîtrises le sujet !" : "Excellent! 🏆 You really know your stuff!";
-      else if (pct >= 70) msg = fr ? "Très bien ! Continue comme ça. 💪"       : "Great work! Keep it up. 💪";
+      if (pct >= 90)      msg = fr ? "Excellent ! Tu maîtrises le sujet !" : "Excellent! You really know your stuff!";
+      else if (pct >= 70) msg = fr ? "Très bien ! Continue comme ça."       : "Great work! Keep it up.";
       else if (pct >= 50) msg = fr ? "Pas mal ! Il y a encore des choses à explorer." : "Not bad! There's still more to discover.";
-      else                msg = fr ? "Continue à apprendre — tu y arriveras ! 📚" : "Keep studying — you'll get there! 📚";
+      else                msg = fr ? "Continue à apprendre — tu y arriveras !" : "Keep studying — you'll get there!";
 
       const catsWithBests = CATS.filter(c => bests[c.id] !== undefined);
 
@@ -262,14 +261,14 @@
             <span class="aiquiz-score-denom">/ ${total}</span>
           </div>
           <p class="aiquiz-result-msg">${msg}</p>
-          ${isRecord ? `<p class="aiquiz-new-record">🏆 ${fr ? "Nouveau record !" : "New record!"}</p>` : ""}
+          ${isRecord ? `<p class="aiquiz-new-record">${fr ? "Nouveau record !" : "New record!"}</p>` : ""}
           ${catsWithBests.length ? `
             <div class="aiquiz-result-bests">
               <span class="aiquiz-bests-label">${fr ? "Vos meilleurs scores" : "Your best scores"}</span>
               ${catsWithBests.map(c => {
                 const poolTotal = Math.min(PER_ROUND, getPool(c.id).length);
                 return `<span class="aiquiz-best-row${c.id === curCat ? " current" : ""}">
-                  <span>${c.icon} ${c.label}</span>
+                  <span>${c.label}</span>
                   <span class="aiquiz-best-val">${bests[c.id]}/${poolTotal}</span>
                 </span>`;
               }).join("")}

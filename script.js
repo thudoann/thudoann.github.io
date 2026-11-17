@@ -11,12 +11,86 @@ const i18n = {
   contactOpening: isFr ? "Ouverture…" : "Opening…",
   contactSubmitLabel: isFr ? "Envoyer l'email" : "Send email",
   keyboardHint: isFr ? "← → pour changer d’onglet" : "← → to switch tabs",
+  copyEmail: isFr ? "Copier l’adresse" : "Copy email",
+  copied: isFr ? "Copié ✓" : "Copied ✓",
+  copyFailed: isFr ? "Copie impossible" : "Copy failed",
+  heroRoles: isFr
+    ? ["Ingénierie de recherche en IA", "Biotech × IA en santé", "NLP · données synthétiques", "Disponible pour de nouvelles opportunités"]
+    : ["AI Research Engineer", "Biotech × AI in healthcare", "NLP · synthetic data", "Open to opportunities"],
 };
 
 const tabs = document.querySelectorAll(".tab");
 const panels = document.querySelectorAll(".panel");
-const loaded = { aboutCv: false, papers: false, hobbies: false, projects: false, quiz: false, contact: false, rabbitholes: false, sudoku: false, aiquiz: false };
-const tabFiles = { papers: "papers.html", hobbies: "hobbies.html", projects: "projects.html", quiz: "quiz.html", contact: "contact.html", rabbitholes: "rabbitholes.html", sudoku: "sudoku.html", aiquiz: "ai-quiz.html" };
+const loaded = { aboutCv: false, papers: false, projects: false, contact: false, aiquiz: false };
+const tabFiles = { papers: "papers.html", projects: "projects.html", contact: "contact.html", aiquiz: "ai-quiz.html" };
+
+/* ---------- Scroll progress + back to top ---------- */
+function initScrollProgress() {
+  const bar = document.getElementById("scroll-progress-bar");
+  const backToTop = document.getElementById("back-to-top");
+  if (!bar || !backToTop) return;
+
+  const update = () => {
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const percent = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
+    bar.style.width = Math.min(Math.max(percent, 0), 100) + "%";
+    backToTop.classList.toggle("visible", window.scrollY > 260);
+  };
+
+  update();
+  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update);
+  backToTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
+const reducedMotion = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+const finePointer = !!(window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches);
+const REVEAL_SEL = "[data-reveal], article, .card, .proj-card, .paper-item, .glance-card, .contact-card, .cv-item, .tech-pill, .proj-other-heading, .panel-title";
+
+const revealObserver = "IntersectionObserver" in window
+  ? new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        el.classList.add("is-visible");
+        obs.unobserve(el);
+        if (el.matches(".panel-title")) scrambleText(el);
+        // clear the stagger delay so hover transitions stay snappy afterwards
+        el.addEventListener("transitionend", () => { el.style.transitionDelay = ""; }, { once: true });
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -20px 0px" })
+  : null;
+
+/* Slide-up + fade for anything matching REVEAL_SEL; siblings stagger in */
+function initRevealAnimations(root = document) {
+  if (!root.querySelectorAll) return;
+  const els = root.querySelectorAll(REVEAL_SEL);
+  const perParent = new Map();
+  els.forEach((el) => {
+    if (el.dataset.revealBound) return;
+    el.dataset.revealBound = "1";
+    el.classList.add("reveal");
+    const n = perParent.get(el.parentElement) || 0;
+    perParent.set(el.parentElement, n + 1);
+    if (!reducedMotion) el.style.transitionDelay = Math.min(n, 6) * 70 + "ms";
+    if (revealObserver) revealObserver.observe(el);
+    else el.classList.add("is-visible");
+  });
+}
+
+/* Content loaded asynchronously (GitHub projects, CV, tab files) gets revealed too */
+function watchForNewContent() {
+  const main = document.getElementById("main-content");
+  if (!main || !("MutationObserver" in window)) return;
+  let queued = false;
+  new MutationObserver(() => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; initRevealAnimations(main); });
+  }).observe(main, { childList: true, subtree: true });
+}
 
 /* ---------- Theme toggle ---------- */
 (function initThemeToggle() {
@@ -25,8 +99,20 @@ const tabFiles = { papers: "papers.html", hobbies: "hobbies.html", projects: "pr
   toggle.addEventListener("click", function () {
     const html = document.documentElement;
     const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    html.setAttribute("data-theme", next);
+    const apply = () => html.setAttribute("data-theme", next);
     try { localStorage.setItem("theme", next); } catch (e) {}
+    if (!document.startViewTransition || reducedMotion) { apply(); return; }
+    const r = toggle.getBoundingClientRect();
+    const x = r.left + r.width / 2;
+    const y = r.top + r.height / 2;
+    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    const vt = document.startViewTransition(apply);
+    vt.ready.then(() => {
+      html.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+        { duration: 550, easing: "ease-in-out", pseudoElement: "::view-transition-new(root)" }
+      );
+    }).catch(() => {});
   });
 })();
 
@@ -241,22 +327,15 @@ async function loadPanel(panel, filename, fallbackMsg) {
     panel.innerHTML = await res.text();
     initSubTabs(panel);
     await initCivicQuizEmbeds(panel);
-    if (panel.id === "hobbies") {
-      initTravelPlanner(panel);
-      if (typeof initCameraGuide === "function") initCameraGuide(panel);
-    }
-    if (panel.id === "rabbitholes") {
-      if (typeof initKnowledgeGuide === "function") initKnowledgeGuide(panel);
-    }
+    initRevealAnimations(panel);
     if (panel.id === "projects") {
       if (typeof initProjectsGuide === "function") initProjectsGuide(panel);
     }
-    if (panel.id === "sudoku") {
-      if (typeof initSudoku === "function") initSudoku(panel);
-    }
+    if (panel.id === "projects") initProjectSearch(panel);
     if (panel.id === "aiquiz") {
       if (typeof initAiQuiz === "function") initAiQuiz(panel);
     }
+    if (panel.id === "aiquiz") initPipelineDiagram(panel);
     return true;
   } catch (err) {
     hideLoading(panel);
@@ -313,6 +392,7 @@ async function loadAboutCv() {
     container.classList.remove("loading");
     container.innerHTML = await res.text();
     initCvAccordion(container);
+    initRevealAnimations(container);
     loaded.aboutCv = true;
   } catch (err) {
     container.classList.remove("loading");
@@ -339,6 +419,7 @@ function switchToTab(tab) {
   tabs.forEach((t) => t.setAttribute("aria-selected", t === tab ? "true" : "false"));
   panels.forEach((p) => p.classList.remove("active"));
   panel.classList.add("active");
+  syncNav();
 
   if (history.replaceState) history.replaceState(null, "", "#" + id);
   else location.hash = id;
@@ -348,6 +429,8 @@ function switchToTab(tab) {
   if (tabFiles[id] && !loaded[id]) {
     loadPanel(panel, tabFiles[id], i18n.tabError).then(ok => { if (ok) loaded[id] = true; });
   }
+
+  requestAnimationFrame(() => initRevealAnimations(panel));
 }
 
 function openTabById(id) {
@@ -366,19 +449,163 @@ tabs.forEach((tab, i) => {
   });
 });
 
-document.addEventListener("keydown", (e) => {
-  const inForm = e.target.closest(".contact-form");
-  if (e.target.closest(".tabs")) return;
-  if (inForm) return;
-});
+/* Arrow keys switch tabs when focus is on the page (not in a widget that uses arrows) */
+function initArrowTabNav() {
+  const tabList = Array.from(tabs);
+  document.addEventListener("keydown", (e) => {
+    if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    const t = e.target;
+    const onPage = t === document.body || t === document.documentElement || t.classList?.contains("tab");
+    if (!onPage) return;
+    const active = document.querySelector(".panel.active");
+    if (active && active.id === "aiquiz") return;
+
+    const cur = tabList.findIndex((tb) => tb.getAttribute("aria-selected") === "true");
+    const dir = e.key === "ArrowRight" ? 1 : -1;
+    const next = tabList[(cur + dir + tabList.length) % tabList.length];
+    e.preventDefault();
+    switchToTab(next);
+    next.focus({ preventScroll: true });
+    hideKeyboardHint();
+  });
+}
+
+/* Typewriter role line under the name */
+function initHeroRole() {
+  const el = document.getElementById("hero-role");
+  if (!el) return;
+  const roles = i18n.heroRoles;
+  const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) {
+    el.textContent = roles[0];
+    return;
+  }
+  let r = 0;
+  let c = 0;
+  let deleting = false;
+  const tick = () => {
+    const word = roles[r];
+    if (!deleting) {
+      c++;
+      el.textContent = word.slice(0, c);
+      if (c === word.length) {
+        deleting = true;
+        return setTimeout(tick, 2000);
+      }
+      return setTimeout(tick, 55 + Math.random() * 45);
+    }
+    c--;
+    el.textContent = word.slice(0, c);
+    if (c === 0) {
+      deleting = false;
+      r = (r + 1) % roles.length;
+      return setTimeout(tick, 350);
+    }
+    setTimeout(tick, 28);
+  };
+  tick();
+}
+
+/* Copy-to-clipboard for the contact email shown in the sidebar */
+function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(text).then(() => true, () => false);
+  }
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    ta.remove();
+    return Promise.resolve(ok);
+  } catch (_) {
+    return Promise.resolve(false);
+  }
+}
+
+function initCopyEmail() {
+  const btn = document.getElementById("copy-email");
+  const link = document.querySelector(".aside-link[href^='mailto:']");
+  if (!btn || !link) return;
+  const email = link.getAttribute("href").replace(/^mailto:/, "");
+  const label = i18n.copyEmail;
+  btn.textContent = label;
+  let timer;
+  btn.addEventListener("click", async () => {
+    const ok = await copyText(email);
+    btn.textContent = ok ? i18n.copied : i18n.copyFailed;
+    btn.classList.toggle("copied", ok);
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      btn.textContent = label;
+      btn.classList.remove("copied");
+    }, 1800);
+  });
+}
+
+/* Clicking the cat line sends paw prints floating up from the cursor */
+function initCatPaws() {
+  const cat = document.querySelector(".cat-line");
+  const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!cat || reduce) return;
+  cat.addEventListener("click", (e) => {
+    for (let i = 0; i < 6; i++) {
+      const paw = document.createElement("span");
+      paw.className = "paw-burst";
+      paw.textContent = "🐾";
+      paw.setAttribute("aria-hidden", "true");
+      paw.style.left = e.clientX + (Math.random() * 40 - 20) + "px";
+      paw.style.top = e.clientY + "px";
+      paw.style.setProperty("--dx", Math.random() * 60 - 30 + "px");
+      paw.style.setProperty("--dy", -40 - Math.random() * 60 + "px");
+      paw.style.setProperty("--rot", Math.random() * 60 - 30 + "deg");
+      document.body.appendChild(paw);
+      setTimeout(() => paw.remove(), 1300);
+    }
+  });
+}
+
+/* Cursor spotlight on cards (fine pointers only) */
+function initCardSpotlight() {
+  if (!finePointer) return;
+  const SEL = ".proj-card, .paper-item, .glance-card, .contact-card";
+  document.addEventListener("pointermove", (e) => {
+    const card = e.target.closest ? e.target.closest(SEL) : null;
+    if (!card) return;
+    card.classList.add("spotlight-ready");
+    const r = card.getBoundingClientRect();
+    card.style.setProperty("--mx", e.clientX - r.left + "px");
+    card.style.setProperty("--my", e.clientY - r.top + "px");
+  }, { passive: true });
+}
 
 const hash = location.hash.slice(1);
-if (hash && ["about", "projects", "quiz", "papers", "hobbies", "rabbitholes", "sudoku", "aiquiz", "contact"].includes(hash)) {
+if (hash && ["about", "projects", "papers", "aiquiz", "contact"].includes(hash)) {
   openTabById(hash);
 } else {
   if (history.replaceState) history.replaceState(null, "", "#about");
 }
 initAboutCvLazy();
+initScrollProgress();
+initRevealAnimations();
+initArrowTabNav();
+initHeroRole();
+initCopyEmail();
+initCatPaws();
+initCardSpotlight();
+initNav();
+initNameWave();
+initRipples();
+initDoodleTilt();
+initTilt();
+initMagnetic();
+initCursorGlow();
+watchForNewContent();
 window.addEventListener("hashchange", () => {
   const id = location.hash.slice(1);
   if (id && document.getElementById(id)) openTabById(id);
@@ -529,4 +756,255 @@ for (let d = 1; d <= daysInMonth; d++) {
   el.setAttribute("role", "gridcell");
   if (d === now.getDate()) el.setAttribute("aria-current", "date");
   calendar.appendChild(el);
+}
+
+/* ---------- Navigation: sync label, mobile menu, shrink on scroll ---------- */
+function syncNav() {
+  const selected = document.querySelector(".tab[aria-selected='true']");
+  const label = document.querySelector(".nav-toggle-label");
+  if (selected && label) label.textContent = selected.textContent.trim();
+}
+
+function setNavOpen(open) {
+  const nav = document.querySelector(".nav");
+  const btn = document.querySelector(".nav-toggle");
+  if (!nav || !btn) return;
+  nav.classList.toggle("nav-open", open);
+  btn.setAttribute("aria-expanded", open ? "true" : "false");
+}
+
+function initNav() {
+  const nav = document.querySelector(".nav");
+  const btn = document.querySelector(".nav-toggle");
+  if (!nav) return;
+  if (btn) {
+    btn.addEventListener("click", () => setNavOpen(!nav.classList.contains("nav-open")));
+  }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setNavOpen(false);
+  });
+  document.addEventListener("click", (e) => {
+    if (!nav.classList.contains("nav-open")) return;
+    if (!e.target.closest(".nav")) setNavOpen(false);
+  });
+  tabs.forEach((t) => t.addEventListener("click", () => setNavOpen(false)));
+
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      nav.classList.toggle("is-scrolled", window.scrollY > 80);
+      ticking = false;
+    });
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+  syncNav();
+}
+
+/* ---------- Micro-interactions (fine pointers only) ---------- */
+function initTilt() {
+  if (!finePointer || reducedMotion) return;
+  document.addEventListener("pointermove", (e) => {
+    const card = e.target.closest ? e.target.closest(".proj-card") : null;
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform =
+      `perspective(900px) rotateX(${(-py * 8).toFixed(2)}deg) rotateY(${(px * 10).toFixed(2)}deg) translateY(-3px)`;
+  }, { passive: true });
+  document.addEventListener("pointerout", (e) => {
+    const card = e.target.closest ? e.target.closest(".proj-card") : null;
+    if (card && !card.contains(e.relatedTarget)) card.style.transform = "";
+  });
+}
+
+function initMagnetic() {
+  if (!finePointer || reducedMotion) return;
+  const SEL = ".theme-toggle, .planner-secondary-btn, .aside-copy, .back-to-top, .lang-switch, .nav-toggle";
+  document.addEventListener("pointermove", (e) => {
+    const el = e.target.closest ? e.target.closest(SEL) : null;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - (r.left + r.width / 2)) * 0.2;
+    const y = (e.clientY - (r.top + r.height / 2)) * 0.2;
+    el.style.translate = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
+  }, { passive: true });
+  document.addEventListener("pointerout", (e) => {
+    const el = e.target.closest ? e.target.closest(SEL) : null;
+    if (el && !el.contains(e.relatedTarget)) el.style.translate = "";
+  });
+}
+
+function initCursorGlow() {
+  if (!finePointer || reducedMotion) return;
+  const glow = document.createElement("div");
+  glow.className = "cursor-glow";
+  glow.setAttribute("aria-hidden", "true");
+  document.documentElement.appendChild(glow);
+  let x = 0;
+  let y = 0;
+  let queued = false;
+  document.addEventListener("pointermove", (e) => {
+    x = e.clientX;
+    y = e.clientY;
+    glow.classList.add("on");
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      glow.style.transform = `translate(${x}px, ${y}px)`;
+      queued = false;
+    });
+  }, { passive: true });
+  document.documentElement.addEventListener("mouseleave", () => glow.classList.remove("on"));
+}
+
+/* ---------- Extra interactions ---------- */
+
+/* Letters of the name lift individually under the cursor */
+function initNameWave() {
+  const h1 = document.querySelector(".site-title h1");
+  if (!h1 || reducedMotion) return;
+  const text = h1.textContent;
+  h1.setAttribute("aria-label", text);
+  h1.textContent = "";
+  Array.from(text).forEach((ch) => {
+    const span = document.createElement("span");
+    span.className = "hl";
+    span.setAttribute("aria-hidden", "true");
+    span.textContent = ch === " " ? "\u00a0" : ch;
+    h1.appendChild(span);
+  });
+}
+
+/* Click ripple on buttons and tabs */
+function initRipples() {
+  if (reducedMotion) return;
+  const SEL = ".planner-secondary-btn, .aside-copy, .aiquiz-next-btn, .aiquiz-opt-btn, .theme-toggle, .back-to-top, .tab, .nav-toggle, .proj-link-github, .proj-link-demo";
+  document.addEventListener("pointerdown", (e) => {
+    const el = e.target.closest ? e.target.closest(SEL) : null;
+    if (!el || el.disabled) return;
+    if (getComputedStyle(el).position === "static") el.style.position = "relative";
+    el.classList.add("ripple-host");
+    const r = el.getBoundingClientRect();
+    const d = Math.max(r.width, r.height) * 2;
+    const span = document.createElement("span");
+    span.className = "ripple";
+    span.style.width = span.style.height = d + "px";
+    span.style.left = e.clientX - r.left - d / 2 + "px";
+    span.style.top = e.clientY - r.top - d / 2 + "px";
+    el.appendChild(span);
+    setTimeout(() => { span.remove(); el.classList.remove("ripple-host"); }, 650);
+  }, { passive: true });
+}
+
+/* Scramble-in effect for section titles */
+const SCRAMBLE_CHARS = "!<>-_/[]{}=+*^?#";
+function scrambleText(el) {
+  if (reducedMotion || el.dataset.scrambled) return;
+  el.dataset.scrambled = "1";
+  const final = el.textContent;
+  const frames = 18;
+  let f = 0;
+  const step = () => {
+    f++;
+    const progress = f / frames;
+    el.textContent = final.split("").map((ch, i) => {
+      if (ch === " " || i / final.length < progress) return ch;
+      return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+    }).join("");
+    if (f < frames) requestAnimationFrame(step);
+    else el.textContent = final;
+  };
+  requestAnimationFrame(step);
+}
+
+/* Sidebar doodle tilts toward the cursor */
+function initDoodleTilt() {
+  const img = document.querySelector(".aside-doodle img");
+  const aside = document.querySelector(".calendar");
+  if (!img || !aside || !finePointer || reducedMotion) return;
+  aside.addEventListener("pointermove", (e) => {
+    const r = aside.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    img.style.transform = `perspective(600px) rotateY(${(px * 12).toFixed(2)}deg) rotateX(${(-py * 9).toFixed(2)}deg) scale(1.03)`;
+  }, { passive: true });
+  aside.addEventListener("pointerleave", () => { img.style.transform = ""; });
+}
+
+/* Project search: filters cards by any text they contain */
+function initProjectSearch(panel) {
+  const input = panel.querySelector("#proj-search");
+  const grid = panel.querySelector("[data-role='gh-projects']");
+  const empty = panel.querySelector(".proj-search-empty");
+  if (!input || !grid || input.dataset.bound) return;
+  input.dataset.bound = "1";
+  const apply = () => {
+    const q = input.value.trim().toLowerCase();
+    let shown = 0;
+    grid.querySelectorAll(".proj-card").forEach((card) => {
+      const match = !q || card.textContent.toLowerCase().includes(q);
+      card.classList.toggle("proj-filtered-out", !match);
+      if (match) shown++;
+    });
+    if (empty) empty.hidden = !(q && shown === 0);
+  };
+  input.addEventListener("input", apply);
+  new MutationObserver(apply).observe(grid, { childList: true, subtree: true });
+}
+
+/* ---------- CI/CD pipeline diagram: click a box for details ---------- */
+const PIPELINE_DETAILS = {
+  en: {
+    write: ["Write code", "Developers write features and fixes, then push them to the shared repository on GitHub. Every push can trigger the steps below. Small, frequent changes are easier to review and easier to fix."],
+    ci: ["CI: Continuous Integration", "On every push, a robot builds the project and runs automated tests, linting and security checks. A red result reaches the author within minutes, while the change is still fresh. Typical tools: GitHub Actions, GitLab CI, Jenkins."],
+    cd: ["CD: Continuous Delivery / Deployment", "When CI passes, the app is packaged (for example as a Docker image) and released. With Delivery, a person decides when to go live. With Deployment, it goes live automatically. Teams often release gradually, for example with a canary release."],
+    prod: ["Production: real users", "The new version now serves real users. Good pipelines release gradually and can roll back quickly if errors rise."],
+    monitor: ["Monitor: check quality", "Logs, error rates and latency are watched continuously. For AI systems, output quality is watched too: accuracy on fresh samples, drift in the input data and user feedback. Alerts fire when a number drops below its limit."],
+    retrain: ["Retrain: fresh data", "When quality drops (new data patterns, drift), the model is retrained on fresh data and evaluated. The new model goes back into the pipeline at CI, which tests it and releases it. This extra loop is the MLOps part: models are treated like code."]
+  },
+  fr: {
+    write: ["Écrire le code", "Les développeurs écrivent des fonctionnalités et des corrections, puis les envoient dans le dépôt partagé sur GitHub. Chaque envoi peut déclencher les étapes suivantes. Des modifications petites et fréquentes sont plus faciles à relire et à corriger."],
+    ci: ["CI : intégration continue", "À chaque envoi, un robot construit le projet et lance les tests automatiques, le linting et les contrôles de sécurité. Un résultat en échec prévient l’auteur en quelques minutes, pendant que la modification est encore fraîche. Outils courants : GitHub Actions, GitLab CI, Jenkins."],
+    cd: ["CD : livraison ou déploiement continu", "Quand la CI réussit, l’application est empaquetée (par exemple en image Docker) puis publiée. Avec la livraison continue, une personne décide du moment de la mise en ligne. Avec le déploiement continu, la mise en ligne est automatique. Les équipes publient souvent progressivement, par exemple avec une publication canary."],
+    prod: ["Production : vrais utilisateurs", "La nouvelle version sert maintenant de vrais utilisateurs. Un bon pipeline publie progressivement et peut revenir rapidement en arrière si les erreurs augmentent."],
+    monitor: ["Surveiller : contrôler la qualité", "Les journaux, les taux d’erreur et les temps de réponse sont suivis en continu. Pour les systèmes d’IA, la qualité des réponses est aussi suivie : précision sur des données récentes, dérive des données d’entrée et retours des utilisateurs. Une alerte se déclenche quand un indicateur passe sous sa limite."],
+    retrain: ["Réentraîner : nouvelles données", "Quand la qualité baisse (nouveaux schémas de données, dérive), le modèle est réentraîné sur des données récentes puis évalué. Le nouveau modèle repasse dans le pipeline à l’étape CI, qui le teste et le publie. Cette boucle supplémentaire est la partie MLOps : les modèles sont traités comme du code."]
+  }
+};
+
+function initPipelineDiagram(panel) {
+  const figure = panel.querySelector(".pipe-figure");
+  if (!figure) return;
+  const detail = figure.querySelector(".pipe-detail");
+  const nodes = figure.querySelectorAll(".pipe-node");
+  const texts = isFr ? PIPELINE_DETAILS.fr : PIPELINE_DETAILS.en;
+
+  const select = (node) => {
+    nodes.forEach((n) => {
+      const on = n === node;
+      n.classList.toggle("selected", on);
+      n.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    const [title, body] = texts[node.dataset.step];
+    detail.innerHTML = "";
+    const strong = document.createElement("strong");
+    strong.textContent = title;
+    const p = document.createElement("span");
+    p.textContent = body;
+    detail.append(strong, document.createElement("br"), p);
+  };
+
+  nodes.forEach((node) => {
+    node.addEventListener("click", () => select(node));
+    node.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        select(node);
+      }
+    });
+  });
 }
