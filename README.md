@@ -1,6 +1,6 @@
 # thudoann.github.io
 
-Personal website — available in English and French.
+Personal website, available in English and French.
 
 **Live:** https://thudoann.github.io · https://thudoann.github.io/fr/
 
@@ -15,7 +15,7 @@ Personal website — available in English and French.
 
 ## Stack
 
-Static HTML/CSS/JS — no framework, no build step, no server. Everything runs in the browser.
+Static HTML/CSS/JS, no framework, no build step, no server. Everything runs in the browser.
 
 ---
 
