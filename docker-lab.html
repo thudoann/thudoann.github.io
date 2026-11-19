@@ -13,9 +13,11 @@
       new MutationObserver(function(){apply(p.getAttribute('data-theme')||'light')}).observe(p,{attributes:true,attributeFilter:['data-theme']});
     } else apply('light');
   if(window.parent!==window){
-    var sendH=function(){window.parent.postMessage({type:'lab-height',h:Math.ceil(Math.max(document.documentElement.scrollHeight,document.body.scrollHeight))+16},'*')};
-    new ResizeObserver(sendH).observe(document.body);
-    window.addEventListener('load',sendH); setTimeout(sendH,300);
+    document.addEventListener('DOMContentLoaded',function(){
+      var sendH=function(){window.parent.postMessage({type:'lab-height',h:Math.ceil(Math.max(document.documentElement.scrollHeight,document.body.scrollHeight))+16},'*')};
+      new ResizeObserver(sendH).observe(document.body);
+      window.addEventListener('load',sendH); setTimeout(sendH,300);
+    });
   }
   }catch(e){apply('light')}
 })();

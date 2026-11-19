@@ -1020,7 +1020,7 @@ function initLabFrames() {
       frame.style.height = Math.max(h, 300) + "px";
     } catch (err) { /* cross-origin or not ready: keep the default height */ }
   };
-  const frames = () => document.querySelectorAll(".docker-frame, .evals-frame");
+  const frames = () => document.querySelectorAll(".docker-frame, .evals-frame, .monitoring-frame");
   frames().forEach((frame) => frame.addEventListener("load", () => fit(frame)));
   window.addEventListener("message", (e) => {
     if (!e.data || e.data.type !== "lab-height") return;
